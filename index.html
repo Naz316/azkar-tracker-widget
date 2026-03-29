@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Azkar Master Widget</title>
-    <!-- Using Amiri and Reem Kufi for that classic "Abjad Hawaz" calligraphic style -->
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Reem+Kufi:wght@400;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -34,7 +33,6 @@
             transition: background 0.4s ease;
         }
 
-        /* Top Header */
         .header {
             display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;
         }
@@ -45,7 +43,6 @@
             cursor: pointer; font-size: 12px; font-weight: bold;
         }
 
-        /* Tabs */
         .tabs {
             display: grid; grid-template-columns: repeat(4, 1fr);
             gap: 5px; margin-bottom: 20px;
@@ -57,110 +54,91 @@
             transition: 0.3s; display: flex; flex-direction: column; align-items: center;
         }
         .tab.active { background: var(--accent); color: white; }
-        .tab span { font-size: 16px; margin-bottom: 4px; }
+        .tab span { font-size: 18px; margin-bottom: 4px; }
 
-        /* Content Area - Fixed Size */
         .main-display {
             flex-grow: 1; overflow-y: auto; padding: 15px;
             text-align: center; display: flex; flex-direction: column;
             background: rgba(0,0,0,0.1); border-radius: 15px;
             scrollbar-width: thin; scrollbar-color: var(--accent) transparent;
-            min-height: 0; /* Important for flex-shrink */
+            min-height: 0; 
         }
         
         .arabic {
             font-family: var(--font-arabic); font-size: 24px; color: var(--text);
             direction: rtl; line-height: 1.8; margin-bottom: 20px;
-            word-wrap: break-word;
         }
-        .divider {
-            height: 1px; background: rgba(255,255,255,0.1);
-            width: 60%; margin: 0 auto 20px; flex-shrink: 0;
-        }
-        .translation {
-            font-size: 15px; color: var(--text-dim); line-height: 1.6;
-            margin-bottom: 20px; font-weight: 400;
-        }
+        .divider { height: 1px; background: rgba(255,255,255,0.1); width: 60%; margin: 0 auto 20px; flex-shrink: 0; }
+        .translation { font-size: 15px; color: var(--text-dim); line-height: 1.6; margin-bottom: 20px; }
 
-        /* Footer Alignment Fixed */
         .footer-controls {
             display: flex; justify-content: space-between; align-items: center;
-            padding-top: 20px; margin-top: 10px;
+            padding-top: 20px; margin-top: 10px; height: 80px;
             border-top: 1px solid rgba(255,255,255,0.1);
         }
 
         .side-info {
             flex: 1; display: flex; flex-direction: column; 
-            align-items: center; justify-content: center;
-            height: 50px; /* Force same height for vertical alignment */
+            align-items: center; justify-content: center; height: 100%;
         }
-        .info-label { font-size: 10px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 2px; }
+        .info-label { font-size: 10px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 4px; }
         .info-value { font-size: 14px; color: var(--text); font-weight: 700; }
-        
-        /* Repetition Label - Reset from Red to Default */
-        .repeat-label { 
-            font-family: var(--font-arabic); 
-            font-size: 14px; 
-            color: var(--text); /* Default color now */
-        }
+        .repeat-label { font-family: var(--font-arabic); font-size: 15px; color: var(--text); }
 
         .counter-circle {
-            width: 65px; height: 65px; border-radius: 50%;
+            width: 70px; height: 70px; border-radius: 50%;
             border: 3px solid var(--accent);
             display: flex; align-items: center; justify-content: center;
-            font-size: 22px; font-weight: 700; color: var(--text);
+            font-size: 26px; font-weight: 700; color: var(--text);
             cursor: pointer; transition: 0.2s; background: var(--card);
-            margin: 0 10px;
+            margin: 0 10px; flex-shrink: 0;
         }
         .counter-circle:active { transform: scale(0.95); }
 
         .nav-btn {
             background: var(--card); border: none; color: var(--text);
-            width: 35px; height: 35px; border-radius: 50%; cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
+            width: 40px; height: 40px; border-radius: 50%; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
         }
 
-        /* Color Menu */
+        /* Color Menu & Tooltips */
         .color-menu {
             position: absolute; top: 60px; right: 25px;
             background: #1A1A1A; padding: 12px; border-radius: 12px;
-            display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
-            visibility: hidden; opacity: 0; transition: 0.3s; z-index: 100;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+            visibility: hidden; opacity: 0; transition: 0.3s; z-index: 9999;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.8);
         }
         .color-menu.show { visibility: visible; opacity: 1; }
         .color-dot { 
-            width: 25px; height: 25px; border-radius: 50%; cursor: pointer; 
+            width: 28px; height: 28px; border-radius: 50%; cursor: pointer; 
             border: 2px solid rgba(255,255,255,0.1); position: relative;
         }
-
-        /* Tooltip style for color names */
         .color-dot:hover::after {
             content: attr(data-name);
-            position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%);
-            font-size: 9px; color: white; background: black; padding: 2px 5px;
-            border-radius: 4px; white-space: nowrap;
+            position: absolute; top: -30px; left: 50%; transform: translateX(-50%);
+            font-size: 10px; color: white; background: #333; padding: 4px 8px;
+            border-radius: 4px; white-space: nowrap; z-index: 10000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
         }
 
         .main-display::-webkit-scrollbar { width: 4px; }
         .main-display::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
-        
-        [dir="rtl"] .translation { direction: ltr; }
     </style>
 </head>
 <body>
 
-<div class="widget" id="widget">
+<div class="widget">
     <div class="header">
-        <button class="lang-toggle" onclick="toggleLang()" id="langBtn">EN/AR</button>
+        <button class="lang-toggle" onclick="toggleLang()" id="langBtn">EN / عربي</button>
         <button style="background:none; border:none; cursor:pointer; font-size:20px;" onclick="toggleColors()">🎨</button>
     </div>
     
-    <div class="tabs">
-        <button class="tab active" onclick="changeCat(0)"><span>☀️</span><label>Morning</label></button>
-        <button class="tab" onclick="changeCat(1)"><span>🌙</span><label>Evening</label></button>
-        <button class="tab" onclick="changeCat(2)"><span>🛌</span><label>Sleep</label></button>
-        <button class="tab" onclick="changeCat(3)"><span>🌅</span><label>Waking</label></button>
+    <div class="tabs" id="tabs">
+        <button class="tab active" onclick="changeCat(0)"><span>☀️</span><label id="t0">Morning</label></button>
+        <button class="tab" onclick="changeCat(1)"><span>🌙</span><label id="t1">Evening</label></button>
+        <button class="tab" onclick="changeCat(2)"><span>🛌</span><label id="t2">Sleep</label></button>
+        <button class="tab" onclick="changeCat(3)"><span>🌅</span><label id="t3">Waking</label></button>
     </div>
 
     <div class="main-display" id="scrollArea">
@@ -177,8 +155,7 @@
             <span class="info-value" id="progressVal">1 / 26</span>
         </div>
 
-        <!-- Count UP circle -->
-        <div class="counter-circle" id="circleCount" onclick="incrementCount()">0 / 1</div>
+        <div class="counter-circle" id="circleCount" onclick="incrementCount()">0</div>
 
         <div class="side-info">
             <span class="info-label" id="lblRepeat">Repeat</span>
@@ -190,44 +167,40 @@
 
     <div class="color-menu" id="colorMenu">
         <div class="color-dot" data-name="Plum" style="background:#4D1D3D" onclick="applyTheme('#4D1D3D', '#9B3675')"></div>
-        <div class="color-dot" data-name="Deep Purple" style="background:#1E122C" onclick="applyTheme('#1E122C', '#7446A0')"></div>
-        <div class="color-dot" data-name="Maroon" style="background:#3B1414" onclick="applyTheme('#3B1414', '#992E2E')"></div>
-        <div class="color-dot" data-name="Coffee" style="background:#3E2723" onclick="applyTheme('#3E2723', '#8D6E63')"></div>
-        <div class="color-dot" data-name="Olive" style="background:#827717" onclick="applyTheme('#827717', '#C0CA33')"></div>
-        <div class="color-dot" data-name="Green" style="background:#1B5E20" onclick="applyTheme('#1B5E20', '#4CAF50')"></div>
-        <div class="color-dot" data-name="Teal" style="background:#006064" onclick="applyTheme('#006064', '#00ACC1')"></div>
-        <div class="color-dot" data-name="Blue" style="background:#0D47A1" onclick="applyTheme('#0D47A1', '#42A5F5')"></div>
-        <div class="color-dot" data-name="Slate" style="background:#263238" onclick="applyTheme('#263238', '#78909C')"></div>
-        <div class="color-dot" data-name="Grey" style="background:#424242" onclick="applyTheme('#424242', '#BDBDBD')"></div>
-        <div class="color-dot" data-name="Black" style="background:#000000" onclick="applyTheme('#000000', '#555555')"></div>
-        <div class="color-dot" data-name="Light" style="background:#f5f5f5" onclick="applyTheme('#f5f5f5', '#7446A0', true)"></div>
+        <div class="color-dot" data-name="Amethyst" style="background:#1E122C" onclick="applyTheme('#1E122C', '#7446A0')"></div>
+        <div class="color-dot" data-name="Ruby" style="background:#3B1414" onclick="applyTheme('#3B1414', '#992E2E')"></div>
+        <div class="color-dot" data-name="Mocha" style="background:#3E2723" onclick="applyTheme('#3E2723', '#8D6E63')"></div>
+        <div class="color-dot" data-name="Forest" style="background:#1B5E20" onclick="applyTheme('#1B5E20', '#4CAF50')"></div>
+        <div class="color-dot" data-name="Ocean" style="background:#0D47A1" onclick="applyTheme('#0D47A1', '#42A5F5')"></div>
+        <div class="color-dot" data-name="Midnight" style="background:#000000" onclick="applyTheme('#000000', '#555555')"></div>
+        <div class="color-dot" data-name="Cloud" style="background:#f5f5f5" onclick="applyTheme('#f5f5f5', '#7446A0', true)"></div>
     </div>
 </div>
 
 <script>
 const azkarData = [
     {
-        name: "Morning",
-        arabic: ["أَعُوْذُ بِاللّٰهِ مِنَ الشَّيْطَانِ الرَّجِيْمِ. اَللّٰهُ لَآ إِلٰهَ إِلَّا هُوَ الْحَىُّ الْقَيُّوْمُ ، لَا تَأْخُذُهُۥ سِنَةٌ وَّلَا نَوْمٌ ، لَهُ مَا فِى السَّمٰـوٰتِ وَمَا فِى الْأَرْضِ ، مَنْ ذَا الَّذِىْ يَشْفَعُ عِنْدَهُ إِلَّا بِإِذْنِهِۦ ، يَعْلَمُ مَا بَيْنَ أَيْدِيْهِمْ وَمَا خَلْفَهُمْ ، وَلَا يُحِيْطُوْنَ بِشَىْءٍ مِّنْ عِلْمِهِٓ إِلَّا بِمَا شَآءَ ، وَسِعَ كُرْسِيُّهُ السَّمٰـوٰتِ وَالْأَرْضَ، وَلَا يَئُوْدُهُۥ حِفْظُهُمَا ، وَهُوَ الْعَلِىُّ الْعَظِيْمُ.", "بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ. قُلْ هُوَ اللّٰهُ أَحَدٌ ، اَللّٰهُ الصَّمَدُ ، لَمْ يَلِدْ وَلَمْ يُوْلَدْ ، وَلَمْ يَكُنْ لَّهُ كُفُوًا أَحَدٌ.", "بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ. قُلْ أَعُوْذُ بِرَبِّ الْفَلَقِ ، مِنْ شَرِّ مَا خَلَقَ ، وَمِنْ شَرِّ غَاسِقٍ إِذَا وَقَبَ ، وَمِنْ شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ ، وَمِنْ شَرِّ حَاسِدٍ إِذَا حَسَدَ.", "بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ. قُلْ أَعُوْذُ بِرَبِّ النَّاسِ ، مَلِكِ النَّاسِ ، إِلٰهِ النَّاسِ ، مِنْ شَرِّ الْوَسْوَاسِ الْخَنَّاسِ ، اَلَّذِيْ يُوَسْوِسُ فِيْ صُدُوْرِ النَّاسِ ، مِنَ الْجِنَّةِ وَالنَّاسِ.", "اَللّٰهُمَّ أَنْتَ رَبِّيْ لَا إِلٰهَ إِلَّا أَنْتَ ، خَلَقْتَنِيْ وَأَنَا عَبْدُكَ ، وَأَنَا عَلَىٰ عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ ، أَعُوْذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ ، أَبُوْءُ لَكَ بِنِعْمَتِكَ عَلَيَّ وَأَبُوْءُ لَكَ بِذَنْبِيْ ، فَاغْفِرْ لِيْ فَإِنَّهُ لَا يَغْفِرُ الذُّنُوْبَ إِلَّا أَنْتَ.", "اَللّٰهُمَّ إِنِّيْ أَعُوْذُ بِكَ مِنَ الْهَمِّ وَالْحَزَنِ ، وَأَعُوْذُ بِكَ مِنَ الْعَجْزِ وَالْكَسَلِ، وَأَعُوْذُ بِكَ مِنَ الْجُبْنِ وَالْبُخْلِ ، وَأَعُوْذُ بِكَ مِنْ غَلَبَةِ الدَّيْنِ وَقَهْرِ الرِّجَالِ.", "اَللّٰهُمَّ إِنِّيْ أَسْأَلُكَ الْعَافِيَةَ فِي الدُّنْيَا وَالْآخِرَةِ ، اَللّٰهُمَّ إِنِّيْ أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِيْ دِيْنِيْ وَدُنْيَايَ وَأَهْلِيْ وَمَالِيْ ، اَللّٰهُمَّ اسْتُرْ عَوْرَاتِيْ وَآمِنْ رَوْعَاتِيْ ، اَللّٰهُمَّ احْفَظْنِيْ مِنْ بَيْنِ يَدَيَّ ، وَمِنْ خَلْفِيْ ، وَعَنْ يَّمِيْنِيْ ، وَعَنْ شِمَالِيْ ، وَمِنْ فَوْقِيْ ، وَأَعُوْذُ بِعَظَمَتِكَ أَنْ أُغْتَالَ مِنْ تَحْتِيْ.", "اَللّٰهُمَّ عَالِمَ الْغَيْبِ وَالشَّهَادَةِ ، فَاطِرَ السَّمٰوَاتِ وَالْأَرْضِ ، رَبَّ كُلِّ شَيْءٍ وَمَلِيْكَهُ ، أَشْهَدُ أَنْ لَّا إِلٰهَ إِلَّا أَنْتَ ، أَعُوْذُ بِكَ مِنْ شَرِّ نَفْسِيْ ، وَمِنْ شَرِّ الشَّيْطَانِ وَشِرْكِهِ ، وَأَنْ أَقْتَرِفَ عَلَىٰ نَفْسِيْ سُوْءًا ، أَوْ أَجُرَّهُ إِلَىٰ مُسْلِمٍ.", "يَا حَيُّ يَا قَيُّوْمُ ، بِرَحْمَتِكَ أَسْتَغِيْثُ ، أَصْلِحْ لِيْ شَأْنِيْ كُلَّهُ ، وَلَا تَكِلْنِيْ إِلَىٰ نَفْسِيْ طَرْفَةَ عَيْنٍ.", "اَللّٰهُمَّ مَا أَصْبَحَ بِيْ مِنْ نِّعْمَةٍ أَوْ بِأَحَدٍ مِّنْ خَلْقِكَ ، فَمِنْكَ وَحْدَكَ لَا شَرِيْكَ لَكَ ، فَلَكَ الْحَمْدُ وَلَكَ الشُّكْرُ.", "أَصْبَحْنَا عَلَىٰ فِطْرَةِ الْإِسْلَامِ ، وَعَلَىٰ كَلِمَةِ الْإِخْلَاصِ ، وَعَلَىٰ دِيْنِ نَبِيِّنَا مُحَمَّدٍ ، وَعَلَىٰ مِلَّةِ أَبِيْنَا إِبْرَاهِيْمَ حَنِيْفًا مُّسْلِمًا وَّمَا كَانَ مِنَ الْمُشْرِكِيْنَ.", "أَصْبَحْتُ أُثْنِيْ عَلَيْكَ حَمْدًا ، وَأَشْهَدُ أَنْ لَّا إِلٰهَ إِلَّا اللّٰهُ.", "أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلّٰهِ وَالْحَمْدُ لِلّٰهِ ، لَا إِلٰهَ إِلَّا اللّٰهُ وَحْدَهُ لَا شَرِيْكَ لَهُ ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ ، وَهُوَ عَلَىٰ كُلِّ شَيْءٍ قَدِيْرٌ ، رَبِّ أَسْأَلُكَ خَيْرَ مَا فِيْ هٰذَا الْيَوْمِ وَخَيْرَ مَا بَعْدَهُ ، وَأَعُوْذُ بِكَ مِنْ شَرِّ مَا فِيْ هٰذَا الْيَوْمِ وَشَرِّ مَا بَعْدَهُ ، رَبِّ أَعُوْذُ بِكَ مِنَ الْكَسَلِ وَسُوْءِ الْكِبَرِ ، رَبِّ أَعُوْذُ بِكَ مِنْ عَذَابٍ فِي النَّارِ وَعَذَابٍ فِي الْقَبْرِ.", "أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلّٰهِ رَبِّ الْعَالَمِيْنَ ، اَللّٰهُمَّ إِنِّيْ أَسْأَلُكَ خَيْرَ هٰذَا الْيَوْمِ ، فَتْحَهُ وَنَصْرَهُ وَنُوْرَهُ وَبَرَكَتَهُ وَهُدَاهُ ، وَأَعُوْذُ بِكَ مِنْ شَرِّ مَا فِيْهِ وَشَرِّ مَا بَعْدَهُ.", "اَللّٰهُمَّ إِنِّيْ أَصْبَحْتُ أُشْهِدُكَ ، وَأُشْهِدُ حَمَلَةَ عَرْشِكَ وَمَلَائِكَتَكَ وَجَمِيْعَ خَلْقِكَ ، أَنَّكَ أَنْتَ اللّٰهُ لَا إِلٰهَ إِلَّا أَنْتَ وَحْدَكَ لَا شَرِيْكَ لَكَ ، وَأَنَّ مُحَمَّدًا عَبْدُكَ وَرَسُوْلُكَ.", "اَللّٰهُمَّ بِكَ أَصْبَحْنَا وَبِكَ أَمْسَيْنَا وَبِكَ نَحْيَا وَبِكَ نَمُوْتُ وَإِلَيْكَ النُّشُوْرُ.", "اَللّٰهُمَّ عَافِنِيْ فِيْ بَدَنِيْ ، اَللّٰهُمَّ عَافِنِيْ فِيْ سَمْعِيْ ، اَللّٰهُمَّ عَافِنِيْ فِيْ بَصَرِيْ ، لَا إِلٰهَ إِلَّا أَنْتَ ، اَللّٰهُمَّ إِنِّيْ أَعُوْذُ بِكَ مِنَ الْكُفْرِ وَالْفَقْرِ، وأَعُوْذُ بِكَ مِنْ عَذَابِ الْقَبْرِ، لَا إِلٰهَ إِلَّا أَنْتَ.", "حَسْبِيَ اللّٰهُ لَا إِلٰهَ إِلَّا هُوَ ، عَلَيْهِ تَوَكَّلْتُ ، وَهُوَ رَبُّ الْعَرْشِ الْعَظِيْمِ.", "رَضِيْتُ بِاللّٰهِ رَبًّا ، وَبِالْإِسْلَامِ دِيْنًا ، وَبِمُحَمَّدٍ نَّبِيًّا.", "بِسْمِ اللّٰهِ الَّذِيْ لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ ، وَهُوَ السَّمِيْعُ الْعَلِيْمُ.", "سُبْحَانَ اللّٰهِ وَبِحَمْدِهِ.", "لَا إِلٰهَ إِلَّا اللّٰهُ وَحْدَهُ لَا شَرِيْكَ لَهُ ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ ، وَهُوَ عَلَىٰ كُلِّ شَيْءٍ قَدِيْرٌ.", "سُبْحَانَ اللّٰهِ ، اَلْحَمْدُ لِلّٰهِ ، اَللّٰهُ أَكْبَرُ.", "اَللّٰهُمَّ صَلِّ عَلَىٰ مُحَمَّدٍ وَّعَلَىٰ اٰلِ مُحَمَّدٍ ، كَمَا صَلَّيْتَ عَلَىٰ إِبْرَاهِيْمَ وَعَلَىٰ اٰلِ إِبْرَاهِيْمَ ، إِنَّكَ حَمِيْدٌ مَّجِيْدٌ ، اَللّٰهُمَّ بَارِكْ عَلَىٰ مُحَمَّدٍ وَّعَلَىٰ اٰلِ مُحَمَّدٍ ، كَمَا بَارَكْتَ عَلَىٰ إِبْرَاهِيْمَ وَعَلَىٰ اٰلِ إِبْرَاهِيْمَ ، إِنَّكَ حَمِيْدٌ مَّجِيْدٌ.", "أَسْتَغْفِرُ اللّٰهَ وَأَتُوْبُ إِلَيْهِ.", "سُبْحَانَ اللّٰهِ وَبِحَمْدِهِ ، عَدَدَ خَلْقِهِ ، وَرِضَا نَفْسِهِ ، وَزِنَةَ عَرْشِهِ ، وَمِدَادَ كَلِمَاتِهِ."],
-        trans: ["I seek the protection of Allah... Ayat Al-Kursi (2:255)", "In the name of Allah... Surah Al-Ikhlas (112)", "In the name of Allah... Surah Al-Falaq (113)", "In the name of Allah... Surah An-Nas (114)", "O Allah, You are my Lord... (Sayyid al-Istighfar)", "O Allah, I seek Your protection from anxiety and grief...", "O Allah, I ask You for well-being in this world and the next...", "O Allah, Knower of the unseen and the seen...", "O The Ever Living, The Sustainer of all...", "O Allah, all the favours that I or anyone from Your creation...", "We have entered the morning upon the natural religion of Islam...", "I have entered the morning praising You...", "We have entered the morning and the kingdom belongs to Allah...", "We have entered the morning and the kingdom belongs to Allah, Lord of the Worlds...", "O Allah, I have entered the morning, and I call upon You...", "O Allah, by You we have entered the morning...", "O Allah, grant me well-being in my body...", "Allah is sufficient for me...", "I am pleased with Allah as my Lord...", "In the Name of Allah, with whose Name nothing can harm...", "Allah is free from imperfection, and all praise is due to Him.", "There is no god worthy of worship except Allah...", "Allah is free from imperfection. All praise be to Allah. Allah is the Greatest.", "Salawat: O Allah, honour and have mercy upon Muhammad...", "I seek Allah’s forgiveness and turn to Him in repentance.", "Allah is free from imperfection and all praise is due to Him..."],
+        nameEn: "Morning", nameAr: "أذكار الصباح",
+        arabic: ["أَعُوْذُ بِاللّٰهِ مِنَ الشَّيْطَانِ الرَّجِيْمِ. اَللّٰهُ لَآ إِلٰهَ إِلَّا هُوَ الْحَىُّ الْقَيُّوْمُ... (آية الكرسي)", "بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ. قُلْ هُوَ اللّٰهُ أَحَدٌ...", "بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ. قُلْ أَعُوْذُ بِرَبِّ الْفَلَقِ...", "بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ. قُلْ أَعُوْذُ بِرَبِّ النَّاسِ...", "اَللّٰهُمَّ أَنْتَ رَبِّيْ لَا إِلٰهَ إِلَّا أَنْتَ...", "اَللّٰهُمَّ إِنِّيْ أَعُوْذُ بِكَ مِنَ الْهَمِّ وَالْحَزَنِ...", "اَللّٰهُمَّ إِنِّيْ أَسْأَلُكَ الْعَافِيَةَ...", "اَللّٰهُمَّ عَالِمَ الْغَيْبِ...", "يَا حَيُّ يَا قَيُّوْمُ...", "اَللّٰهُمَّ مَا أَصْبَحَ بِيْ مِنْ نِّعْمَةٍ...", "أَصْبَحْنَا عَلَىٰ فِطْرَةِ الْإِسْلَامِ...", "أَصْبَحْتُ أُثْنِيْ عَلَيْكَ حَمْدًا...", "أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلّٰهِ...", "أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلّٰهِ رَبِّ الْعَالَمِيْنَ...", "اَللّٰهُمَّ إِنِّيْ أَصْبَحْتُ أُشْهِدُكَ...", "اَللّٰهُمَّ بِكَ أَصْبَحْنَا...", "اَللّٰهُمَّ عَافِنِيْ فِيْ بَدَنِيْ...", "حَسْبِيَ اللّٰهُ لَا إِلٰهَ إِلَّا هُوَ...", "رَضِيْتُ بِاللّٰهِ رَبًّا...", "بِسْمِ اللّٰهِ الَّذِيْ لَا يَضُرُّ...", "سُبْحَانَ اللّٰهِ وَبِحَمْدِهِ.", "لَا إِلٰهَ إِلَّا اللّٰهُ وَحْدَهُ لَا شَرِيْكَ لَهُ...", "سُبْحَانَ اللّٰهِ ، اَلْحَمْدُ لِلّٰهِ ، اَللّٰهُ أَكْبَرُ.", "اَللّٰهُمَّ صَلِّ عَلَىٰ مُحَمَّدٍ...", "أَسْتَغْفِرُ اللّٰهَ وَأَتُوْبُ إِلَيْهِ.", "سُبْحَانَ اللّٰهِ وَبِحَمْدِهِ ، عَدَدَ خَلْقِهِ..."],
+        trans: ["Ayat Al-Kursi (2:255)", "Surah Al-Ikhlas", "Surah Al-Falaq", "Surah An-Nas", "Sayyid al-Istighfar", "Anxiety and grief relief", "Asking for well-being", "Knower of unseen", "Ever Living, Sustainer", "Morning favours", "Natural religion of Islam", "Praising Allah", "Kingdom belongs to Allah", "Lord of the Worlds", "Witness of the Throne", "By You we enter morning", "Body well-being", "Allah is sufficient", "Pleased with Allah", "Nothing can harm", "SubhanAllah wa bihamdihi", "La ilaha illa Allah", "Tasbih, Tahmid, Takbir", "Salawat", "Istighfar", "Glory be to Allah ( многочисленно)"],
         reps: [1, 3, 3, 3, 1, 1, 1, 1, 1, 1, 1, 3, 1, 1, 4, 1, 3, 7, 3, 3, 100, 100, 100, 10, 100, 3]
     },
     {
-        name: "Evening",
-        arabic: ["أَعُوْذُ بِاللّٰهِ مِنَ الشَّيْطَانِ الرَّجِيْمِ... (آية الكرسي)", "بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ. قُلْ هُوَ اللّٰهُ أَحَدٌ...", "بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ. قُلْ أَعُوْذُ بِرَبِّ الْفَلَقِ...", "بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ. قُلْ أَعُوْذُ بِرَبِّ النَّاسِ...", "اَللّٰهُمَّ أَنْتَ رَبِّيْ لَا إِلٰهَ إِلَّا أَنْتَ...", "اَللّٰهُمَّ إِنِّيْ أَعُوْذُ بِكَ مِنَ الْهَمِّ وَالْحَزَنِ...", "اَللّٰهُمَّ إِنِّيْ أَسْأَلُكَ الْعَافِيَةَ...", "اَللّٰهُمَّ عَالِمَ الْغَيْبِ...", "يَا حَيُّ يَا قَيُّوْمُ...", "اَللّٰهُمَّ مَا أَمْسَىٰ بِيْ مِنْ نِّعْمَةٍ...", "أَمْسَيْنَا عَلَىٰ فِطْرَةِ الْإِسْلَامِ...", "أَمْسَيْتُ أُثْنِيْ عَلَيْكَ حَمْدًا...", "أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلّٰهِ...", "أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلّٰهِ رَبِّ الْعَالَمِيْنَ...", "اَللّٰهُمَّ إِنِّيْ أَمْسَيْتُ أُشْهِدُكَ...", "اَللّٰهُمَّ بِكَ أَمْسَيْنَا...", "اَللّٰهُمَّ عَافِنِيْ فِيْ بَدَنِيْ...", "حَسْبِيَ اللّٰهُ لَا إِلٰهَ إِلَّا هُوَ...", "رَضِيْتُ بِاللّٰهِ رَبًّا...", "بِسْمِ اللّٰهِ الَّذِيْ لَا يَضُرُّ...", "سُبْحَانَ اللّٰهِ وَبِحَمْدِهِ.", "لَا إِلٰهَ إِلَّا اللّٰهُ وَحْدَهُ لَا شَرِيْكَ لَهُ...", "سُبْحَانَ اللّٰهِ ، اَلْحَمْدُ لِلّٰهِ ، اَللّٰهُ أَكْبَرُ.", "اَللّٰهُمَّ صَلِّ عَلَىٰ مُحَمَّدٍ...", "أَعُوْذُ بِكَلِمَاتِ اللّٰهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ."],
-        trans: ["Ayat Al-Kursi (2:255)", "Surah Al-Ikhlas", "Surah Al-Falaq", "Surah An-Nas", "Sayyid al-Istighfar", "Protection from anxiety...", "Asking for well-being...", "Knower of unseen...", "Assistance through mercy...", "Evening favours...", "Natural religion of Islam...", "Praising Allah...", "Kingdom belongs to Allah...", "Kingdom of the Worlds...", "Witness of the Throne...", "Entered the evening...", "Body well-being...", "Allah is sufficient...", "Pleased with Allah...", "Nothing can harm...", "SubhanAllah wa bihamdihi", "La ilaha illa Allah...", "Tasbih, Tahmid, Takbir", "Salawat", "I seek protection in Allah’s perfect words..."],
+        nameEn: "Evening", nameAr: "أذكار المساء",
+        arabic: ["أَعُوْذُ بِاللّٰهِ مِنَ الشَّيْطَانِ الرَّجِيْمِ... (آية الكرسي)", "بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ. قُلْ هُوَ اللّٰهُ أَحَدٌ...", "بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ. قُلْ أَعُوْذُ بِرَبِّ الْفَلَقِ...", "بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ. قُلْ أَعُوْذُ بِرَبِّ النَّاسِ...", "اَللّٰهُمَّ أَنْتَ رَبِّيْ لَا إِلٰهَ إِلَّا أَنْتَ...", "اَللّٰهُمَّ إِنِّيْ أَعُوْذُ بِكَ مِنَ الْهَمِّ وَالْحَزَنِ...", "اَللّٰهُمَّ إِنِّيْ أَسْأَلُكَ الْعَافِيَةَ...", "اَللّٰهُمَّ عَالِمَ الْغَيْبِ...", "يَا حَيُّ يَا قَيُّوْمُ...", "اَللّٰهُمَّ مَا أَمْسَىٰ بِيْ مِنْ نِّعْمَةٍ...", "أَمْسَيْنَا عَلَىٰ فِطْرَةِ الْإِسْلَامِ...", "أَمْسَيْتُ أُثْنِيْ عَلَيْكَ حَمْدًا...", "أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلّٰهِ...", "أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلّٰهِ رَبِّ الْعَالَمِيْنَ...", "اَللّٰهُمَّ إِنِّيْ أَمْسَيْتُ أُشْهِدُكَ...", "اَللّٰهُمَّ بِكَ أَمْسَيْنَا...", "اَللّٰهُمَّ عَافِنِيْ فِيْ بَدَنِيْ...", "حَسْبِيَ اللّٰهُ لَا إِلٰهَ إِلَّا هُوَ...", "رَضِيْتُ بِاللّٰهِ رَبًّا...", "بِسْمِ اللّٰهِ الَّذِيْ لَا يَضُرُّ...", "سُبْحَانَ اللّٰهِ وَبِحَمْدِهِ.", "لَا إِلٰهَ إِلَّا اللّٰهُ وَحْدَهُ لَا شَرِيْكَ لَهُ...", "سُبْحَانَ اللّٰهِ ، اَلْحَمْدُ لِلّٰهِ ، اَللّٰهُ أَكْبَرُ.", "اَللّٰهُمَّ صَلِّ عَلَىٰ مُحَمَّدٍ...", "أَعُوْذُ بِكَلِمَاتِ اللّٰهِ التَّامَّاتِ..."],
+        trans: ["Ayat Al-Kursi", "Surah Al-Ikhlas", "Surah Al-Falaq", "Surah An-Nas", "Sayyid al-Istighfar", "Anxiety protection", "Well-being", "Knower of unseen", "Sustainer", "Evening favours", "Islam", "Praising Allah", "Kingdom belongs to Allah", "Lord of Worlds", "Witnesses", "By You we enter evening", "Body well-being", "Sufficiency", "Satisfaction", "Protection from harm", "Praise", "Tawheed", "Tasbeeh set", "Salawat", "Perfect words protection"],
         reps: [1, 3, 3, 3, 1, 1, 1, 1, 1, 1, 1, 3, 1, 1, 4, 1, 3, 7, 3, 3, 100, 100, 100, 10, 3]
     },
     {
-        name: "Sleep",
-        arabic: ["أَعُوْذُ بِاللّٰهِ مِنَ الشَّيْطَانِ الرَّجِيْمِ... (آية الكرسي)", "اٰمَنَ الرَّسُوْلُ بِمَآ أُنْزِلَ إِلَيْهِ مِنْ رَّبِّهِ...", "قُلْ يَـٰٓأَيُّهَا الْكَافِرُوْنَ...", "قُلْ هُوَ اللّٰهُ أَحَدٌ...", "قُلْ أَعُوْذُ بِرَبِّ الْفَلَقِ...", "قُلْ أَعُوْذُ بِرَبِّ النَّاسِ...", "اَللّٰهُ أَكْبَرُ", "اَلْحَمْدُ لِلّٰهِ", "سُبْحَانَ اللّٰهِ", "بِاسْمِكَ رَبِّيْ وَضَعْتُ جَنْبِيْ...", "اَللّٰهُمَّ قِنِيْ عَذَابَكَ يَوْمَ تَبْعَثُ عِبَادَكَ.", "اَلْحَمْدُ لِلّٰهِ الَّذِيْ أَطْعَمَنَا وَسَقَانَا...", "اَللّٰهُمَّ عَالِمَ الْغَيْبِ وَالشَّهَادَةِ...", "اَللّٰهُمَّ رَبَّ السَّمٰوَاتِ وَرَبَّ الأَرْضِ...", "اَللّٰهُمَّ إِنِّيْ أَعُوْذُ بِوَجْهِكَ الْكَرِيْمِ...", "اَللّٰهُمَّ إِنَّكَ خَلَقْتَ نَفْسِيْ...", "بِسْمِ اللّٰهِ وَضَعْتُ جَنْبِيْ...", "اَلْحَمْدُ لِلّٰهِ الَّذِيْ كَفَانِيْ وَآوَانِيْ...", "اَللّٰهُمَّ بِاسْمِكَ أَمُوْتُ وَأَحْيَا.", "لَا إِلٰهَ إِلَّا اللّٰهُ وَحْدَهُ لَا شَرِيْكَ لَهُ...", "اَللّٰهُمَّ أَسْلَمْتُ نَفْسِيْ إِلَيْكَ..."],
-        trans: ["Ayat Al-Kursi", "Last 2 verses of Al-Baqarah", "Surah Al-Kafirun", "Surah Al-Ikhlas", "Surah Al-Falaq", "Surah An-Nas", "Allahu Akbar (34x)", "Alhamdulillah (33x)", "SubhanAllah (33x)", "In Your Name I lie down...", "Protect me from Your punishment...", "Praise to Allah who fed us...", "Knower of unseen...", "Lord of the heavens...", "Refuge in Your Noble Countenance...", "You created my soul...", "In Allah's Name I lie down...", "Praise to Allah who sufficed me...", "In Your Name I die and live", "No god but Allah... (La ilaha illa Allah)", "I submit my soul to You..."],
+        nameEn: "Sleep", nameAr: "أذكار النوم",
+        arabic: ["آية الكرسي...", "آمن الرسول... (٢:٢٨٥-٢٨٦)", "سورة الكافرون...", "سورة الإخلاص...", "سورة الفلق...", "سورة الناس...", "اَللّٰهُ أَكْبَرُ", "اَلْحَمْدُ لِلّٰهِ", "سُبْحَانَ اللّٰهِ", "بِاسْمِكَ رَبِّيْ وَضَعْتُ جَنْبِيْ...", "اَللّٰهُمَّ قِنِيْ عَذَابَكَ...", "اَلْحَمْدُ لِلّٰهِ الَّذِيْ أَطْعَمَنَا...", "اَللّٰهُمَّ عَالِمَ الْغَيْبِ...", "اَللّٰهُمَّ رَبَّ السَّمٰوَاتِ...", "اَللّٰهُمَّ إِنِّيْ أَعُوْذُ بِوَجْهِكَ...", "اَللّٰهُمَّ إِنَّكَ خَلَقْتَ نَفْسِيْ...", "بِسْمِ اللّٰهِ وَضَعْتُ جَنْبِيْ...", "اَلْحَمْدُ لِلّٰهِ الَّذِيْ كَفَانِيْ...", "اَللّٰهُمَّ بِاسْمِكَ أَمُوْتُ وَأَحْيَا.", "لا إله إلا الله وحده لا شريك له...", "اَللّٰهُمَّ أَسْلَمْتُ نَفْسِيْ إِلَيْكَ..."],
+        trans: ["Ayat Al-Kursi", "Last verses of Baqarah", "Al-Kafirun", "Al-Ikhlas", "Al-Falaq", "An-Nas", "Allahu Akbar (34)", "Alhamdulillah (33)", "SubhanAllah (33)", "In Your Name I lie down", "Protect from punishment", "Allah provided for us", "Knower of unseen", "Lord of heavens", "Noble Countenance", "Soul creation", "I lie down", "Sufficiency", "In Your Name I die/live", "Tawheed", "I submit my soul"],
         reps: [1, 1, 1, 3, 3, 3, 34, 33, 33, 1, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
     },
     {
-        name: "Wake Up",
-        arabic: ["لَا إِلٰهَ إِلاَّ اللّٰهُ الْوَاحِدُ الْقَهَّارُ...", "لَا إِلٰهَ إِلَّا اللّٰهُ وَحْدَهُ لَا شَرِيْكَ لَهُ...", "اَلْحَمْدُ لِلّٰهِ الَّذِيْ عَافَانِيْ فِيْ جَسَدِيْ...", "اَلْحَمْدُ لِلّٰهِ الَّذِيْ أَحْيَانَا بَعْدَ مَا أَمَاتَنَا...", "إِنَّ فِىْ خَلْقِ السَّمـٰوٰتِ وَالْأَرْضِ... (٣:١٩٠-٢٠٠)"],
-        trans: ["No god worthy of worship but Allah: The One...", "No god but Allah... O Allah, forgive me.", "Praise to Allah who granted me well-being...", "Praise to Allah who gave us life after death...", "Signs for people of reason (Surah Ali 'Imran 190-200)"],
+        nameEn: "Waking", nameAr: "الاستيقاظ",
+        arabic: ["لَا إِلٰهَ إِلاَّ اللّٰهُ الْوَاحِدُ الْقَهَّارُ...", "لَا إِلٰهَ إِلَّا اللّٰهُ وَحْدَهُ لَا شَرِيْكَ لَهُ...", "اَلْحَمْدُ لِلّٰهِ الَّذِيْ عَافَانِيْ...", "اَلْحَمْدُ لِلّٰهِ الَّذِيْ أَحْيَانَا...", "إِنَّ فِىْ خَلْقِ السَّمـٰوٰتِ وَالْأَرْضِ... (٣:١٩٠-٢٠٠)"],
+        trans: ["The One, The All-Dominant", "Forgiveness prayer", "Body well-being", "Life after death", "Creation signs"],
         reps: [1, 1, 1, 1, 1]
     }
 ];
@@ -248,20 +221,27 @@ function render() {
     document.getElementById('progressVal').innerText = `${currentIndex + 1} / ${category.arabic.length}`;
     
     // Arabic repetition labels
-    let repTextAr = "";
-    if (maxReps === 1) repTextAr = "مرة واحدة";
-    else if (maxReps === 2) repTextAr = "مرتان";
-    else if (maxReps >= 3 && maxReps <= 10) repTextAr = maxReps + " مرات";
-    else repTextAr = maxReps + " مرة";
+    let repText = "";
+    if (lang === 'ar') {
+        if (maxReps === 1) repText = "مرة واحدة";
+        else if (maxReps === 2) repText = "مرتان";
+        else if (maxReps >= 3 && maxReps <= 10) repText = maxReps + " مرات";
+        else repText = maxReps + " مرة";
+    } else {
+        repText = maxReps + (maxReps === 1 ? " Time" : " Times");
+    }
 
-    let repTextEn = maxReps + (maxReps === 1 ? " Time" : " Times");
-
-    document.getElementById('repeatVal').innerText = (lang === 'ar') ? repTextAr : repTextEn;
-    document.getElementById('circleCount').innerText = `${currentCount} / ${maxReps}`;
+    document.getElementById('repeatVal').innerText = repText;
+    document.getElementById('circleCount').innerText = currentCount;
     
-    // UI Language items
+    // Translate UI
     document.getElementById('lblProgress').innerText = (lang === 'ar') ? "التقدم" : "Progress";
     document.getElementById('lblRepeat').innerText = (lang === 'ar') ? "التكرار" : "Repeat";
+    
+    // Translate Category Tabs
+    for(let i=0; i<4; i++) {
+        document.getElementById('t'+i).innerText = (lang === 'ar') ? azkarData[i].nameAr : azkarData[i].nameEn;
+    }
     
     document.getElementById('scrollArea').scrollTop = 0;
 }
@@ -270,21 +250,18 @@ function incrementCount() {
     const maxReps = azkarData[currentCat].reps[currentIndex];
     if (currentCount < maxReps) {
         currentCount++;
-        document.getElementById('circleCount').innerText = `${currentCount} / ${maxReps}`;
+        document.getElementById('circleCount').innerText = currentCount;
     }
-    // If it reaches max, it stays at max (e.g., 5/5) and doesn't reset to 0 unless zikr changes.
 }
 
 function next() {
-    const totalItems = azkarData[currentCat].arabic.length;
-    currentIndex = (currentIndex + 1) % totalItems;
+    currentIndex = (currentIndex + 1) % azkarData[currentCat].arabic.length;
     currentCount = 0;
     render();
 }
 
 function prev() {
-    const totalItems = azkarData[currentCat].arabic.length;
-    currentIndex = (currentIndex - 1 + totalItems) % totalItems;
+    currentIndex = (currentIndex - 1 + azkarData[currentCat].arabic.length) % azkarData[currentCat].arabic.length;
     currentCount = 0;
     render();
 }
@@ -310,20 +287,12 @@ function applyTheme(bg, acc, isLight = false) {
     const root = document.documentElement;
     root.style.setProperty('--bg', bg);
     root.style.setProperty('--accent', acc);
-    
-    if (isLight) {
-        root.style.setProperty('--text', '#333333');
-        root.style.setProperty('--text-dim', '#666666');
-        root.style.setProperty('--card', 'rgba(0,0,0,0.05)');
-    } else {
-        root.style.setProperty('--text', '#FFFFFF');
-        root.style.setProperty('--text-dim', '#B1A2C1');
-        root.style.setProperty('--card', 'rgba(255,255,255,0.05)');
-    }
+    root.style.setProperty('--text', isLight ? '#333' : '#FFF');
+    root.style.setProperty('--text-dim', isLight ? '#666' : '#B1A2C1');
+    root.style.setProperty('--card', isLight ? 'rgba(0,0,0,0.05)' : 'rgba(255,255,255,0.05)');
     document.getElementById('colorMenu').classList.remove('show');
 }
 
-// Initial render
 render();
 </script>
 </body>
