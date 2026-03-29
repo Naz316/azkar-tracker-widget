@@ -32,7 +32,7 @@
             transition: background 0.4s ease;
         }
 
-        /* HEADER - Equal sized side icons and centered middle icon */
+        /* HEADER */
         .header {
             display: grid;
             grid-template-columns: 1fr auto 1fr;
@@ -41,19 +41,15 @@
             margin-bottom: 20px;
             z-index: 100;
         }
-
         .header-left { display: flex; justify-content: flex-start; }
         .header-right { display: flex; justify-content: flex-end; }
-
         .icon-btn {
             background: none; border: none; cursor: pointer;
             width: 40px; height: 40px; padding: 0;
             display: flex; align-items: center; justify-content: center;
-            transition: transform 0.2s;
         }
-        /* Ensure both side icons look the same size */
         .icon-btn img { width: 35px; height: 35px; object-fit: contain; }
-        .palette-emoji { font-size: 32px; line-height: 1; display: flex; align-items: center; justify-content: center;}
+        .palette-emoji { font-size: 32px; line-height: 1; }
 
         .floating-icon {
             width: 70px; height: 70px;
@@ -61,7 +57,6 @@
             animation: float 3s ease-in-out infinite;
             filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
         }
-
         @keyframes float {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-8px); }
@@ -88,7 +83,6 @@
             background: rgba(0,0,0,0.15); border-radius: 20px;
             margin-bottom: 15px;
         }
-        
         .arabic {
             font-family: var(--font-arabic); font-size: 24px; color: var(--text);
             direction: rtl; line-height: 1.8; margin-bottom: 15px;
@@ -96,32 +90,40 @@
         }
         .translation { font-size: 16px; color: var(--text-dim); line-height: 1.6; }
 
-        /* FOOTER */
+        /* FOOTER & PROGRESS CIRCLE */
         .footer-controls {
             display: flex; justify-content: space-between; align-items: center;
-            height: 80px;
+            height: 100px;
         }
-
-        .side-info {
-            flex: 1; display: flex; flex-direction: column; 
-            align-items: center; justify-content: center;
-        }
+        .side-info { flex: 1; display: flex; flex-direction: column; align-items: center; }
         .info-label { font-size: 10px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
         .info-value { font-size: 15px; color: var(--text); font-weight: 700; white-space: nowrap; }
 
-        .counter-circle {
-            width: 75px; height: 75px; border-radius: 50%;
-            border: 3px solid var(--accent);
+        .counter-container {
+            position: relative;
+            width: 85px; height: 85px;
             display: flex; align-items: center; justify-content: center;
+            cursor: pointer; margin: 0 10px;
+        }
+        .counter-container svg {
+            position: absolute;
+            transform: rotate(-90deg);
+            width: 100%; height: 100%;
+        }
+        .circle-bg { fill: none; stroke: rgba(255,255,255,0.1); stroke-width: 6; }
+        .circle-progress {
+            fill: none;
+            stroke: var(--accent);
+            stroke-width: 6;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.3s ease;
+        }
+        #circleCount {
             font-size: 28px; font-weight: 700; color: var(--text);
-            cursor: pointer; background: var(--card);
-            margin: 0 10px; flex-shrink: 0;
+            z-index: 2;
         }
 
-        .nav-btn {
-            background: none; border: none; color: var(--text);
-            font-size: 24px; cursor: pointer; padding: 10px;
-        }
+        .nav-btn { background: none; border: none; color: var(--text); font-size: 24px; cursor: pointer; padding: 10px; }
 
         /* COLOR MENU */
         .color-menu {
@@ -129,8 +131,7 @@
             background: #1A1A1A; padding: 15px; border-radius: 16px;
             display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
             visibility: hidden; opacity: 0; transition: 0.3s; z-index: 1000;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1);
         }
         .color-menu.show { visibility: visible; opacity: 1; }
         .color-dot { width: 30px; height: 30px; border-radius: 50%; cursor: pointer; }
@@ -148,13 +149,9 @@
                 <img src="https://cdn-icons-png.flaticon.com/128/6212/6212766.png" alt="Language">
             </button>
         </div>
-        
         <div class="header-center">
-            <img id="cycleIcon" class="floating-icon" 
-                 src="https://cdn-icons-png.flaticon.com/128/4354/4354959.png" 
-                 onclick="changeIcon()" alt="Icon">
+            <img id="cycleIcon" class="floating-icon" src="https://cdn-icons-png.flaticon.com/128/4354/4354959.png" onclick="changeIcon()" alt="Icon">
         </div>
-
         <div class="header-right">
             <button class="icon-btn palette-emoji" onclick="toggleColors()">🎨</button>
         </div>
@@ -178,10 +175,18 @@
             <span class="info-label" id="lblProgress">PROGRESS</span>
             <span class="info-value" id="progressVal">1 / 26</span>
         </div>
-        <div class="counter-circle" id="circleCount" onclick="incrementCount()">0</div>
+
+        <div class="counter-container" onclick="incrementCount()">
+            <svg>
+                <circle class="circle-bg" cx="42.5" cy="42.5" r="38"></circle>
+                <circle id="progressRing" class="circle-progress" cx="42.5" cy="42.5" r="38"></circle>
+            </svg>
+            <div id="circleCount">0</div>
+        </div>
+
         <div class="side-info">
             <span class="info-label" id="lblRepeat">REPEAT</span>
-            <span class="info-value" id="repeatVal">1 Time</span>
+            <span class="info-value" id="repeatVal">مرة واحدة</span>
         </div>
         <button class="nav-btn" onclick="next()">❯</button>
     </div>
@@ -230,7 +235,7 @@ const azkarData = [
             "بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ. قُلْ هُوَ اللّٰهُ أَحَدٌ ، اَللّٰهُ الصَّمَدُ ، لَمْ يَلِدْ وَلَمْ يُوْلَدْ ، وَلَمْ يَكُنْ لَّهُ كُفُوًا أَحَدٌ.",
             "بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ. قُلْ أَعُوْذُ بِرَبِّ الْفَلَقِ ، مِنْ شَرِّ مَا خَلَقَ ، وَمِنْ شَرِّ غَاسِقٍ إِذَا وَقَبَ ، وَمِنْ شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ ، وَمِنْ شَرِّ حَاسِدٍ إِذَا حَسَدَ.",
             "بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ. قُلْ أَعُوْذُ بِرَبِّ النَّاسِ ، مَلِكِ النَّاسِ ، إِلٰهِ النَّاسِ ، مِنْ شَرِّ الْوَسْوَاسِ الْخَنَّاسِ ، اَلَّذِيْ يُوَسْوِسُ فِيْ صُدُوْرِ النَّاسِ ، مِنَ الْجِنَّةِ وَالنَّاسِ.",
-            "اَللّٰهُمَّ أَنْتَ رَبِّيْ لَا إِلٰهَ إِلَّا أَنْتَ ، خَلَقْتَنِيْ وَأَنَا عَبْدُكَ ، وَأَنَا عَلَىٰ عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ ، أَعُوْذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ ، أَبُوْءُ لَكَ بِنِعْمَتِكَ عَلَيَّ وَأَبُوْءُ لَكَ بِذَنْبِيْ ، فَاغْفِرْ لِيْ فَإِنَّهُ لَا يَغْفِرُ الذُّنُوْبَ إِلَّا أَنْتَ.",
+            "اَللّٰهُمَّ أَنْتَ رَبِّيْ لَا إِلٰهَ إِلَّا أَنْتَ ، خَلقتَنِيْ وَأَنَا عَبْدُكَ ، وَأَنَا عَلَىٰ عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ ، أَعُوْذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ ، أَبُوْءُ لَكَ بِنِعْمَتِكَ عَلَيَّ وَأَبُوْءُ لَكَ بِذَنْبِيْ ، فَاغْفِرْ لِيْ فَإِنَّهُ لَا يَغْفِرُ الذُّنُوْبَ إِلَّا أَنْتَ.",
             "اَللّٰهُمَّ إِنِّيْ أَعُوْذُ بِكَ مِنَ الْهَمِّ وَالْحَزَنِ ، وَأَعُوْذُ بِكَ مِنَ الْعَجْزِ وَالْكَسَلِ، وَأَعُوْذُ بِكَ مِنَ الْجُبْنِ وَالْبُخْلِ ، وَأَعُوْذُ بِكَ مِنْ غَلَبَةِ الدَّيْنِ وَقَهْرِ الرِّجَالِ.",
             "اَللّٰهُمَّ إِنِّيْ أَسْأَلُكَ الْعَافِيَةَ فِي الدُّنْيَا وَالْآخِرَةِ ، اَللّٰهُمَّ إِنِّيْ أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِيْ دِيْنِيْ وَدُنْيَايَ وَأَهْلِيْ وَمَالِيْ ، اَللّٰهُمَّ اسْتُرْ عَوْرَاتِيْ وَآمِنْ رَوْعَاتِيْ ، اَللّٰهُمَّ احْفَظْنِيْ مِنْ بَيْنِ يَدَيَّ ، وَمِنْ خَلْفِيْ ، وَعَنْ يَّمِيْنِيْ ، وَعَنْ شِمَالِيْ ، وَمِنْ فَوْقِيْ ، وَأَعُوْذُ بِعَظَمَتِكَ أَنْ أُغْتَالَ مِنْ تَحْتِيْ.",
             "اَللّٰهُمَّ عَالِمَ الْغَيْبِ وَالشَّهَادَةِ ، فَاطِرَ السَّمٰوَاتِ وَالْأَرْضِ ، رَبَّ كُلِّ شَيْءٍ وَمَلِيْكَهُ ، أَشْهَدُ أَنْ لَّا إِلٰهَ إِلَّا أَنْتَ ، أَعُوْذُ بِكَ مِنْ شَرِّ نَفْسِيْ ، وَمِنْ شَرِّ الشَّيْطَانِ وَشِرْكِهِ ، وَأَنْ أَقْتَرِفَ عَلَىٰ نَفْسِيْ سُوْءًا ، أَوْ أَجُرَّهُ إِلَىٰ مُسْلِمٍ.",
@@ -291,25 +296,30 @@ const azkarData = [
     },
     {
         nameEn: "Sleep", nameAr: "النوم",
-        arabic: ["بِاسْمِكَ رَبِّي وَضَعْتُ جَنْبِي..."],
+        arabic: ["بِاسْمِكَ رَبِّي وَضَعْتُ جَنْبِي..."],
         trans: ["In Your name..."],
         reps: [1]
     }
 ];
 
 let currentCat = 0, currentIndex = 0, currentCount = 0, lang = 'ar';
+const circleRadius = 38;
+const circleCircumference = 2 * Math.PI * circleRadius;
+
+function updateCircleProgress(count, max) {
+    const ring = document.getElementById('progressRing');
+    const progress = count / max;
+    const offset = circleCircumference - (progress * circleCircumference);
+    ring.style.strokeDasharray = `${circleCircumference} ${circleCircumference}`;
+    ring.style.strokeDashoffset = offset;
+}
 
 function getRepetitionText(count, currentLang) {
-    if (currentLang === 'en') {
-        return count === 1 ? "1 Time" : count + " Times";
-    }
-    
-    // Arabic Specific Logic
+    if (currentLang === 'en') return count === 1 ? "1 Time" : count + " Times";
     switch(count) {
         case 1: return "مرة واحدة";
         case 2: return "مرتان";
         case 3: return "ثلاث مرات";
-        case 4: return "أربع مرات";
         case 7: return "سبع مرات";
         case 10: return "عشر مرات";
         case 100: return "مئة مرة";
@@ -328,6 +338,8 @@ function render() {
     document.getElementById('lblProgress').innerText = lang === 'ar' ? "التقدم" : "PROGRESS";
     document.getElementById('lblRepeat').innerText = lang === 'ar' ? "التكرار" : "REPEAT";
     
+    updateCircleProgress(currentCount, category.reps[currentIndex]);
+
     for(let i=0; i<4; i++) {
         document.getElementById('t'+i).innerText = (lang === 'ar') ? azkarData[i].nameAr : azkarData[i].nameEn;
     }
@@ -335,9 +347,11 @@ function render() {
 }
 
 function incrementCount() {
-    if (currentCount < azkarData[currentCat].reps[currentIndex]) {
+    const max = azkarData[currentCat].reps[currentIndex];
+    if (currentCount < max) {
         currentCount++;
         document.getElementById('circleCount').innerText = currentCount;
+        updateCircleProgress(currentCount, max);
     }
 }
 
