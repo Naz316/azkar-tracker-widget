@@ -69,7 +69,7 @@
             cursor: pointer; font-size: 11px; font-weight: bold;
         }
 
-        /* TABS - NEW ORDER */
+        /* TABS - WAKING UP FIRST */
         .tabs {
             display: grid; grid-template-columns: repeat(4, 1fr);
             gap: 8px; margin-bottom: 20px; z-index: 10;
@@ -89,7 +89,7 @@
             text-align: center; display: flex; flex-direction: column;
             justify-content: center;
             background: rgba(0,0,0,0.1); border-radius: 20px;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
         
         .arabic {
@@ -98,31 +98,41 @@
         }
         .translation { font-size: 17px; color: var(--text-dim); line-height: 1.5; }
 
-        /* FOOTER - ALIGNED VERTICALLY */
+        /* FOOTER - NO LINE & ALIGNED */
         .footer-controls {
-            display: flex; justify-content: space-between; align-items: center;
-            padding-top: 15px; border-top: 2px solid var(--accent);
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 10px 0;
         }
 
         .side-info {
-            flex: 1; display: flex; flex-direction: column; align-items: center;
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center;
+            justify-content: center;
+            min-width: 80px;
         }
         .info-label { font-size: 10px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
-        .info-value { font-size: 16px; color: var(--text); font-weight: 700; }
+        .info-value { font-size: 15px; color: var(--text); font-weight: 700; white-space: nowrap; }
 
         .counter-circle {
             width: 70px; height: 70px; border-radius: 50%;
             border: 3px solid var(--accent);
             display: flex; align-items: center; justify-content: center;
-            font-size: 30px; font-weight: 700; color: var(--text);
+            font-size: 28px; font-weight: 700; color: var(--text);
             cursor: pointer; background: var(--card);
-            margin: 0 10px;
+            margin: 0 15px;
+            flex-shrink: 0;
         }
 
         .nav-btn {
             background: none; border: none; color: var(--text);
-            font-size: 20px; cursor: pointer; padding: 10px;
+            font-size: 22px; cursor: pointer; padding: 10px;
+            transition: 0.2s;
         }
+        .nav-btn:active { transform: scale(0.8); }
 
         /* SIMPLE 12 COLOR MENU */
         .palette-btn { background:none; border:none; cursor:pointer; font-size:24px; }
@@ -132,6 +142,7 @@
             display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
             visibility: hidden; opacity: 0; transition: 0.3s; z-index: 1000;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.1);
         }
         .color-menu.show { visibility: visible; opacity: 1; }
         .color-dot { width: 30px; height: 30px; border-radius: 50%; cursor: pointer; border: 2px solid rgba(255,255,255,0.1); position: relative; }
@@ -159,7 +170,6 @@
         <button class="palette-btn" onclick="toggleColors()">🎨</button>
     </div>
     
-    <!-- TABS IN REQUESTED ORDER -->
     <div class="tabs">
         <button class="tab active" onclick="changeCat(0)">
             <span>🛌</span>
@@ -189,7 +199,7 @@
         
         <div class="side-info">
             <span class="info-label" id="lblProgress">PROGRESS</span>
-            <span class="info-value" id="progressVal">1 / 5</span>
+            <span class="info-value" id="progressVal">1 / 3</span>
         </div>
 
         <div class="counter-circle" id="circleCount" onclick="incrementCount()">0</div>
@@ -202,7 +212,6 @@
         <button class="nav-btn" onclick="next()">❯</button>
     </div>
 
-    <!-- SIMPLE 12 COLORS MENU -->
     <div class="color-menu" id="colorMenu">
         <div class="color-dot" data-name="Red" style="background:#cc0000" onclick="applyTheme('#3B1414', '#cc0000')"></div>
         <div class="color-dot" data-name="Blue" style="background:#0066cc" onclick="applyTheme('#0A192F', '#0066cc')"></div>
@@ -234,7 +243,6 @@ function changeIcon() {
     document.getElementById('cycleIcon').src = iconGallery[currentIconIdx];
 }
 
-// Reordered Data: Waking, Morning, Evening, Sleep
 const azkarData = [
     {
         nameEn: "Waking", nameAr: "الاستيقاظ",
@@ -250,7 +258,7 @@ const azkarData = [
     },
     {
         nameEn: "Evening", nameAr: "المساء",
-        arabic: ["أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ", "اللَّهُمَّ بِكَ أَمْسَيْنَا وَبِكَ أَصْبَحْنَا", "بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ"],
+        arabic: ["أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ", "اللَّهُمَّ بِكَ أَمْسَيْنَا وَبِكَ أَصْبَحْنَا", "بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ"],
         trans: ["Evening has come, the kingdom belongs to Allah", "O Allah, by You we enter the evening...", "In the name of Allah, with whose name nothing is harmed..."],
         reps: [1, 1, 3]
     },
