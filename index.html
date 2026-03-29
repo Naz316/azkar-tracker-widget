@@ -12,7 +12,6 @@
             --card: rgba(255, 255, 255, 0.05);
             --text: #FFFFFF;
             --text-dim: #B1A2C1;
-            --circle-border: rgba(255,255,255,0.3);
             --font-arabic: 'Reem Kufi', serif;
         }
 
@@ -26,141 +25,119 @@
         .widget {
             width: 95%; max-width: 500px; height: 85vh;
             background-color: var(--bg);
-            border-radius: 24px; padding: 25px;
+            border-radius: 32px; padding: 25px;
             display: flex; flex-direction: column;
             position: relative; box-shadow: 0 12px 40px rgba(0,0,0,0.6);
             border: 1px solid rgba(255,255,255,0.08);
             transition: background 0.4s ease;
         }
 
-        /* HEADER AREA */
+        /* HEADER - EXACT CENTERING */
         .header {
+            position: relative;
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
+            height: 60px;
             margin-bottom: 20px;
             z-index: 100;
         }
 
-        .lang-toggle {
-            background: var(--card); border: 1px solid var(--text-dim);
-            color: var(--text); padding: 5px 12px; border-radius: 20px;
-            cursor: pointer; font-size: 11px; font-weight: bold;
-            min-width: 80px;
-        }
-
         .header-icon-container {
-            flex-grow: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
         }
 
         .floating-icon {
-            width: 55px; 
-            height: 55px;
+            width: 65px; 
+            height: 65px;
             cursor: pointer;
             animation: float 3s ease-in-out infinite;
-            transition: transform 0.2s ease;
             filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
         }
-        .floating-icon:active { transform: scale(0.9); }
 
         @keyframes float {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-8px); }
         }
 
-        /* TABS */
+        .lang-toggle {
+            background: var(--card); border: 1px solid var(--text-dim);
+            color: var(--text); padding: 6px 14px; border-radius: 20px;
+            cursor: pointer; font-size: 11px; font-weight: bold;
+        }
+
+        /* TABS - NEW ORDER */
         .tabs {
             display: grid; grid-template-columns: repeat(4, 1fr);
-            gap: 5px; margin-bottom: 20px; z-index: 10;
+            gap: 8px; margin-bottom: 20px; z-index: 10;
         }
         .tab {
-            background: var(--card); border: none; color: var(--text-dim);
+            background: transparent; border: none; color: var(--text-dim);
             padding: 10px 2px; border-radius: 12px; cursor: pointer;
             font-size: 10px; font-weight: 700; text-align: center;
             transition: 0.3s; display: flex; flex-direction: column; align-items: center;
         }
-        .tab.active { background: var(--accent); color: white; }
-        .tab label { margin-top: 4px; cursor: pointer; }
-        .tab span { font-size: 18px; }
+        .tab.active { background: var(--accent); color: white; border-radius: 12px; }
+        .tab span { font-size: 20px; margin-bottom: 4px; }
 
-        /* CONTENT DISPLAY */
+        /* MAIN CONTENT */
         .main-display {
             flex-grow: 1; overflow-y: auto; padding: 20px;
             text-align: center; display: flex; flex-direction: column;
-            background: rgba(0,0,0,0.15); border-radius: 15px;
-            scrollbar-width: thin; scrollbar-color: var(--accent) transparent;
-            min-height: 0; position: relative;
+            justify-content: center;
+            background: rgba(0,0,0,0.1); border-radius: 20px;
+            margin-bottom: 10px;
         }
         
         .arabic {
-            font-family: var(--font-arabic); font-size: 26px; color: var(--text);
-            direction: rtl; line-height: 1.8; margin-bottom: 20px;
+            font-family: var(--font-arabic); font-size: 28px; color: var(--text);
+            direction: rtl; line-height: 1.6; margin-bottom: 15px;
         }
-        .divider { height: 1px; background: rgba(255,255,255,0.1); width: 60%; margin: 0 auto 20px; flex-shrink: 0; }
-        .translation { font-size: 16px; color: var(--text-dim); line-height: 1.6; margin-bottom: 20px; }
+        .translation { font-size: 17px; color: var(--text-dim); line-height: 1.5; }
 
-        /* FOOTER */
+        /* FOOTER - ALIGNED VERTICALLY */
         .footer-controls {
             display: flex; justify-content: space-between; align-items: center;
-            padding-top: 20px; margin-top: 10px; height: 80px;
-            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 15px; border-top: 2px solid var(--accent);
         }
 
         .side-info {
-            flex: 1; display: flex; flex-direction: column; 
-            align-items: center; justify-content: center; height: 100%;
+            flex: 1; display: flex; flex-direction: column; align-items: center;
         }
-        .info-label { font-size: 10px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 5px; }
-        .info-value { font-size: 15px; color: var(--text); font-weight: 700; }
-        .repeat-label { font-family: var(--font-arabic); font-size: 16px; color: var(--text); }
+        .info-label { font-size: 10px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+        .info-value { font-size: 16px; color: var(--text); font-weight: 700; }
 
         .counter-circle {
-            width: 75px; height: 75px; border-radius: 50%;
+            width: 70px; height: 70px; border-radius: 50%;
             border: 3px solid var(--accent);
             display: flex; align-items: center; justify-content: center;
-            font-size: 28px; font-weight: 700; color: var(--text);
-            cursor: pointer; transition: 0.2s; background: var(--card);
-            margin: 0 15px; flex-shrink: 0;
+            font-size: 30px; font-weight: 700; color: var(--text);
+            cursor: pointer; background: var(--card);
+            margin: 0 10px;
         }
-        .counter-circle:active { transform: scale(0.9); }
 
         .nav-btn {
-            background: var(--card); border: none; color: var(--text);
-            width: 40px; height: 40px; border-radius: 50%; cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
+            background: none; border: none; color: var(--text);
+            font-size: 20px; cursor: pointer; padding: 10px;
         }
 
-        /* UPDATED COLOR MENU (12 Colors) */
-        .palette-btn { background:none; border:none; cursor:pointer; font-size:24px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); }
-
+        /* SIMPLE 12 COLOR MENU */
+        .palette-btn { background:none; border:none; cursor:pointer; font-size:24px; }
         .color-menu {
             position: absolute; top: 70px; right: 25px;
             background: #1A1A1A; padding: 15px; border-radius: 16px;
-            display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
-            visibility: hidden; opacity: 0; transition: 0.3s; z-index: 10000;
-            box-shadow: 0 12px 40px rgba(0,0,0,0.8);
-            border: 1px solid rgba(255,255,255,0.1);
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+            visibility: hidden; opacity: 0; transition: 0.3s; z-index: 1000;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
         .color-menu.show { visibility: visible; opacity: 1; }
-        
-        .color-dot { 
-            width: 32px; height: 32px; border-radius: 50%; cursor: pointer; 
-            border: 2px solid rgba(255,255,255,0.2); position: relative; 
-            transition: transform 0.2s;
-        }
-        .color-dot:hover { transform: scale(1.15); border-color: white; }
-        
-        /* Tooltip style from your image */
+        .color-dot { width: 30px; height: 30px; border-radius: 50%; cursor: pointer; border: 2px solid rgba(255,255,255,0.1); position: relative; }
         .color-dot:hover::after {
-            content: attr(data-name);
-            position: absolute; top: -40px; left: 50%; transform: translateX(-50%);
-            font-size: 12px; color: white; background: #000; padding: 5px 12px;
-            border-radius: 8px; white-space: nowrap; z-index: 10001;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-            font-weight: 600;
+            content: attr(data-name); position: absolute; top: -35px; left: 50%; transform: translateX(-50%);
+            font-size: 10px; color: white; background: #333; padding: 4px 8px; border-radius: 4px; white-space: nowrap;
         }
 
         .main-display::-webkit-scrollbar { width: 4px; }
@@ -171,39 +148,39 @@
 
 <div class="widget">
     <div class="header">
-        <button class="lang-toggle" onclick="toggleLang()" id="langBtn">EN / عربي</button>
+        <button class="lang-toggle" onclick="toggleLang()" id="langBtn">عربي / EN</button>
         
         <div class="header-icon-container">
             <img id="cycleIcon" class="floating-icon" 
                  src="https://cdn-icons-png.flaticon.com/128/4354/4354959.png" 
-                 onclick="changeIcon()" alt="Islamic Icon">
+                 onclick="changeIcon()" alt="Icon">
         </div>
 
         <button class="palette-btn" onclick="toggleColors()">🎨</button>
     </div>
     
-    <div class="tabs" id="tabs">
+    <!-- TABS IN REQUESTED ORDER -->
+    <div class="tabs">
         <button class="tab active" onclick="changeCat(0)">
-            <span>☀️</span>
-            <label id="t0">Morning</label>
+            <span>🛌</span>
+            <label id="t0">Waking</label>
         </button>
         <button class="tab" onclick="changeCat(1)">
-            <span>🌆</span>
-            <label id="t1">Evening</label>
+            <span>☀️</span>
+            <label id="t1">Morning</label>
         </button>
         <button class="tab" onclick="changeCat(2)">
-            <span>🌙</span>
-            <label id="t2">Sleep</label>
+            <span>🌆</span>
+            <label id="t2">Evening</label>
         </button>
         <button class="tab" onclick="changeCat(3)">
-            <span>🛌</span>
-            <label id="t3">Waking Up</label>
+            <span>🌙</span>
+            <label id="t3">Sleep</label>
         </button>
     </div>
 
     <div class="main-display" id="scrollArea">
         <div class="arabic" id="arabicText"></div>
-        <div class="divider"></div>
         <div class="translation" id="translationText"></div>
     </div>
 
@@ -211,44 +188,38 @@
         <button class="nav-btn" onclick="prev()">❮</button>
         
         <div class="side-info">
-            <span class="info-label" id="lblProgress">Progress</span>
-            <span class="info-value" id="progressVal">1 / 26</span>
+            <span class="info-label" id="lblProgress">PROGRESS</span>
+            <span class="info-value" id="progressVal">1 / 5</span>
         </div>
 
         <div class="counter-circle" id="circleCount" onclick="incrementCount()">0</div>
 
         <div class="side-info">
-            <span class="info-label" id="lblRepeat">Repeat</span>
-            <span class="repeat-label" id="repeatVal">مرة واحدة</span>
+            <span class="info-label" id="lblRepeat">REPEAT</span>
+            <span class="info-value" id="repeatVal">1 Time</span>
         </div>
 
         <button class="nav-btn" onclick="next()">❯</button>
     </div>
 
-    <!-- 12 COLORS MENU (4x3 Grid) -->
+    <!-- SIMPLE 12 COLORS MENU -->
     <div class="color-menu" id="colorMenu">
-        <!-- Row 1 -->
-        <div class="color-dot" data-name="Plum" style="background:#4D1D3D" onclick="applyTheme('#4D1D3D', '#9B3675')"></div>
-        <div class="color-dot" data-name="Amethyst" style="background:#1E122C" onclick="applyTheme('#1E122C', '#7446A0')"></div>
-        <div class="color-dot" data-name="Red" style="background:#3B1414" onclick="applyTheme('#3B1414', '#992E2E')"></div>
-        <div class="color-dot" data-name="Mocha" style="background:#3E2723" onclick="applyTheme('#3E2723', '#8D6E63')"></div>
-        
-        <!-- Row 2 -->
-        <div class="color-dot" data-name="Gold" style="background:#5D5317" onclick="applyTheme('#5D5317', '#C5B358')"></div>
-        <div class="color-dot" data-name="Forest" style="background:#1B5E20" onclick="applyTheme('#1B5E20', '#4CAF50')"></div>
-        <div class="color-dot" data-name="Ocean" style="background:#003333" onclick="applyTheme('#003333', '#26A69A')"></div>
-        <div class="color-dot" data-name="Midnight" style="background:#0D47A1" onclick="applyTheme('#0D47A1', '#42A5F5')"></div>
-        
-        <!-- Row 3 -->
-        <div class="color-dot" data-name="Taupe" style="background:#4E342E" onclick="applyTheme('#4E342E', '#A1887F')"></div>
-        <div class="color-dot" data-name="Grey" style="background:#424242" onclick="applyTheme('#424242', '#9E9E9E')"></div>
-        <div class="color-dot" data-name="Black" style="background:#000000" onclick="applyTheme('#000000', '#555555')"></div>
-        <div class="color-dot" data-name="Cloud" style="background:#f5f5f5" onclick="applyTheme('#f5f5f5', '#7446A0', true)"></div>
+        <div class="color-dot" data-name="Red" style="background:#cc0000" onclick="applyTheme('#3B1414', '#cc0000')"></div>
+        <div class="color-dot" data-name="Blue" style="background:#0066cc" onclick="applyTheme('#0A192F', '#0066cc')"></div>
+        <div class="color-dot" data-name="Brown" style="background:#663300" onclick="applyTheme('#2D1B0D', '#8B4513')"></div>
+        <div class="color-dot" data-name="Yellow" style="background:#ffcc00" onclick="applyTheme('#332B00', '#ffcc00')"></div>
+        <div class="color-dot" data-name="Black" style="background:#000000" onclick="applyTheme('#000000', '#444444')"></div>
+        <div class="color-dot" data-name="Gray" style="background:#808080" onclick="applyTheme('#222222', '#808080')"></div>
+        <div class="color-dot" data-name="Cloud" style="background:#ffffff" onclick="applyTheme('#f5f5f5', '#7446A0', true)"></div>
+        <div class="color-dot" data-name="Pink" style="background:#ff66b2" onclick="applyTheme('#331122', '#ff66b2')"></div>
+        <div class="color-dot" data-name="Green" style="background:#228b22" onclick="applyTheme('#0D2612', '#228b22')"></div>
+        <div class="color-dot" data-name="Purple" style="background:#800080" onclick="applyTheme('#1E122C', '#800080')"></div>
+        <div class="color-dot" data-name="Orange" style="background:#ff8c00" onclick="applyTheme('#2E1A00', '#ff8c00')"></div>
+        <div class="color-dot" data-name="Teal" style="background:#008080" onclick="applyTheme('#002222', '#008080')"></div>
     </div>
 </div>
 
 <script>
-// ICONS LIST
 const iconGallery = [
     "https://cdn-icons-png.flaticon.com/128/4354/4354959.png",
     "https://cdn-icons-png.flaticon.com/128/7321/7321058.png",
@@ -263,34 +234,35 @@ function changeIcon() {
     document.getElementById('cycleIcon').src = iconGallery[currentIconIdx];
 }
 
+// Reordered Data: Waking, Morning, Evening, Sleep
 const azkarData = [
     {
-        nameEn: "Morning", nameAr: "أذكار الصباح",
-        arabic: ["أَعُوْذُ بِاللّٰهِ مِنَ الشَّيْطَانِ الرَّجِيْمِ. اَللّٰهُ لَآ إِلٰهَ إِلَّا هُوَ الْحَىُّ الْقَيُّوْمُ... (آية الكرسي)", "بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ. قُلْ هُوَ اللّٰهُ أَحَدٌ...", "بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ. قُلْ أَعُوْذُ بِرَبِّ الْفَلَقِ...", "بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ. قُلْ أَعُوْذُ بِرَبِّ النَّاسِ...", "اَللّٰهُمَّ أَنْتَ رَبِّيْ لَا إِلٰهَ إِلَّا أَنْتَ...", "اَللّٰهُمَّ إِنِّيْ أَعُوْذُ بِكَ مِنَ الْهَمِّ وَالْحَزَنِ...", "اَللّٰهُمَّ إِنِّيْ أَسْأَلُكَ الْعَافِيَةَ...", "اَللّٰهُمَّ عَالِمَ الْغَيْبِ...", "يَا حَيُّ يَا قَيُّوْمُ...", "اَللّٰهُمَّ مَا أَصْبَحَ بِيْ مِنْ نِّعْمَةٍ...", "أَصْبَحْنَا عَلَىٰ فِطْرَةِ الْإِسْلَامِ...", "أَصْبَحْتُ أُثْنِيْ عَلَيْكَ حَمْدًا...", "أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلّٰهِ...", "أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلّٰهِ رَبِّ الْعَالَمِيْنَ...", "اَللّٰهُمَّ إِنِّيْ أَصْبَحْتُ أُشْهِدُكَ...", "اَللّٰهُمَّ بِكَ أَصْبَحْنَا...", "اَللّٰهُمَّ عَافِنِيْ فِيْ بَدَنِيْ...", "حَسْبِيَ اللّٰهُ لَا إِلٰهَ إِلَّا هُوَ...", "رَضِيْتُ بِاللّٰهِ رَبًّا...", "بِسْمِ اللّٰهِ الَّذِيْ لَا يَضُرُّ...", "سُبْحَانَ اللّٰهِ وَبِحَمْدِهِ.", "لَا إِلٰهَ إِلَّا اللّٰهُ وَحْدَهُ لَا شَرِيْكَ لَهُ...", "سُبْحَانَ اللّٰهِ ، اَلْحَمْدُ لِلّٰهِ ، اَللّٰهُ أَكْبَرُ.", "اَللّٰهُمَّ صَلِّ عَلَىٰ مُحَمَّدٍ...", "أَسْتَغْفِرُ اللّٰهَ وَأَتُوْبُ إِلَيْهِ.", "سُبْحَانَ اللّٰهِ وَبِحَمْدِهِ ، عَدَدَ خَلْقِهِ..."],
-        trans: ["Ayat Al-Kursi (2:255)", "Surah Al-Ikhlas", "Surah Al-Falaq", "Surah An-Nas", "Sayyid al-Istighfar", "Anxiety relief", "Well-being", "Knower of unseen", "Ever Living", "Morning favours", "Islam", "Praising Allah", "Kingdom of Allah", "Lord of Worlds", "Witness", "By You we enter", "Body well-being", "Sufficiency", "Satisfaction", "No harm", "Praise", "Tawheed", "Tasbeeh", "Salawat", "Istighfar", "Glory to Allah"],
-        reps: [1, 3, 3, 3, 1, 1, 1, 1, 1, 1, 1, 3, 1, 1, 4, 1, 3, 7, 3, 3, 100, 100, 100, 10, 100, 3]
-    },
-    {
-        nameEn: "Evening", nameAr: "أذكار المساء",
-        arabic: ["أَعُوْذُ بِاللّٰهِ مِنَ الشَّيْطَانِ الرَّجِيْمِ... (آية الكرسي)", "بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ. قُلْ هُوَ اللّٰهُ أَحَدٌ...", "بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ. قُلْ أَعُوْذُ بِرَبِّ الْفَلَقِ...", "بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ. قُلْ أَعُوْذُ بِرَبِّ النَّاسِ...", "اَللّٰهُمَّ أَنْتَ رَبِّيْ لَا إِلٰهَ إِلَّا أَنْتَ...", "اَللّٰهُمَّ إِنِّيْ أَعُوْذُ بِكَ مِنَ الْهَمِّ وَالْحَزَنِ...", "اَللّٰهُمَّ إِنِّيْ أَسْأَلُكَ الْعَافِيَةَ...", "اَللّٰهُمَّ عَالِمَ الْغَيْبِ...", "يَا حَيُّ يَا قَيُّوْمُ...", "اَللّٰهُمَّ مَا أَمْسَىٰ بِيْ مِنْ نِّعْمَةٍ...", "أَمْسَيْنَا عَلَىٰ فِطْرَةِ الْإِسْلَامِ...", "أَمْسَيْتُ أُثْنِيْ عَلَيْكَ حَمْدًا...", "أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلّٰهِ...", "أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلّٰهِ رَبِّ الْعَالَمِيْنَ...", "اَللّٰهُمَّ إِنِّيْ أَمْسَيْتُ أُشْهِدُكَ...", "اَللّٰهُمَّ بِكَ أَمْسَيْنَا...", "اَللّٰهُمَّ عَافِنِيْ فِيْ بَدَنِيْ...", "حَسْبِيَ اللّٰهُ لَا إِلٰهَ إِلَّا هُوَ...", "رَضِيْتُ بِاللّٰهِ رَبًّا...", "بِسْمِ اللّٰهِ الَّذِيْ لَا يَضُرُّ...", "سُبْحَانَ اللّٰهِ وَبِحَمْدِهِ.", "لَا إِلٰهَ إِلَّا اللّٰهُ وَحْدَهُ لَا شَرِيْكَ لَهُ...", "سُبْحَانَ اللّٰهِ ، اَلْحَمْدُ لِلّٰهِ ، اَللّٰهُ أَكْبَرُ.", "اَللّٰهُمَّ صَلِّ عَلَىٰ مُحَمَّدٍ...", "أَعُوْذُ بِكَلِمَاتِ اللّٰهِ التَّامَّاتِ..."],
-        trans: ["Ayat Al-Kursi", "Al-Ikhlas", "Al-Falaq", "An-Nas", "Istighfar", "Anxiety", "Well-being", "Unseen", "Sustainer", "Evening Favours", "Islam", "Praising", "Kingdom", "Lord of Worlds", "Witness", "Evening", "Well-being", "Sufficiency", "Satisfaction", "Protection", "Praise", "Tawheed", "Tasbeeh", "Salawat", "Perfect Words"],
-        reps: [1, 3, 3, 3, 1, 1, 1, 1, 1, 1, 1, 3, 1, 1, 4, 1, 3, 7, 3, 3, 100, 100, 100, 10, 3]
-    },
-    {
-        nameEn: "Sleep", nameAr: "أذكار النوم",
-        arabic: ["آية الكرسي...", "آمن الرسول...", "الكافرون", "الإخلاص", "الفلق", "الناس", "الله أكبر", "الحمد لله", "سبحان الله", "باسمك ربي", "قني عذابك", "الحمد لله الذي أطعمنا", "عالم الغيب", "رب السماوات", "أعوذ بوجهك", "خلقت نفسي", "باسم الله وضعت جنبي", "كفاني وآواني", "باسمك أموت وأحيا", "لا إله إلا الله", "أسلمت نفسي"],
-        trans: ["Kursi", "Baqarah", "Kafirun", "Ikhlas", "Falaq", "Nas", "Allahu Akbar (34)", "Alhamdulillah (33)", "SubhanAllah (33)", "Lie down", "Punishment", "Fed us", "Unseen", "Heavens", "Face", "Soul", "Side", "Sufficiency", "Die/Live", "Tawheed", "Submit"],
-        reps: [1, 1, 1, 3, 3, 3, 34, 33, 33, 1, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-    },
-    {
         nameEn: "Waking", nameAr: "الاستيقاظ",
-        arabic: ["لا إله إلا الله الواحد القهار", "لا إله إلا الله وحده", "الحمد لله الذي عافاني", "الحمد لله الذي أحيانا", "إن في خلق السماوات"],
-        trans: ["One, Dominant", "Forgiveness", "Well-being", "Life", "Creation"],
-        reps: [1, 1, 1, 1, 1]
+        arabic: ["الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ", "لَا إِلَهَ إِلَّا اللهُ وَحْدَهُ لَا شَرِيكَ لَهُ", "الْحَمْدُ لِلَّهِ الَّذِي عَافَانِي فِي جَسَدِي"],
+        trans: ["Praise be to Allah who gave us life...", "None has the right to be worshipped but Allah...", "Praise be to Allah who gave me health..."],
+        reps: [1, 1, 1]
+    },
+    {
+        nameEn: "Morning", nameAr: "الصباح",
+        arabic: ["أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ", "اللَّهُمَّ بِكَ أَصْبَحْنَا وَبِكَ أَمْسَيْنَا", "أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ"],
+        trans: ["Morning has come, the kingdom belongs to Allah", "O Allah, by You we enter the morning...", "I seek refuge in the perfect words of Allah..."],
+        reps: [1, 1, 3]
+    },
+    {
+        nameEn: "Evening", nameAr: "المساء",
+        arabic: ["أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ", "اللَّهُمَّ بِكَ أَمْسَيْنَا وَبِكَ أَصْبَحْنَا", "بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ"],
+        trans: ["Evening has come, the kingdom belongs to Allah", "O Allah, by You we enter the evening...", "In the name of Allah, with whose name nothing is harmed..."],
+        reps: [1, 1, 3]
+    },
+    {
+        nameEn: "Sleep", nameAr: "النوم",
+        arabic: ["بِاسْمِكَ رَبِّي وَضَعْتُ جَنْبِي", "اللَّهُمَّ قِنِي عَذَابَكَ يَوْمَ تَبْعَثُ عِبَادَكَ", "بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا"],
+        trans: ["In Your name, my Lord, I lie down...", "O Allah, protect me from Your punishment...", "In Your name, O Allah, I die and live..."],
+        reps: [1, 3, 1]
     }
 ];
 
-let currentCat = 0, currentIndex = 0, currentCount = 0, lang = 'ar';
+let currentCat = 0, currentIndex = 0, currentCount = 0, lang = 'en';
 
 function render() {
     const category = azkarData[currentCat];
@@ -298,20 +270,12 @@ function render() {
     document.getElementById('translationText').innerText = category.trans[currentIndex];
     document.getElementById('progressVal').innerText = `${currentIndex + 1} / ${category.arabic.length}`;
     
-    let maxReps = category.reps[currentIndex], repText = "";
-    if (lang === 'ar') {
-        if (maxReps === 1) repText = "مرة واحدة";
-        else if (maxReps === 2) repText = "مرتان";
-        else if (maxReps <= 10) repText = maxReps + " مرات";
-        else repText = maxReps + " مرة";
-    } else {
-        repText = maxReps + (maxReps === 1 ? " Time" : " Times");
-    }
-
-    document.getElementById('repeatVal').innerText = repText;
+    let maxReps = category.reps[currentIndex];
+    document.getElementById('repeatVal').innerText = lang === 'ar' ? (maxReps === 1 ? "مرة واحدة" : maxReps + " مرات") : (maxReps === 1 ? "1 Time" : maxReps + " Times");
+    
     document.getElementById('circleCount').innerText = currentCount;
-    document.getElementById('lblProgress').innerText = (lang === 'ar') ? "التقدم" : "Progress";
-    document.getElementById('lblRepeat').innerText = (lang === 'ar') ? "التكرار" : "Repeat";
+    document.getElementById('lblProgress').innerText = lang === 'ar' ? "التقدم" : "PROGRESS";
+    document.getElementById('lblRepeat').innerText = lang === 'ar' ? "التكرار" : "REPEAT";
     
     for(let i=0; i<4; i++) {
         document.getElementById('t'+i).innerText = (lang === 'ar') ? azkarData[i].nameAr : azkarData[i].nameEn;
@@ -319,8 +283,7 @@ function render() {
 }
 
 function incrementCount() {
-    const maxReps = azkarData[currentCat].reps[currentIndex];
-    if (currentCount < maxReps) {
+    if (currentCount < azkarData[currentCat].reps[currentIndex]) {
         currentCount++;
         document.getElementById('circleCount').innerText = currentCount;
     }
@@ -344,7 +307,6 @@ function applyTheme(bg, acc, isLight = false) {
     root.style.setProperty('--accent', acc);
     root.style.setProperty('--text', isLight ? '#333' : '#FFF');
     root.style.setProperty('--text-dim', isLight ? '#666' : '#B1A2C1');
-    root.style.setProperty('--card', isLight ? 'rgba(0,0,0,0.05)' : 'rgba(255,255,255,0.05)');
     document.getElementById('colorMenu').classList.remove('show');
 }
 
