@@ -33,7 +33,7 @@
             transition: background 0.4s ease;
         }
 
-        /* HEADER AREA - Aligned to the top */
+        /* HEADER AREA */
         .header {
             display: flex; 
             justify-content: space-between; 
@@ -49,7 +49,6 @@
             min-width: 80px;
         }
 
-        /* TOP FLOATING ICON */
         .header-icon-container {
             flex-grow: 1;
             display: flex;
@@ -85,7 +84,7 @@
         }
         .tab.active { background: var(--accent); color: white; }
         .tab label { margin-top: 4px; cursor: pointer; }
-        .tab img { width: 24px; height: 24px; }
+        .tab span { font-size: 18px; }
 
         /* CONTENT DISPLAY */
         .main-display {
@@ -103,7 +102,7 @@
         .divider { height: 1px; background: rgba(255,255,255,0.1); width: 60%; margin: 0 auto 20px; flex-shrink: 0; }
         .translation { font-size: 16px; color: var(--text-dim); line-height: 1.6; margin-bottom: 20px; }
 
-        /* FOOTER ALIGNMENT */
+        /* FOOTER */
         .footer-controls {
             display: flex; justify-content: space-between; align-items: center;
             padding-top: 20px; margin-top: 10px; height: 80px;
@@ -134,26 +133,34 @@
             display: flex; align-items: center; justify-content: center;
         }
 
-        /* COLOR MENU */
+        /* UPDATED COLOR MENU (12 Colors) */
         .palette-btn { background:none; border:none; cursor:pointer; font-size:24px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); }
 
         .color-menu {
             position: absolute; top: 70px; right: 25px;
-            background: #1A1A1A; padding: 12px; border-radius: 12px;
+            background: #1A1A1A; padding: 15px; border-radius: 16px;
             display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
             visibility: hidden; opacity: 0; transition: 0.3s; z-index: 10000;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.8);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.8);
+            border: 1px solid rgba(255,255,255,0.1);
         }
         .color-menu.show { visibility: visible; opacity: 1; }
-        .color-dot { width: 30px; height: 30px; border-radius: 50%; cursor: pointer; border: 2px solid rgba(255,255,255,0.1); position: relative; }
         
-        /* Z-INDEX TOOLTIP FIX */
+        .color-dot { 
+            width: 32px; height: 32px; border-radius: 50%; cursor: pointer; 
+            border: 2px solid rgba(255,255,255,0.2); position: relative; 
+            transition: transform 0.2s;
+        }
+        .color-dot:hover { transform: scale(1.15); border-color: white; }
+        
+        /* Tooltip style from your image */
         .color-dot:hover::after {
             content: attr(data-name);
-            position: absolute; top: -35px; left: 50%; transform: translateX(-50%);
-            font-size: 11px; color: white; background: #333; padding: 5px 10px;
-            border-radius: 6px; white-space: nowrap; z-index: 10001;
+            position: absolute; top: -40px; left: 50%; transform: translateX(-50%);
+            font-size: 12px; color: white; background: #000; padding: 5px 12px;
+            border-radius: 8px; white-space: nowrap; z-index: 10001;
             box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            font-weight: 600;
         }
 
         .main-display::-webkit-scrollbar { width: 4px; }
@@ -166,7 +173,6 @@
     <div class="header">
         <button class="lang-toggle" onclick="toggleLang()" id="langBtn">EN / عربي</button>
         
-        <!-- ICON IN THE MIDDLE OF HEADER -->
         <div class="header-icon-container">
             <img id="cycleIcon" class="floating-icon" 
                  src="https://cdn-icons-png.flaticon.com/128/4354/4354959.png" 
@@ -219,20 +225,30 @@
         <button class="nav-btn" onclick="next()">❯</button>
     </div>
 
+    <!-- 12 COLORS MENU (4x3 Grid) -->
     <div class="color-menu" id="colorMenu">
+        <!-- Row 1 -->
         <div class="color-dot" data-name="Plum" style="background:#4D1D3D" onclick="applyTheme('#4D1D3D', '#9B3675')"></div>
         <div class="color-dot" data-name="Amethyst" style="background:#1E122C" onclick="applyTheme('#1E122C', '#7446A0')"></div>
-        <div class="color-dot" data-name="Ruby" style="background:#3B1414" onclick="applyTheme('#3B1414', '#992E2E')"></div>
+        <div class="color-dot" data-name="Red" style="background:#3B1414" onclick="applyTheme('#3B1414', '#992E2E')"></div>
         <div class="color-dot" data-name="Mocha" style="background:#3E2723" onclick="applyTheme('#3E2723', '#8D6E63')"></div>
+        
+        <!-- Row 2 -->
+        <div class="color-dot" data-name="Gold" style="background:#5D5317" onclick="applyTheme('#5D5317', '#C5B358')"></div>
         <div class="color-dot" data-name="Forest" style="background:#1B5E20" onclick="applyTheme('#1B5E20', '#4CAF50')"></div>
-        <div class="color-dot" data-name="Ocean" style="background:#0D47A1" onclick="applyTheme('#0D47A1', '#42A5F5')"></div>
-        <div class="color-dot" data-name="Midnight" style="background:#000000" onclick="applyTheme('#000000', '#555555')"></div>
+        <div class="color-dot" data-name="Ocean" style="background:#003333" onclick="applyTheme('#003333', '#26A69A')"></div>
+        <div class="color-dot" data-name="Midnight" style="background:#0D47A1" onclick="applyTheme('#0D47A1', '#42A5F5')"></div>
+        
+        <!-- Row 3 -->
+        <div class="color-dot" data-name="Taupe" style="background:#4E342E" onclick="applyTheme('#4E342E', '#A1887F')"></div>
+        <div class="color-dot" data-name="Grey" style="background:#424242" onclick="applyTheme('#424242', '#9E9E9E')"></div>
+        <div class="color-dot" data-name="Black" style="background:#000000" onclick="applyTheme('#000000', '#555555')"></div>
         <div class="color-dot" data-name="Cloud" style="background:#f5f5f5" onclick="applyTheme('#f5f5f5', '#7446A0', true)"></div>
     </div>
 </div>
 
 <script>
-// ICONS LIST (Cycles through your 5 provided images)
+// ICONS LIST
 const iconGallery = [
     "https://cdn-icons-png.flaticon.com/128/4354/4354959.png",
     "https://cdn-icons-png.flaticon.com/128/7321/7321058.png",
@@ -274,10 +290,7 @@ const azkarData = [
     }
 ];
 
-let currentCat = 0;
-let currentIndex = 0;
-let currentCount = 0;
-let lang = 'ar';
+let currentCat = 0, currentIndex = 0, currentCount = 0, lang = 'ar';
 
 function render() {
     const category = azkarData[currentCat];
@@ -285,8 +298,7 @@ function render() {
     document.getElementById('translationText').innerText = category.trans[currentIndex];
     document.getElementById('progressVal').innerText = `${currentIndex + 1} / ${category.arabic.length}`;
     
-    let maxReps = category.reps[currentIndex];
-    let repText = "";
+    let maxReps = category.reps[currentIndex], repText = "";
     if (lang === 'ar') {
         if (maxReps === 1) repText = "مرة واحدة";
         else if (maxReps === 2) repText = "مرتان";
@@ -304,7 +316,6 @@ function render() {
     for(let i=0; i<4; i++) {
         document.getElementById('t'+i).innerText = (lang === 'ar') ? azkarData[i].nameAr : azkarData[i].nameEn;
     }
-    document.getElementById('scrollArea').scrollTop = 0;
 }
 
 function incrementCount() {
@@ -315,34 +326,17 @@ function incrementCount() {
     }
 }
 
-function next() {
-    currentIndex = (currentIndex + 1) % azkarData[currentCat].arabic.length;
-    currentCount = 0;
-    render();
-}
-
-function prev() {
-    currentIndex = (currentIndex - 1 + azkarData[currentCat].arabic.length) % azkarData[currentCat].arabic.length;
-    currentCount = 0;
-    render();
-}
+function next() { currentIndex = (currentIndex + 1) % azkarData[currentCat].arabic.length; currentCount = 0; render(); }
+function prev() { currentIndex = (currentIndex - 1 + azkarData[currentCat].arabic.length) % azkarData[currentCat].arabic.length; currentCount = 0; render(); }
 
 function changeCat(index) {
-    currentCat = index;
-    currentIndex = 0;
-    currentCount = 0;
+    currentCat = index; currentIndex = 0; currentCount = 0;
     document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', i === index));
     render();
 }
 
-function toggleLang() {
-    lang = (lang === 'ar') ? 'en' : 'ar';
-    render();
-}
-
-function toggleColors() {
-    document.getElementById('colorMenu').classList.toggle('show');
-}
+function toggleLang() { lang = (lang === 'ar') ? 'en' : 'ar'; render(); }
+function toggleColors() { document.getElementById('colorMenu').classList.toggle('show'); }
 
 function applyTheme(bg, acc, isLight = false) {
     const root = document.documentElement;
