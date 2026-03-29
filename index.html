@@ -32,7 +32,7 @@
             transition: background 0.4s ease;
         }
 
-        /* HEADER */
+        /* HEADER - Equal sized side icons and centered middle icon */
         .header {
             display: grid;
             grid-template-columns: 1fr auto 1fr;
@@ -41,15 +41,19 @@
             margin-bottom: 20px;
             z-index: 100;
         }
+
         .header-left { display: flex; justify-content: flex-start; }
         .header-right { display: flex; justify-content: flex-end; }
+
         .icon-btn {
             background: none; border: none; cursor: pointer;
             width: 40px; height: 40px; padding: 0;
             display: flex; align-items: center; justify-content: center;
+            transition: transform 0.2s;
         }
+        /* Ensure both side icons look the same size */
         .icon-btn img { width: 35px; height: 35px; object-fit: contain; }
-        .palette-emoji { font-size: 32px; line-height: 1; }
+        .palette-emoji { font-size: 32px; line-height: 1; display: flex; align-items: center; justify-content: center;}
 
         .floating-icon {
             width: 70px; height: 70px;
@@ -57,6 +61,7 @@
             animation: float 3s ease-in-out infinite;
             filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
         }
+
         @keyframes float {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-8px); }
@@ -76,25 +81,14 @@
         .tab.active { background: var(--accent); color: white; }
         .tab span { font-size: 20px; margin-bottom: 2px; }
 
-        /* MAIN CONTENT & ANIMATION */
+        /* MAIN CONTENT */
         .main-display {
             flex-grow: 1; overflow-y: auto; padding: 15px;
             text-align: center; display: flex; flex-direction: column;
             background: rgba(0,0,0,0.15); border-radius: 20px;
             margin-bottom: 15px;
-            position: relative;
         }
         
-        /* Slide Animation Class */
-        .slide-fade {
-            animation: slideFade 0.5s ease-out;
-        }
-
-        @keyframes slideFade {
-            from { opacity: 0; transform: translateX(20px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-
         .arabic {
             font-family: var(--font-arabic); font-size: 24px; color: var(--text);
             direction: rtl; line-height: 1.8; margin-bottom: 15px;
@@ -102,43 +96,32 @@
         }
         .translation { font-size: 16px; color: var(--text-dim); line-height: 1.6; }
 
-        /* FOOTER & PROGRESS CIRCLE */
+        /* FOOTER */
         .footer-controls {
             display: flex; justify-content: space-between; align-items: center;
-            height: 100px;
+            height: 80px;
         }
-        .side-info { flex: 1; display: flex; flex-direction: column; align-items: center; }
+
+        .side-info {
+            flex: 1; display: flex; flex-direction: column; 
+            align-items: center; justify-content: center;
+        }
         .info-label { font-size: 10px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
         .info-value { font-size: 15px; color: var(--text); font-weight: 700; white-space: nowrap; }
 
-        .counter-container {
-            position: relative;
-            width: 85px; height: 85px;
+        .counter-circle {
+            width: 75px; height: 75px; border-radius: 50%;
+            border: 3px solid var(--accent);
             display: flex; align-items: center; justify-content: center;
-            cursor: pointer; margin: 0 10px;
-            transition: transform 0.1s active;
-        }
-        .counter-container:active { transform: scale(0.95); }
-
-        .counter-container svg {
-            position: absolute;
-            transform: rotate(-90deg);
-            width: 100%; height: 100%;
-        }
-        .circle-bg { fill: none; stroke: rgba(255,255,255,0.1); stroke-width: 6; }
-        .circle-progress {
-            fill: none;
-            stroke: var(--accent);
-            stroke-width: 6;
-            stroke-linecap: round;
-            transition: stroke-dashoffset 0.3s ease;
-        }
-        #circleCount {
             font-size: 28px; font-weight: 700; color: var(--text);
-            z-index: 2;
+            cursor: pointer; background: var(--card);
+            margin: 0 10px; flex-shrink: 0;
         }
 
-        .nav-btn { background: none; border: none; color: var(--text); font-size: 24px; cursor: pointer; padding: 10px; }
+        .nav-btn {
+            background: none; border: none; color: var(--text);
+            font-size: 24px; cursor: pointer; padding: 10px;
+        }
 
         /* COLOR MENU */
         .color-menu {
@@ -146,7 +129,8 @@
             background: #1A1A1A; padding: 15px; border-radius: 16px;
             display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
             visibility: hidden; opacity: 0; transition: 0.3s; z-index: 1000;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.1);
         }
         .color-menu.show { visibility: visible; opacity: 1; }
         .color-dot { width: 30px; height: 30px; border-radius: 50%; cursor: pointer; }
@@ -164,9 +148,13 @@
                 <img src="https://cdn-icons-png.flaticon.com/128/6212/6212766.png" alt="Language">
             </button>
         </div>
+        
         <div class="header-center">
-            <img id="cycleIcon" class="floating-icon" src="https://cdn-icons-png.flaticon.com/128/4354/4354959.png" onclick="changeIcon()" alt="Icon">
+            <img id="cycleIcon" class="floating-icon" 
+                 src="https://cdn-icons-png.flaticon.com/128/4354/4354959.png" 
+                 onclick="changeIcon()" alt="Icon">
         </div>
+
         <div class="header-right">
             <button class="icon-btn palette-emoji" onclick="toggleColors()">🎨</button>
         </div>
@@ -180,10 +168,8 @@
     </div>
 
     <div class="main-display" id="scrollArea">
-        <div id="contentWrapper">
-            <div class="arabic" id="arabicText"></div>
-            <div class="translation" id="translationText"></div>
-        </div>
+        <div class="arabic" id="arabicText"></div>
+        <div class="translation" id="translationText"></div>
     </div>
 
     <div class="footer-controls">
@@ -192,18 +178,10 @@
             <span class="info-label" id="lblProgress">PROGRESS</span>
             <span class="info-value" id="progressVal">1 / 26</span>
         </div>
-
-        <div class="counter-container" onclick="incrementCount()">
-            <svg>
-                <circle class="circle-bg" cx="42.5" cy="42.5" r="38"></circle>
-                <circle id="progressRing" class="circle-progress" cx="42.5" cy="42.5" r="38"></circle>
-            </svg>
-            <div id="circleCount">0</div>
-        </div>
-
+        <div class="counter-circle" id="circleCount" onclick="incrementCount()">0</div>
         <div class="side-info">
             <span class="info-label" id="lblRepeat">REPEAT</span>
-            <span class="info-value" id="repeatVal">مرة واحدة</span>
+            <span class="info-value" id="repeatVal">1 Time</span>
         </div>
         <button class="nav-btn" onclick="next()">❯</button>
     </div>
@@ -225,10 +203,6 @@
 </div>
 
 <script>
-// Audio Elements
-const sndClick = new Audio("https://www.soundjay.com/buttons/button-16.mp3");
-const sndComplete = new Audio("https://www.soundjay.com/buttons/button-09.mp3");
-
 const iconGallery = [
     "https://cdn-icons-png.flaticon.com/128/4354/4354959.png",
     "https://cdn-icons-png.flaticon.com/128/7321/7321058.png",
@@ -256,7 +230,7 @@ const azkarData = [
             "بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ. قُلْ هُوَ اللّٰهُ أَحَدٌ ، اَللّٰهُ الصَّمَدُ ، لَمْ يَلِدْ وَلَمْ يُوْلَدْ ، وَلَمْ يَكُنْ لَّهُ كُفُوًا أَحَدٌ.",
             "بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ. قُلْ أَعُوْذُ بِرَبِّ الْفَلَقِ ، مِنْ شَرِّ مَا خَلَقَ ، وَمِنْ شَرِّ غَاسِقٍ إِذَا وَقَبَ ، وَمِنْ شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ ، وَمِنْ شَرِّ حَاسِدٍ إِذَا حَسَدَ.",
             "بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ. قُلْ أَعُوْذُ بِرَبِّ النَّاسِ ، مَلِكِ النَّاسِ ، إِلٰهِ النَّاسِ ، مِنْ شَرِّ الْوَسْوَاسِ الْخَنَّاسِ ، اَلَّذِيْ يُوَسْوِسُ فِيْ صُدُوْرِ النَّاسِ ، مِنَ الْجِنَّةِ وَالنَّاسِ.",
-            "اَللّٰهُمَّ أَنْتَ رَبِّيْ لَا إِلٰهَ إِلَّا أَنْتَ ، خَلقتَنِيْ وَأَنَا عَبْدُكَ ، وَأَنَا عَلَىٰ عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ ، أَعُوْذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ ، أَبُوْءُ لَكَ بِنِعْمَتِكَ عَلَيَّ وَأَبُوْءُ لَكَ بِذَنْبِيْ ، فَاغْفِرْ لِيْ فَإِنَّهُ لَا يَغْفِرُ الذُّنُوْبَ إِلَّا أَنْتَ.",
+            "اَللّٰهُمَّ أَنْتَ رَبِّيْ لَا إِلٰهَ إِلَّا أَنْتَ ، خَلَقْتَنِيْ وَأَنَا عَبْدُكَ ، وَأَنَا عَلَىٰ عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ ، أَعُوْذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ ، أَبُوْءُ لَكَ بِنِعْمَتِكَ عَلَيَّ وَأَبُوْءُ لَكَ بِذَنْبِيْ ، فَاغْفِرْ لِيْ فَإِنَّهُ لَا يَغْفِرُ الذُّنُوْبَ إِلَّا أَنْتَ.",
             "اَللّٰهُمَّ إِنِّيْ أَعُوْذُ بِكَ مِنَ الْهَمِّ وَالْحَزَنِ ، وَأَعُوْذُ بِكَ مِنَ الْعَجْزِ وَالْكَسَلِ، وَأَعُوْذُ بِكَ مِنَ الْجُبْنِ وَالْبُخْلِ ، وَأَعُوْذُ بِكَ مِنْ غَلَبَةِ الدَّيْنِ وَقَهْرِ الرِّجَالِ.",
             "اَللّٰهُمَّ إِنِّيْ أَسْأَلُكَ الْعَافِيَةَ فِي الدُّنْيَا وَالْآخِرَةِ ، اَللّٰهُمَّ إِنِّيْ أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِيْ دِيْنِيْ وَدُنْيَايَ وَأَهْلِيْ وَمَالِيْ ، اَللّٰهُمَّ اسْتُرْ عَوْرَاتِيْ وَآمِنْ رَوْعَاتِيْ ، اَللّٰهُمَّ احْفَظْنِيْ مِنْ بَيْنِ يَدَيَّ ، وَمِنْ خَلْفِيْ ، وَعَنْ يَّمِيْنِيْ ، وَعَنْ شِمَالِيْ ، وَمِنْ فَوْقِيْ ، وَأَعُوْذُ بِعَظَمَتِكَ أَنْ أُغْتَالَ مِنْ تَحْتِيْ.",
             "اَللّٰهُمَّ عَالِمَ الْغَيْبِ وَالشَّهَادَةِ ، فَاطِرَ السَّمٰوَاتِ وَالْأَرْضِ ، رَبَّ كُلِّ شَيْءٍ وَمَلِيْكَهُ ، أَشْهَدُ أَنْ لَّا إِلٰهَ إِلَّا أَنْتَ ، أَعُوْذُ بِكَ مِنْ شَرِّ نَفْسِيْ ، وَمِنْ شَرِّ الشَّيْطَانِ وَشِرْكِهِ ، وَأَنْ أَقْتَرِفَ عَلَىٰ نَفْسِيْ سُوْءًا ، أَوْ أَجُرَّهُ إِلَىٰ مُسْلِمٍ.",
@@ -264,7 +238,7 @@ const azkarData = [
             "اَللّٰهُمَّ مَا أَصْبَحَ بِيْ مِنْ نِّعْمَةٍ أَوْ بِأَحَدٍ مِّنْ خَلْقِكَ ، فَمِنْكَ وَحْدَكَ لَا شَرِيْكَ لَكَ ، فَلَكَ الْحَمْدُ وَلَكَ الشُّكْرُ.",
             "أَصْبَحْنَا عَلَىٰ فِطْرَةِ الْإِسْلَامِ ، وَعَلَىٰ كَلِمَةِ الْإِخْلَاصِ ، وَعَلَىٰ دِيْنِ نَبِيِّنَا مُحَمَّدٍ ، وَعَلَىٰ مِلَّةِ أَبِيْنَا إِبْرَاهِيْمَ حَنِيْفًا مُّسْلِمًا وَّمَا كَانَ مِنَ الْمُشْرِكِيْنَ.",
             "أَصْبَحْتُ أُثْنِيْ عَلَيْكَ حَمْدًا ، وَأَشْهَدُ أَنْ لَّا إِلٰهَ إِلَّا اللّٰهُ.",
-            "أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلّٰهِ وَالْحَمْدُ لِلّٰهِ ، لَا إِلٰهَ إِلَّا اللّٰهُ وَحْدَهُ لَا شَرِيْكَ لَهُ ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ ، وَهُوَ عَلَىٰ كُلِّ شَيْءٍ قَدِيْرٌ ، رَبِّ أَسْأَلُكَ خَيْرَ مَا فِيْ هٰذَا الْيَوْمِ وَخَيْرَ مَا بَعْدَهُ ، وَأَعُوْذُ بِكَ مِنْ شَرِّ مَا فِيْ هٰذَا الْيَوْمِ وَشرِّ مَا بَعْدَهُ ، رَبِّ أَعُوْذُ بِكَ مِنَ الْكَسَلِ وَسُوْءِ الْكِبَرِ ، رَبِّ أَعُوْذُ بِكَ مِنْ عَذَابٍ فِي النَّارِ وَعَذَابٍ فِي الْقَبْرِ.",
+            "أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلّٰهِ وَالْحَمْدُ لِلّٰهِ ، لَا إِلٰهَ إِلَّا اللّٰهُ وَحْدَهُ لَا شَرِيْكَ لَهُ ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ ، وَهُوَ عَلَىٰ كُلِّ شَيْءٍ قَدِيْرٌ ، رَبِّ أَسْأَلُكَ خَيْرَ مَا فِيْ هٰذَا الْيَوْمِ وَخَيْرَ مَا بَعْدَهُ ، وَأَعُوْذُ بِكَ مِنْ شَرِّ مَا فِيْ هٰذَا الْيَوْمِ وَشَرِّ مَا بَعْدَهُ ، رَبِّ أَعُوْذُ بِكَ مِنَ الْكَسَلِ وَسُوْءِ الْكِبَرِ ، رَبِّ أَعُوْذُ بِكَ مِنْ عَذَابٍ فِي النَّارِ وَعَذَابٍ فِي الْقَبْرِ.",
             "أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلّٰهِ رَبِّ الْعَالَمِيْنَ ، اَللّٰهُمَّ إِنِّيْ أَسْأَلُكَ خَيْرَ هٰذَا الْيَوْمِ ، فَتْحَهُ وَنَصْرَهُ وَنُوْرَهُ وَبَرَكَتَهُ وَهُدَاهُ ، وَأَعُوْذُ بِكَ مِنْ شَرِّ مَا فِيْهِ وَشَرِّ مَا بَعْدَهُ.",
             "اَللّٰهُمَّ إِنِّيْ أَصْبَحْتُ أُشْهِدُكَ ، وَأُشْهِدُ حَمَلَةَ عَرْشِكَ وَمَلَائِكَتَكَ وَجَمِيْعَ خَلْقِكَ ، أَنَّكَ أَنْتَ اللّٰهُ لَا إِلٰهَ إِلَّا أَنْتَ وَحْدَكَ لَا شَرِيْكَ لَكَ ، وَأَنَّ مُحَمَّدًا عَبْدُكَ وَرَسُوْلُكَ.",
             "اَللّٰهُمَّ بِكَ أَصْبَحْنَا وَبِكَ أَمْسَيْنَا وَبِكَ نَحْيَا وَبِكَ نَمُوْتُ وَإِلَيْكَ النُّشُوْرُ.",
@@ -317,30 +291,25 @@ const azkarData = [
     },
     {
         nameEn: "Sleep", nameAr: "النوم",
-        arabic: ["بِاسْمِكَ رَبِّي وَضَعْتُ جَنْبِي..."],
+        arabic: ["بِاسْمِكَ رَبِّي وَضَعْتُ جَنْبِي..."],
         trans: ["In Your name..."],
         reps: [1]
     }
 ];
 
 let currentCat = 0, currentIndex = 0, currentCount = 0, lang = 'ar';
-const circleRadius = 38;
-const circleCircumference = 2 * Math.PI * circleRadius;
-
-function updateCircleProgress(count, max) {
-    const ring = document.getElementById('progressRing');
-    const progress = count / max;
-    const offset = circleCircumference - (progress * circleCircumference);
-    ring.style.strokeDasharray = `${circleCircumference} ${circleCircumference}`;
-    ring.style.strokeDashoffset = offset;
-}
 
 function getRepetitionText(count, currentLang) {
-    if (currentLang === 'en') return count === 1 ? "1 Time" : count + " Times";
+    if (currentLang === 'en') {
+        return count === 1 ? "1 Time" : count + " Times";
+    }
+    
+    // Arabic Specific Logic
     switch(count) {
         case 1: return "مرة واحدة";
         case 2: return "مرتان";
         case 3: return "ثلاث مرات";
+        case 4: return "أربع مرات";
         case 7: return "سبع مرات";
         case 10: return "عشر مرات";
         case 100: return "مئة مرة";
@@ -348,15 +317,8 @@ function getRepetitionText(count, currentLang) {
     }
 }
 
-function render(isAutoAdvance = false) {
+function render() {
     const category = azkarData[currentCat];
-    const wrapper = document.getElementById('contentWrapper');
-    
-    // Reset animation
-    wrapper.classList.remove('slide-fade');
-    void wrapper.offsetWidth; // Trigger reflow
-    wrapper.classList.add('slide-fade');
-
     document.getElementById('arabicText').innerText = category.arabic[currentIndex];
     document.getElementById('translationText').innerText = category.trans[currentIndex];
     document.getElementById('progressVal').innerText = `${currentIndex + 1} / ${category.arabic.length}`;
@@ -366,45 +328,16 @@ function render(isAutoAdvance = false) {
     document.getElementById('lblProgress').innerText = lang === 'ar' ? "التقدم" : "PROGRESS";
     document.getElementById('lblRepeat').innerText = lang === 'ar' ? "التكرار" : "REPEAT";
     
-    updateCircleProgress(currentCount, category.reps[currentIndex]);
-
     for(let i=0; i<4; i++) {
         document.getElementById('t'+i).innerText = (lang === 'ar') ? azkarData[i].nameAr : azkarData[i].nameEn;
     }
     document.getElementById('scrollArea').scrollTop = 0;
 }
 
-let isAutoLocked = false;
-
 function incrementCount() {
-    if(isAutoLocked) return;
-    
-    const max = azkarData[currentCat].reps[currentIndex];
-    if (currentCount < max) {
+    if (currentCount < azkarData[currentCat].reps[currentIndex]) {
         currentCount++;
-        
-        // Play click sound
-        sndClick.currentTime = 0;
-        sndClick.play().catch(() => {});
-        
         document.getElementById('circleCount').innerText = currentCount;
-        updateCircleProgress(currentCount, max);
-
-        // Check if finished
-        if (currentCount === max) {
-            isAutoLocked = true;
-            // Play vibrate/completion sound
-            sndComplete.currentTime = 0;
-            sndComplete.play().catch(() => {});
-            
-            if (navigator.vibrate) navigator.vibrate(100);
-
-            // Wait 600ms then slide to next
-            setTimeout(() => {
-                next();
-                isAutoLocked = false;
-            }, 600);
-        }
     }
 }
 
