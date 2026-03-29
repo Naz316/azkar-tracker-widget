@@ -23,7 +23,7 @@
         }
 
         .widget {
-            width: 95%; max-width: 500px; height: 92vh;
+            width: 95%; max-width: 500px; height: 90vh;
             background-color: var(--bg);
             border-radius: 32px; padding: 25px;
             display: flex; flex-direction: column;
@@ -49,9 +49,10 @@
             background: none; border: none; cursor: pointer;
             width: 40px; height: 40px; padding: 0;
             display: flex; align-items: center; justify-content: center;
+            transition: transform 0.2s;
         }
         .icon-btn img { width: 35px; height: 35px; object-fit: contain; }
-        .palette-emoji { font-size: 32px; line-height: 1; }
+        .palette-emoji { font-size: 32px; line-height: 1; display: flex; align-items: center; justify-content: center;}
 
         .floating-icon {
             width: 70px; height: 70px;
@@ -94,10 +95,10 @@
         }
         .translation { font-size: 16px; color: var(--text-dim); line-height: 1.6; }
 
-        /* FOOTER & PROGRESS CIRCLE */
+        /* FOOTER & DIVIDED CIRCLE */
         .footer-controls {
             display: flex; justify-content: space-between; align-items: center;
-            height: 90px;
+            height: 85px;
         }
 
         .side-info {
@@ -107,37 +108,25 @@
         .info-label { font-size: 10px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
         .info-value { font-size: 15px; color: var(--text); font-weight: 700; white-space: nowrap; }
 
-        .counter-container {
-            position: relative;
-            width: 85px; height: 85px;
+        .counter-circle {
+            width: 80px; height: 80px; position: relative;
             display: flex; align-items: center; justify-content: center;
-            cursor: pointer;
-            margin: 0 10px;
-        }
-
-        .counter-container svg {
-            position: absolute;
-            transform: rotate(-90deg);
-            width: 100%; height: 100%;
-        }
-
-        .circle-bg {
-            fill: none;
-            stroke: var(--card);
-            stroke-width: 6;
-        }
-
-        .circle-progress {
-            fill: none;
-            stroke: var(--accent);
-            stroke-width: 6;
-            stroke-linecap: round;
-            transition: stroke-dashoffset 0.35s ease;
-        }
-
-        #circleCount {
             font-size: 28px; font-weight: 700; color: var(--text);
-            z-index: 2;
+            cursor: pointer; margin: 0 10px; flex-shrink: 0;
+        }
+
+        .progress-ring-svg {
+            position: absolute;
+            top: 0; left: 0;
+            transform: rotate(-90deg);
+            width: 80px; height: 80px;
+        }
+
+        .progress-ring-circle {
+            fill: transparent;
+            stroke-width: 5;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.35s, stroke-dasharray 0.35s;
         }
 
         .nav-btn {
@@ -200,11 +189,13 @@
             <span class="info-label" id="lblProgress">PROGRESS</span>
             <span class="info-value" id="progressVal">1 / 26</span>
         </div>
-        
-        <div class="counter-container" onclick="incrementCount()">
-            <svg viewBox="0 0 100 100">
-                <circle class="circle-bg" cx="50" cy="50" r="42"></circle>
-                <circle id="progressRing" class="circle-progress" cx="50" cy="50" r="42"></circle>
+
+        <div class="counter-circle" onclick="incrementCount()">
+            <svg class="progress-ring-svg">
+                <!-- Background track -->
+                <circle class="progress-ring-circle" stroke="rgba(255,255,255,0.1)" r="35" cx="40" cy="40"/>
+                <!-- Active progress -->
+                <circle id="ring" class="progress-ring-circle" stroke="var(--accent)" r="35" cx="40" cy="40"/>
             </svg>
             <span id="circleCount">0</span>
         </div>
@@ -216,7 +207,6 @@
         <button class="nav-btn" onclick="next()">❯</button>
     </div>
 
-    <!-- 12 COLORS MENU -->
     <div class="color-menu" id="colorMenu">
         <div class="color-dot" data-name="Red" style="background:#cc0000" onclick="applyTheme('#3B1414', '#cc0000')"></div>
         <div class="color-dot" data-name="Blue" style="background:#0066cc" onclick="applyTheme('#0A192F', '#0066cc')"></div>
@@ -250,8 +240,8 @@ function changeIcon() {
 const azkarData = [
     {
         nameEn: "Waking", nameAr: "الاستيقاظ",
-        arabic: ["الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ"],
-        trans: ["Praise be to Allah who gave us life after having taken it from us, and unto Him is the resurrection."],
+        arabic: ["لَا إِلٰهَ إِلاَّ اللّٰهُ الْوَاحِدُ الْقَهَّارُ ، رَبُّ السَّمٰـوٰتِ وَالْأَرْضِ وَمَا بَيْنَهُمَا الْعَزِيْزُ الْغَفَّارُ"],
+        trans: ["There is no god worthy of worship but Allah: The One, The All-Dominant; Lord of the heavens, the earth and whatever is between them; The Mighty, The Most Forgiving."],
         reps: [1]
     },
     {
@@ -263,7 +253,7 @@ const azkarData = [
             "بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ. قُلْ أَعُوْذُ بِرَبِّ النَّاسِ ، مَلِكِ النَّاسِ ، إِلٰهِ النَّاسِ ، مِنْ شَرِّ الْوَسْوَاسِ الْخَنَّاسِ ، اَلَّذِيْ يُوَسْوِسُ فِيْ صُدُوْرِ النَّاسِ ، مِنَ الْجِنَّةِ وَالنَّاسِ.",
             "اَللّٰهُمَّ أَنْتَ رَبِّيْ لَا إِلٰهَ إِلَّا أَنْتَ ، خَلَقْتَنِيْ وَأَنَا عَبْدُكَ ، وَأَنَا عَلَىٰ عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ ، أَعُوْذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ ، أَبُوْءُ لَكَ بِنِعْمَتِكَ عَلَيَّ وَأَبُوْءُ لَكَ بِذَنْبِيْ ، فَاغْفِرْ لِيْ فَإِنَّهُ لَا يَغْفِرُ الذُّنُوْبَ إِلَّا أَنْتَ.",
             "اَللّٰهُمَّ إِنِّيْ أَعُوْذُ بِكَ مِنَ الْهَمِّ وَالْحَزَنِ ، وَأَعُوْذُ بِكَ مِنَ الْعَجْزِ وَالْكَسَلِ، وَأَعُوْذُ بِكَ مِنَ الْجُبْنِ وَالْبُخْلِ ، وَأَعُوْذُ بِكَ مِنْ غَلَبَةِ الدَّيْنِ وَقَهْرِ الرِّجَالِ.",
-            "اَللّٰهُمَّ إِنِّيْ أَسْأَلُكَ الْعَافِيَةَ فِي الدُّنْيَا وَالْآخِرَةِ ، اَللّٰهُمَّ إِنِّيْ أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِيْ دِيْنِيْ وَدُنْيَايَ وَأَهْلِيْ وَمَالِيْ ، اَللّٰهُمَّ اسْتُرْ عَوْرَاتِيْ وَآمِنْ رَوْعَاتِيْ ، اَللّٰهُمَّ احْفَظْنِيْ مِنْ بَيْنِ يَدَيَّ ، وَمِنْ خَلْفِيْ ، وَعَنْ يَّمِيْنِيْ ، وَعَنْ شِمَالِيْ ، وَمِنْ فَوْقِيْ ، وَأَعُوْذُ بِعَظَمَتِكَ أَنْ أُغْتَالَ مِنْ تَحْتِيْ.",
+            "اَللّٰهُمَّ إِنِّيْ أَسْأَلُكَ الْعَافِيَةَ فِي الدُّنْيَا وَالْآخِرَةِ ، اَللّٰهُمَّ إِنِّيْ أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِيْ دِيْنِيْ وَدُنْيَايَ وَأَهْلِيْ وَمالِيْ ، اَللّٰهُمَّ اسْتُرْ عَوْرَاتِيْ وَآمِنْ رَوْعَاتِيْ ، اَللّٰهُمَّ احْفَظْنِيْ مِنْ بَيْنِ يَدَيَّ ، وَمِنْ خَلْفِيْ ، وَعَنْ يَّمِيْنِيْ ، وَعَنْ شِمَالِيْ ، وَمِنْ فَوْقِيْ ، وَأَعُوْذُ بِعَظَمَتِكَ أَنْ أُغْتَالَ مِنْ تَحْتِيْ.",
             "اَللّٰهُمَّ عَالِمَ الْغَيْبِ وَالشَّهَادَةِ ، فَاطِرَ السَّمٰوَاتِ وَالْأَرْضِ ، رَبَّ كُلِّ شَيْءٍ وَمَلِيْكَهُ ، أَشْهَدُ أَنْ لَّا إِلٰهَ إِلَّا أَنْتَ ، أَعُوْذُ بِكَ مِنْ شَرِّ نَفْسِيْ ، وَمِنْ شَرِّ الشَّيْطَانِ وَشِرْكِهِ ، وَأَنْ أَقْتَرِفَ عَلَىٰ نَفْسِيْ سُوْءًا ، أَوْ أَجُرَّهُ إِلَىٰ مُسْلِمٍ.",
             "يَا حَيُّ يَا قَيُّوْمُ ، بِرَحْمَتِكَ أَسْتَغِيْثُ ، أَصْلِحْ لِيْ شَأْنِيْ كُلَّهُ ، وَلَا تَكِلْنِيْ إِلَىٰ نَفْسِيْ طَرْفَةَ عَيْنٍ.",
             "اَللّٰهُمَّ مَا أَصْبَحَ بِيْ مِنْ نِّعْمَةٍ أَوْ بِأَحَدٍ مِّنْ خَلْقِكَ ، فَمِنْكَ وَحْدَكَ لَا شَرِيْكَ لَكَ ، فَلَكَ الْحَمْدُ وَلَكَ الشُّكْرُ.",
@@ -271,13 +261,12 @@ const azkarData = [
             "أَصْبَحْتُ أُثْنِيْ عَلَيْكَ حَمْدًا ، وَأَشْهَدُ أَنْ لَّا إِلٰهَ إِلَّا اللّٰهُ.",
             "أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلّٰهِ وَالْحَمْدُ لِلّٰهِ ، لَا إِلٰهَ إِلَّا اللّٰهُ وَحْدَهُ لَا شَرِيْكَ لَهُ ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ ، وَهُوَ عَلَىٰ كُلِّ شَيْءٍ قَدِيْرٌ ، رَبِّ أَسْأَلُكَ خَيْرَ مَا فِيْ هٰذَا الْيَوْمِ وَخَيْرَ مَا بَعْدَهُ ، وَأَعُوْذُ بِكَ مِنْ شَرِّ مَا فِيْ هٰذَا الْيَوْمِ وَشَرِّ مَا بَعْدَهُ ، رَبِّ أَعُوْذُ بِكَ مِنَ الْكَسَلِ وَسُوْءِ الْكِبَرِ ، رَبِّ أَعُوْذُ بِكَ مِنْ عَذَابٍ فِي النَّارِ وَعَذَابٍ فِي الْقَبْرِ.",
             "أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلّٰهِ رَبِّ الْعَالَمِيْنَ ، اَللّٰهُمَّ إِنِّيْ أَسْأَلُكَ خَيْرَ هٰذَا الْيَوْمِ ، فَتْحَهُ وَنَصْرَهُ وَنُوْرَهُ وَبَرَكَتَهُ وَهُدَاهُ ، وَأَعُوْذُ بِكَ مِنْ شَرِّ مَا فِيْهِ وَشَرِّ مَا بَعْدَهُ.",
-            "اَللّٰهُمَّ إِنِّيْ أَسْأَلُكَ خَيْرَ هٰذَا الْيَوْمِ ، فَتْحَهُ وَنَصْرَهُ وَنُوْرَهُ وَبَرَكَتَهُ وَهُدَاهُ ، وَأَعُوْذُ بِكَ مِنْ شَرِّ مَا فِيْهِ وَشَرِّ مَا بَعْدَهُ.",
             "اَللّٰهُمَّ إِنِّيْ أَصْبَحْتُ أُشْهِدُكَ ، وَأُشْهِدُ حَمَلَةَ عَرْشِكَ وَمَلَائِكَتَكَ وَجَمِيْعَ خَلْقِكَ ، أَنَّكَ أَنْتَ اللّٰهُ لَا إِلٰهَ إِلَّا أَنْتَ وَحْدَكَ لَا شَرِيْكَ لَكَ ، وَأَنَّ مُحَمَّدًا عَبْدُكَ وَرَسُوْلُكَ.",
             "اَللّٰهُمَّ بِكَ أَصْبَحْنَا وَبِكَ أَمْسَيْنَا وَبِكَ نَحْيَا وَبِكَ نَمُوْتُ وَإِلَيْكَ النُّشُوْرُ.",
             "اَللّٰهُمَّ عَافِنِيْ فِيْ بَدَنِيْ ، اَللّٰهُمَّ عَافِنِيْ فِيْ سَمْعِيْ ، اَللّٰهُمَّ عَافِنِيْ فِيْ بَصَرِيْ ، لَا إِلٰهَ إِلَّا أَنْتَ ، اَللّٰهُمَّ إِنِّيْ أَعُوْذُ بِكَ مِنَ الْكُفْرِ وَالْفَقْرِ، وأَعُوْذُ بِكَ مِنْ عَذَابِ الْقَبْرِ، لَا إِلٰهَ إِلَّا أَنْتَ.",
             "حَسْبِيَ اللّٰهُ لَا إِلٰهَ إِلَّا هُوَ ، عَلَيْهِ تَوَكَّلْتُ ، وَهُوَ رَبُّ الْعَرْشِ الْعَظِيْمِ.",
             "رَضِيْتُ بِاللّٰهِ رَبًّا ، وَبِالْإِسْلَامِ دِيْنًا ، وَبِمُحَمَّدٍ نَّبِيًّا.",
-            "بِسْمِ اللّٰهِ الَّذِيْ لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ ، وَهُوَ السَّمِيْعُ الْعَلِيْمُ.",
+            "بِسْمِ اللّٰهِ الَّذِيْ لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاء ، وَهُوَ السَّمِيْعُ الْعَلِيْمُ.",
             "سُبْحَانَ اللّٰهِ وَبِحَمْدِهِ.",
             "لَا إِلٰهَ إِلَّا اللّٰهُ وَحْدَهُ لَا شَرِيْكَ لَهُ ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ ، وَهُوَ عَلَىٰ كُلِّ شَيْءٍ قَدِيْرٌ.",
             "سُبْحَانَ اللّٰهِ ، اَلْحَمْدُ لِلّٰهِ ، اَللّٰهُ أَكْبَرُ.",
@@ -286,35 +275,34 @@ const azkarData = [
             "سُبْحَانَ اللّٰهِ وَبِحَمْدِهِ ، عَدَدَ خَلْقِهِ ، وَرِضَا نَفْسِهِ ، وَزِنَةَ عَرْشِهِ ، وَمِدَادَ كَلِمَاتِهِ."
         ],
         trans: [
-            "I seek the protection of Allah from the accursed Shayṭān. Allah, there is no god worthy of worship but He, the Ever Living, The Sustainer of all... (2:255)",
-            "Say, He is Allah, the One... (112)",
-            "Say, I seek protection of the Lord of the daybreak... (113)",
-            "Say, I seek protection of the Lord of mankind... (114)",
+            "I seek the protection of Allah from the accursed Shayṭān. Allah, there is no god worthy of worship but He...",
+            "In the name of Allah, the All-Merciful, the Very Merciful. Say, He is Allah, the One...",
+            "In the name of Allah, the All-Merciful, the Very Merciful. Say, I seek protection of the Lord of the daybreak...",
+            "In the name of Allah, the All-Merciful, the Very Merciful. Say, I seek protection of the Lord of mankind...",
             "O Allah, You are my Lord. There is no god worthy of worship except You...",
             "O Allah, I seek Your protection from anxiety and grief...",
             "O Allah, I ask You for well-being in this world and the next...",
-            "O Allah, Knower of the unseen and the seen...",
-            "O The Ever Living, The Sustainer of all...",
-            "O Allah, all the favours received in the morning are from You Alone...",
+            "O Allah, Knower of the unseen and the seen, Creator of the heavens and the earth...",
+            "O The Ever Living, The Sustainer of all. ; I seek assistance through Your mercy...",
+            "O Allah, all the favours that I or anyone from Your creation has received in the morning...",
             "We have entered the morning upon the natural religion of Islam...",
-            "I have entered the morning praising You...",
-            "Morning has come and the whole kingdom belongs to Allah...",
+            "I have entered the morning praising You, and I bear witness that there is no god worthy of worship but Allah.",
+            "We have entered the morning and at this very time the whole kingdom belongs to Allah...",
             "We have entered the morning and at this very time the whole kingdom belongs to Allah, Lord of the Worlds...",
-            "We have entered the morning and at this very time the whole kingdom belongs to Allah, Lord of the Worlds...",
-            "O Allah, I have entered the morning, and I call upon You to witness...",
-            "O Allah, by You we have entered the morning...",
+            "O Allah, I have entered the morning, and I call upon You...",
+            "O Allah, by You we have entered the morning and by You we enter upon the evening...",
             "O Allah, grant me well-being in my body...",
             "Allah is sufficient for me. There is no god worthy of worship except Him...",
-            "I am pleased with Allah as my Lord...",
-            "In the Name of Allah, with whose Name nothing can harm...",
+            "I am pleased with Allah as my Lord, with Islām as my religion and with Muḥammad ﷺ as my Prophet.",
+            "In the Name of Allah, with whose Name nothing can harm in the earth nor in the sky...",
             "Allah is free from imperfection, and all praise is due to Him.",
-            "There is no god worthy of worship except Allah. He is Alone...",
+            "There is no god worthy of worship except Allah. He is Alone and He has no partner whatsoever...",
             "Allah is free from imperfection. All praise be to Allah. Allah is the Greatest.",
-            "O Allah, honour and have mercy upon Muhammad...",
+            "O Allah, honour and have mercy upon Muhammad and the family of Muhammad...",
             "I seek Allah’s forgiveness and turn to Him in repentance.",
-            "Allah is free from imperfection... as numerous as all He has created..."
+            "Allah is free from imperfection and all praise is due to Him, (in ways) as numerous as all He has created..."
         ],
-        reps: [1, 3, 3, 3, 1, 1, 1, 1, 1, 1, 1, 3, 3, 1, 1, 4, 1, 3, 7, 3, 3, 100, 100, 100, 10, 100, 3]
+        reps: [1, 3, 3, 3, 1, 1, 1, 1, 1, 1, 1, 3, 3, 1, 4, 1, 3, 7, 3, 3, 100, 100, 100, 10, 100, 3]
     },
     {
         nameEn: "Evening", nameAr: "المساء",
@@ -332,17 +320,6 @@ const azkarData = [
 
 let currentCat = 0, currentIndex = 0, currentCount = 0, lang = 'ar';
 
-// Progress Circle Setup
-const circle = document.getElementById('progressRing');
-const radius = circle.r.baseVal.value;
-const circumference = radius * 2 * Math.PI;
-circle.style.strokeDasharray = `${circumference} ${circumference}`;
-
-function setProgress(percent) {
-    const offset = circumference - (percent / 100) * circumference;
-    circle.style.strokeDashoffset = offset;
-}
-
 function getRepetitionText(count, currentLang) {
     if (currentLang === 'en') return count === 1 ? "1 Time" : count + " Times";
     switch(count) {
@@ -356,6 +333,25 @@ function getRepetitionText(count, currentLang) {
     }
 }
 
+function updateCircleProgress() {
+    const ring = document.getElementById('ring');
+    const radius = ring.r.baseVal.value;
+    const circumference = 2 * Math.PI * radius;
+    const maxReps = azkarData[currentCat].reps[currentIndex];
+    
+    // Calculate segmented gaps
+    // We add a tiny gap between segments
+    const gap = maxReps > 1 ? 4 : 0; 
+    const segmentLength = (circumference / maxReps) - gap;
+    
+    ring.style.strokeDasharray = `${segmentLength} ${gap}`;
+    
+    // Calculate how much of the dasharray to hide (offset)
+    const progress = currentCount / maxReps;
+    const offset = circumference - (progress * circumference);
+    ring.style.strokeDashoffset = offset;
+}
+
 function render() {
     const category = azkarData[currentCat];
     document.getElementById('arabicText').innerText = category.arabic[currentIndex];
@@ -364,25 +360,22 @@ function render() {
     
     document.getElementById('repeatVal').innerText = getRepetitionText(category.reps[currentIndex], lang);
     document.getElementById('circleCount').innerText = currentCount;
-    
-    // Update SVG Circle
-    let percent = (currentCount / category.reps[currentIndex]) * 100;
-    setProgress(percent);
-
     document.getElementById('lblProgress').innerText = lang === 'ar' ? "التقدم" : "PROGRESS";
     document.getElementById('lblRepeat').innerText = lang === 'ar' ? "التكرار" : "REPEAT";
     
     for(let i=0; i<4; i++) {
         document.getElementById('t'+i).innerText = (lang === 'ar') ? azkarData[i].nameAr : azkarData[i].nameEn;
     }
+    
+    updateCircleProgress();
     document.getElementById('scrollArea').scrollTop = 0;
 }
 
 function incrementCount() {
-    const maxReps = azkarData[currentCat].reps[currentIndex];
-    if (currentCount < maxReps) {
+    if (currentCount < azkarData[currentCat].reps[currentIndex]) {
         currentCount++;
-        render();
+        document.getElementById('circleCount').innerText = currentCount;
+        updateCircleProgress();
     }
 }
 
