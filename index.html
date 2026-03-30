@@ -20,6 +20,7 @@
             font-family: 'Inter', sans-serif;
             display: flex; justify-content: center; align-items: center;
             margin: 0; padding: 0; height: 100vh; overflow: hidden;
+            transition: all 0.3s ease;
         }
 
         .widget {
@@ -29,7 +30,7 @@
             display: flex; flex-direction: column;
             position: relative; box-shadow: 0 12px 40px rgba(0,0,0,0.6);
             border: 1px solid rgba(255,255,255,0.08);
-            transition: background 0.1s ease;
+            transition: background 0.4s ease, border 0.4s ease;
         }
 
         /* HEADER */
@@ -39,15 +40,16 @@
         }
         .header-left { display: flex; justify-content: flex-start; }
         .header-right { display: flex; justify-content: flex-end; }
+        
         .icon-btn {
             background: none; border: none; cursor: pointer;
             width: 42px; height: 42px; padding: 0;
             display: flex; align-items: center; justify-content: center;
-            color: white; font-size: 28px; transition: 0.1s;
+            color: white; font-size: 28px; transition: transform 0.2s;
         }
         .icon-btn img { width: 38px; height: 38px; object-fit: contain; }
+        .icon-btn:hover { transform: scale(1.1); }
 
-        /* FLOATING ICON */
         .floating-icon {
             width: 70px; height: 70px; cursor: pointer;
             animation: float 3s ease-in-out infinite;
@@ -55,20 +57,16 @@
         }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
-        /* TABS - Icons before text, bigger size, no glitching */
-        .tabs {
-            display: grid; grid-template-columns: repeat(4, 1fr);
-            gap: 8px; margin-bottom: 15px;
-        }
+        /* TABS (Bigger Categories) */
+        .tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 15px; }
         .tab {
             background: transparent; border: none; color: var(--text-dim);
-            padding: 12px 4px; border-radius: 14px; cursor: pointer;
-            font-size: 11px; font-weight: 700; transition: 0.1s;
-            display: flex; flex-direction: row; align-items: center; justify-content: center;
-            gap: 5px; white-space: nowrap;
+            padding: 12px 2px; border-radius: 14px; cursor: pointer;
+            font-size: 13px; font-weight: 700; text-align: center;
+            transition: 0.2s; display: flex; flex-direction: column; align-items: center;
         }
         .tab.active { background: var(--accent); color: white; }
-        .tab span { font-size: 18px; }
+        .tab span { font-size: 26px; margin-bottom: 4px; }
 
         /* MAIN CONTENT */
         .main-display {
@@ -79,73 +77,73 @@
         }
         .arabic {
             font-family: var(--font-arabic); font-size: 24px; color: var(--text);
-            direction: rtl; line-height: 1.7; margin-bottom: 15px;
+            direction: rtl; line-height: 1.7; margin-bottom: 15px; white-space: pre-wrap;
         }
         .translation { font-size: 15px; color: var(--text-dim); line-height: 1.5; }
 
-        /* FOOTER - Progress & Repeat sizing */
-        .footer-controls {
-            display: flex; justify-content: space-between; align-items: center; height: 100px;
-        }
-        .side-info { flex: 1; display: flex; flex-direction: column; align-items: center; min-width: 80px; }
+        /* FOOTER (Balanced text weight) */
+        .footer-controls { display: flex; justify-content: space-between; align-items: center; height: 100px; }
+        .side-info { flex: 1; display: flex; flex-direction: column; align-items: center; }
+        
         .info-label { 
-            font-size: 12px; color: var(--text-dim); text-transform: uppercase; 
-            letter-spacing: 1px; margin-bottom: 4px; font-weight: 600; 
+            font-size: 11px; color: var(--text-dim); text-transform: uppercase; 
+            letter-spacing: 1px; margin-bottom: 4px; font-weight: 600;
         }
+        /* Adjusted Arabic vs English visual weight */
+        [lang="ar"] .info-label { font-size: 13px; font-family: var(--font-arabic); font-weight: 700; }
+        
         .info-value { font-size: 16px; color: var(--text); font-weight: 700; white-space: nowrap; }
 
-        /* COUNTER */
         .counter-container {
             position: relative; width: 85px; height: 85px;
             display: flex; align-items: center; justify-content: center;
-            cursor: pointer; margin: 0 5px;
+            cursor: pointer; margin: 0 10px;
         }
         .counter-container svg { position: absolute; transform: rotate(-90deg); width: 100%; height: 100%; }
         .circle-bg { fill: none; stroke: rgba(255,255,255,0.1); stroke-width: 6; }
-        .circle-progress { fill: none; stroke: var(--accent); stroke-width: 6; stroke-linecap: round; transition: stroke-dashoffset 0.1s ease; }
+        .circle-progress { fill: none; stroke: var(--accent); stroke-width: 6; stroke-linecap: round; transition: stroke-dashoffset 0.2s ease; }
         #circleCount { font-size: 28px; font-weight: 700; color: var(--text); z-index: 2; }
+
         .nav-btn { background: none; border: none; color: var(--text); font-size: 22px; cursor: pointer; padding: 10px; }
 
-        /* MENU - Unified & Fast */
+        /* UNIFIED MENU */
         .menu-popover {
             position: absolute; top: 80px; right: 25px;
             background: #1A1A1A; padding: 18px; border-radius: 16px;
-            visibility: hidden; opacity: 0; transition: 0.1s cubic-bezier(0.4, 0, 0.2, 1); 
-            z-index: 1000; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1);
+            visibility: hidden; opacity: 0; transition: 0.15s ease-out; z-index: 1000;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1);
             width: 240px;
         }
-        .menu-popover.show { visibility: visible; opacity: 1; transform: translateY(0); }
+        .menu-popover.show { visibility: visible; opacity: 1; transform: translateY(5px); }
         
         .menu-section-title { 
             color: white; font-size: 14px; font-weight: 700; 
-            margin-bottom: 12px; display: flex; align-items: center; gap: 8px;
+            margin-bottom: 6px; display: flex; align-items: center; gap: 8px;
+            padding-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,0.1);
         }
-        .menu-divider { height: 1px; background: rgba(255,255,255,0.1); margin: 15px 0; }
         
-        /* COLOR DOTS */
-        .color-menu { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+        .color-menu { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 12px 0 20px 0; }
         .color-dot { 
             width: 32px; height: 32px; border-radius: 50%; cursor: pointer; 
-            border: 2px solid rgba(255,255,255,0.1); transition: 0.1s;
+            border: 2px solid rgba(255,255,255,0.1); transition: 0.2s;
             display: flex; align-items: center; justify-content: center;
         }
-        .color-dot.active { border-color: white; box-shadow: 0 0 8px var(--accent); }
-        .color-dot.active::after { content: '✓'; color: white; font-size: 14px; font-weight: bold; }
+        .color-dot.active { border-color: white; box-shadow: 0 0 10px var(--accent); }
+        .color-dot.active::after { content: '✓'; color: white; font-size: 14px; }
 
-        /* SETTINGS ROWS - Icons before text */
-        .settings-rows { display: flex; flex-direction: column; gap: 12px; }
+        .settings-rows { display: flex; flex-direction: column; gap: 12px; margin-top: 12px; }
         .setting-row { display: flex; justify-content: space-between; align-items: center; color: white; font-size: 13px; font-weight: 600; }
-        .setting-label { display: flex; align-items: center; gap: 10px; }
+        .setting-label { display: flex; align-items: center; gap: 8px; }
         
         .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
         .switch input { opacity: 0; width: 0; height: 0; }
         .slider {
             position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
-            background-color: #333; transition: .15s; border-radius: 24px;
+            background-color: #333; transition: .3s; border-radius: 24px;
         }
         .slider:before {
             position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px;
-            background-color: #888; transition: .15s; border-radius: 50%;
+            background-color: #888; transition: .3s; border-radius: 50%;
         }
         input:checked + .slider { background-color: var(--accent); }
         input:checked + .slider:before { transform: translateX(20px); background-color: white; }
@@ -154,7 +152,7 @@
         .main-display::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
     </style>
 </head>
-<body>
+<body id="bodyRoot">
 
 <div class="widget">
     <div class="header">
@@ -183,7 +181,7 @@
         <div class="translation" id="translationText"></div>
     </div>
 
-    <div class="footer-controls">
+    <div class="footer-controls" id="footer">
         <button class="nav-btn" onclick="prev()">❮</button>
         <div class="side-info">
             <span class="info-label" id="lblProgress">PROGRESS</span>
@@ -212,20 +210,18 @@
         </div>
         <div class="color-menu">
             <div class="color-dot active" data-en="Purple" data-ar="بنفسجي" style="background:#800080" onclick="applyTheme('#1E122C', '#800080', this)"></div>
+            <div class="color-dot" data-en="Midnight Slate" data-ar="زيتي ليلي" style="background:#2c3e50" onclick="applyTheme('#1a252f', '#34495e', this)"></div>
+            <div class="color-dot" data-en="Soft Indigo" data-ar="نيلي هادئ" style="background:#3f51b5" onclick="applyTheme('#1a1f3c', '#3f51b5', this)"></div>
             <div class="color-dot" data-en="Red" data-ar="أحمر" style="background:#cc0000" onclick="applyTheme('#3B1414', '#cc0000', this)"></div>
             <div class="color-dot" data-en="Blue" data-ar="أزرق" style="background:#0066cc" onclick="applyTheme('#0A192F', '#0066cc', this)"></div>
             <div class="color-dot" data-en="Brown" data-ar="بني" style="background:#663300" onclick="applyTheme('#2D1B0D', '#8B4513', this)"></div>
             <div class="color-dot" data-en="Yellow" data-ar="أصفر" style="background:#ffcc00" onclick="applyTheme('#332B00', '#ffcc00', this)"></div>
             <div class="color-dot" data-en="Black" data-ar="أسود" style="background:#000000" onclick="applyTheme('#000000', '#444444', this)"></div>
-            <div class="color-dot" data-en="Gray" data-ar="رمادي" style="background:#808080" onclick="applyTheme('#222222', '#808080', this)"></div>
-            <div class="color-dot" data-en="Cloud" data-ar="سحابي" style="background:#ffffff" onclick="applyTheme('#f5f5f5', '#7446A0', this, true)"></div>
             <div class="color-dot" data-en="Pink" data-ar="وردي" style="background:#ff66b2" onclick="applyTheme('#331122', '#ff66b2', this)"></div>
             <div class="color-dot" data-en="Green" data-ar="أخضر" style="background:#228b22" onclick="applyTheme('#0D2612', '#228b22', this)"></div>
             <div class="color-dot" data-en="Orange" data-ar="برتقالي" style="background:#ff8c00" onclick="applyTheme('#2E1A00', '#ff8c00', this)"></div>
             <div class="color-dot" data-en="Teal" data-ar="تركوازي" style="background:#008080" onclick="applyTheme('#002222', '#008080', this)"></div>
         </div>
-
-        <div class="menu-divider"></div>
 
         <div class="menu-section-title">
             <span>⚙️</span><span id="menuTitleSettings">Settings</span>
@@ -248,7 +244,7 @@
 </div>
 
 <script>
-// --- AUDIO ENGINE ---
+// --- AUDIO ---
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 function playTapSound() {
     if(!document.getElementById('chkClick').checked) return;
@@ -257,7 +253,6 @@ function playTapSound() {
     gain.gain.setValueAtTime(0.1, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
     osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 0.1);
 }
-
 function playVibrateSound() {
     if(!document.getElementById('chkVibrate').checked) return;
     const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
@@ -266,59 +261,16 @@ function playVibrateSound() {
     osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 0.4);
 }
 
-const iconGallery = [
-    "https://cdn-icons-png.flaticon.com/128/4354/4354959.png",
-    "https://cdn-icons-png.flaticon.com/128/7321/7321058.png",
-    "https://cdn-icons-png.flaticon.com/128/3004/3004949.png",
-    "https://cdn-icons-png.flaticon.com/128/6152/6152858.png",
-    "https://cdn-icons-png.flaticon.com/128/13773/13773984.png"
-];
-let currentIconIdx = 0;
-function changeIcon() {
-    currentIconIdx = (currentIconIdx + 1) % iconGallery.length;
-    document.getElementById('cycleIcon').src = iconGallery[currentIconIdx];
-}
-
+// --- DATA ---
 const azkarData = [
-    {
-        nameEn: "Waking", nameAr: "الاستيقاظ",
-        arabic: [
-            "لَا إِلٰهَ إِلاَّ اللّٰهُ الْوَاحِدُ الْقَهَّارُ ، رَبُّ السَّمٰـوٰتِ وَالْأَرْضِ وَمَا بَيْنَهُمَا الْعَزِيْزُ الْغَفَّارُ",
-            "لَا إِلَهَ إِلَّا اللّٰهُ وَحْدَهُ لَا شَرِيْكَ لَهُ ، لَهُ الْمُلْكُ ، وَلَهُ الْحَمْدُ ، وَهُوَ عَلَىٰ كُلِّ شَيْءٍ قَدِيْرٌ‏ ، اَلْحَمْدُ لِلّٰهِ‏ ، وَسُبْحَانَ اللّٰهِ ، وَلَا إِلٰهَ إِلَّا اللّٰهُ ، وَاللّٰهُ أَكْبَرُ ، وَلَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللّٰهِ ، اَللّٰهُمَّ اغْفِرْ لِيْ.",
-            "اَلْحَمْدُ لِلّٰهِ الَّذِيْ عَافَانِيْ فِيْ جَسَدِيْ ، وَرَدَّ عَليَّ رُوْحِيْ ، وَأَذِنَ لِييْ بِذِكْرِهِ.",
-            "اَلْحَمْدُ لِلّٰهِ الَّذِيْ أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُوْرُ"
-        ],
-        trans: [
-            "There is no god but Allah: The One, The All-Dominant...",
-            "There is no god but Allah. He is Alone and He has no partner...",
-            "All praise is for Allah Who granted me well-being...",
-            "All praise is for Allah who gave us life after death..."
-        ],
-        reps: [1, 1, 1, 1]
-    },
-    {
-        nameEn: "Morning", nameAr: "الصباح",
-        arabic: ["أَعُوْذُ بِاللّٰهِ مِنَ الشَّيْطَانِ الرَّجِيْمِ. اَللّٰهُ لَآ إِلٰهَ إِلَّا هُوَ الْحَىُّ الْقَيُّوْمُ..."],
-        trans: ["Ayatul Kursi: I seek protection in Allah from the accursed Shaytan..."],
-        reps: [1]
-    },
-    {
-        nameEn: "Evening", nameAr: "المساء",
-        arabic: ["أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلّٰهِ وَالْحَمْدُ لِلّٰهِ..."],
-        trans: ["We have entered the evening and the kingdom belongs to Allah..."],
-        reps: [1]
-    },
-    {
-        nameEn: "Sleep", nameAr: "النوم",
-        arabic: ["بِاسْمِكَ رَبِّيْ وَضَعْتُ جَنْبِيْ ، وَبِكَ أَرْفَعُهُ..."],
-        trans: ["In Your name, my Lord, I lie down and in Your name I rise..."],
-        reps: [1]
-    }
+    { nameEn: "Waking Up", nameAr: "الاستيقاظ", arabic: ["لَا إِلٰهَ إِلاَّ اللّٰهُ الْوَاحِدُ الْقَهَّارُ ، رَبُّ السَّمٰـوٰتِ وَالْأَرْضِ وَمَا بَيْنَهُمَا الْعَزِيْزُ الْغَفَّارُ","اَلْحَمْدُ لِلّٰهِ الَّذِيْ أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُوْرُ"], trans: ["There is no god worthy of worship but Allah: The One, The All-Dominant...","All praise is for Allah who gave us life after having taken it from us..."], reps: [1, 1] },
+    { nameEn: "Morning", nameAr: "الصباح", arabic: ["أَعُوْذُ بِاللّٰهِ مِنَ الشَّيْطَانِ الرَّجِيْمِ. اَللّٰهُ لَآ إِلٰهَ إِلَّا هُوَ الْحَىُّ الْقَيُّوْمُ...","قُلْ هُوَ اللّٰهُ أَحَدٌ..."], trans: ["Ayat Al-Kursi...","Surah Al-Ikhlas..."], reps: [1, 3] },
+    { nameEn: "Evening", nameAr: "المساء", arabic: ["أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلّٰهِ...","أَعُوْذُ بِكَلِمَاتِ اللّٰهِ التَّامَّاتِ..."], trans: ["We have reached the evening...","I seek refuge in the perfect words of Allah..."], reps: [1, 3] },
+    { nameEn: "Sleep", nameAr: "النوم", arabic: ["بِاسْمِكَ رَبِّيْ وَضَعْتُ جَنْبِيْ...","اَللّٰهُمَّ قِنِيْ عَذَابَكَ..."], trans: ["In your name my Lord I lie down...","O Allah protect me from your punishment..."], reps: [1, 3] }
 ];
 
 let currentCat = 0, currentIndex = 0, currentCount = 0, lang = 'ar';
-const circleRadius = 38;
-const circleCircumference = 2 * Math.PI * circleRadius;
+const circleRadius = 38, circleCircumference = 2 * Math.PI * circleRadius;
 
 function updateCircleProgress(count, max) {
     const ring = document.getElementById('progressRing');
@@ -327,57 +279,43 @@ function updateCircleProgress(count, max) {
     ring.style.strokeDashoffset = offset;
 }
 
-function getRepetitionText(count, currentLang) {
-    if (currentLang === 'en') return count === 1 ? "1 Time" : count + " Times";
-    const arReps = {1: "مرة واحدة", 2: "مرتان", 3: "٣ مرات", 7: "٧ مرات", 10: "١٠ مرات", 33: "٣٣ مرة", 100: "١٠٠ مرة"};
-    return arReps[count] || count + " مرات";
-}
-
 function render() {
     const category = azkarData[currentCat];
-    // Avoid glitching by checking if elements exist before setting
-    const arText = document.getElementById('arabicText');
-    const trText = document.getElementById('translationText');
-    
-    if(category.arabic[currentIndex]) arText.innerText = category.arabic[currentIndex];
-    if(category.trans[currentIndex]) trText.innerText = category.trans[currentIndex];
-    
+    document.getElementById('arabicText').innerText = category.arabic[currentIndex];
+    document.getElementById('translationText').innerText = category.trans[currentIndex];
     document.getElementById('progressVal').innerText = `${currentIndex + 1} / ${category.arabic.length}`;
-    document.getElementById('repeatVal').innerText = getRepetitionText(category.reps[currentIndex], lang);
     document.getElementById('circleCount').innerText = currentCount;
     
-    // Language specific UI
-    const isAr = (lang === 'ar');
-    document.getElementById('lblProgress').innerText = isAr ? "التقدم" : "PROGRESS";
-    document.getElementById('lblRepeat').innerText = isAr ? "التكرار" : "REPEAT";
-    document.getElementById('menuTitleColors').innerText = isAr ? "الألوان" : "Colors";
-    document.getElementById('menuTitleSettings').innerText = isAr ? "الإعدادات" : "Settings";
-    document.getElementById('set1').innerText = isAr ? "صوت النقرة" : "Click Sound";
-    document.getElementById('set2').innerText = isAr ? "اهتزاز" : "Vibration";
-    document.getElementById('set3').innerText = isAr ? "تحويل تلقائي" : "Auto Transfer";
+    // Language attributes for CSS scaling
+    document.getElementById('footer').setAttribute('lang', lang);
+    document.getElementById('lblProgress').innerText = lang === 'ar' ? "التقدم" : "PROGRESS";
+    document.getElementById('lblRepeat').innerText = lang === 'ar' ? "التكرار" : "REPEAT";
+    
+    // Menu Text
+    document.getElementById('menuTitleColors').innerText = lang === 'ar' ? "الألوان" : "Colors";
+    document.getElementById('menuTitleSettings').innerText = lang === 'ar' ? "الإعدادات" : "Settings";
+    document.getElementById('set1').innerText = lang === 'ar' ? "صوت النقرة" : "Click Sound";
+    document.getElementById('set2').innerText = lang === 'ar' ? "الاهتزاز" : "Vibration";
+    document.getElementById('set3').innerText = lang === 'ar' ? "تحويل تلقائي" : "Auto Transfer";
 
-    // Set Tooltips (Arabic / English)
+    // Dynamic Tooltips
     document.querySelectorAll('.color-dot').forEach(dot => {
-        dot.title = `${dot.getAttribute('data-en')} / ${dot.getAttribute('data-ar')}`;
+        dot.title = lang === 'ar' ? dot.getAttribute('data-ar') : dot.getAttribute('data-en');
     });
 
-    for(let i=0; i<4; i++) {
-        document.getElementById('t'+i).innerText = isAr ? azkarData[i].nameAr : azkarData[i].nameEn;
-    }
-    
     updateCircleProgress(currentCount, category.reps[currentIndex]);
-    document.getElementById('scrollArea').scrollTop = 0;
+    for(let i=0; i<4; i++) {
+        document.getElementById('t'+i).innerText = (lang === 'ar') ? azkarData[i].nameAr : azkarData[i].nameEn;
+    }
 }
 
 function incrementCount() {
     const max = azkarData[currentCat].reps[currentIndex];
     if (currentCount < max) {
-        currentCount++; playTapSound();
-        document.getElementById('circleCount').innerText = currentCount;
-        updateCircleProgress(currentCount, max);
+        currentCount++; playTapSound(); render();
         if (currentCount === max) {
             playVibrateSound();
-            if(document.getElementById('chkAuto').checked) setTimeout(next, 400);
+            if(document.getElementById('chkAuto').checked) setTimeout(() => next(), 500);
         }
     }
 }
@@ -388,20 +326,17 @@ function changeCat(index) { currentCat = index; currentIndex = 0; currentCount =
 function toggleLang() { lang = (lang === 'ar') ? 'en' : 'ar'; render(); }
 function toggleUnifiedMenu() { document.getElementById('unifiedMenu').classList.toggle('show'); }
 
-function applyTheme(bg, acc, element, isLight = false) {
-    const root = document.documentElement;
-    root.style.setProperty('--bg', bg); root.style.setProperty('--accent', acc);
-    root.style.setProperty('--text', isLight ? '#333' : '#FFF');
-    root.style.setProperty('--text-dim', isLight ? '#666' : '#B1A2C1');
-    document.querySelectorAll('.color-dot').forEach(dot => dot.classList.remove('active'));
-    element.classList.add('active');
+function applyTheme(bg, acc, el) {
+    document.documentElement.style.setProperty('--bg', bg);
+    document.documentElement.style.setProperty('--accent', acc);
+    document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active'));
+    el.classList.add('active');
 }
 
-// Close menu when clicking outside
-window.onclick = function(e) {
-    if (!e.target.closest('.icon-btn') && !e.target.closest('.menu-popover')) {
-        document.getElementById('unifiedMenu').classList.remove('show');
-    }
+function changeIcon() {
+    const icons = ["https://cdn-icons-png.flaticon.com/128/4354/4354959.png", "https://cdn-icons-png.flaticon.com/128/7321/7321058.png"];
+    const img = document.getElementById('cycleIcon');
+    img.src = icons[img.src.includes("4354959") ? 1 : 0];
 }
 
 render();
