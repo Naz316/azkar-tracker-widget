@@ -756,7 +756,6 @@ function copyDynamicText() {
         btn.innerHTML = '<span style="font-size:16px">✅</span>';
         setTimeout(() => btn.innerHTML = oldIcon, 1000);
     }).catch(() => {
-        // fallback for older browsers
         const textarea = document.createElement('textarea');
         textarea.value = textToCopy;
         document.body.appendChild(textarea);
@@ -844,6 +843,7 @@ function buildShareGrid() {
     if (category.arabic.length === 0) return;
     const text = (lang === 'ar') ? category.arabic[currentIndex] : category.trans[currentIndex];
     const shareText = encodeURIComponent(text.substring(0, 300));
+    const pageUrl = encodeURIComponent(window.location.href);
     
     const platformNames = {
         ar: {
@@ -877,11 +877,11 @@ function buildShareGrid() {
     
     const platforms = [
         { name: pn.whatsapp, icon: icons.whatsapp, url: `https://wa.me/?text=${shareText}` },
-        { name: pn.telegram, icon: icons.telegram, url: `https://t.me/share/url?url=&text=${shareText}` },
-        { name: pn.twitter, icon: icons.twitter, url: `https://twitter.com/intent/tweet?text=${shareText}` },
-        { name: pn.facebook, icon: icons.facebook, url: `https://www.facebook.com/sharer/sharer.php?u=&quote=${shareText}` },
-        { name: pn.messenger, icon: icons.messenger, url: `https://www.facebook.com/dialog/send?link=&app_id=0&redirect_uri=https://www.facebook.com/&quote=${shareText}` },
-        { name: pn.copy, icon: icons.copy, url: "", action: () => navigator.clipboard.writeText(text) }
+        { name: pn.telegram, icon: icons.telegram, url: `https://t.me/share/url?url=${pageUrl}&text=${shareText}` },
+        { name: pn.twitter, icon: icons.twitter, url: `https://twitter.com/intent/tweet?text=${shareText}&url=${pageUrl}` },
+        { name: pn.facebook, icon: icons.facebook, url: `https://www.facebook.com/sharer/sharer.php?u=${pageUrl}&quote=${shareText}` },
+        { name: pn.messenger, icon: icons.messenger, url: `https://www.facebook.com/dialog/send?link=${pageUrl}&app_id=0&redirect_uri=${pageUrl}&quote=${shareText}` },
+        { name: pn.copy, icon: icons.copy, url: "", action: () => navigator.clipboard.writeText(pageUrl) }
     ];
     
     const grid = document.getElementById('shareGrid');
