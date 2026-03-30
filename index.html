@@ -574,7 +574,13 @@ function toggleFavorite() {
 function updateFavoriteButtonUI() {
     const btn = document.getElementById('btnFav');
     const svg = document.getElementById('favSvg');
-    const isFav = (currentCat === 4) ? true : isFavorited(currentCat, currentIndex);
+    let isFav = false;
+    if (currentCat === 4) {
+        // In favorites tab, heart is red only if there is at least one favorite item
+        isFav = favorites.length > 0;
+    } else {
+        isFav = isFavorited(currentCat, currentIndex);
+    }
     if (isFav) {
         svg.innerHTML = '<path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#ff4444"/>';
         btn.setAttribute('data-tooltip', lang === 'ar' ? 'إزالة من المفضلة' : 'Remove from Favorites');
@@ -653,7 +659,7 @@ function render() {
         updateCircleProgress(currentCount, targetRep);
     }
     
-    // Update tab active state (always, even if empty)
+    // Update tab active state (always)
     for(let i=0;i<5;i++) {
         const tabBtn = document.getElementById('tab'+i);
         if(tabBtn) tabBtn.classList.toggle('active', i === currentCat);
@@ -744,11 +750,24 @@ function copyDynamicText() {
     const category = getCategoryData(currentCat);
     if (category.arabic.length === 0) return;
     const textToCopy = (lang === 'ar') ? category.arabic[currentIndex] : category.trans[currentIndex];
-    navigator.clipboard.writeText(textToCopy);
-    const btn = document.getElementById('btnCopy');
-    const oldIcon = btn.innerHTML;
-    btn.innerHTML = '<span style="font-size:16px">✅</span>';
-    setTimeout(() => btn.innerHTML = oldIcon, 1000);
+    navigator.clipboard.writeText(textToCopy).then(() => {
+        const btn = document.getElementById('btnCopy');
+        const oldIcon = btn.innerHTML;
+        btn.innerHTML = '<span style="font-size:16px">✅</span>';
+        setTimeout(() => btn.innerHTML = oldIcon, 1000);
+    }).catch(() => {
+        // fallback for older browsers
+        const textarea = document.createElement('textarea');
+        textarea.value = textToCopy;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        const btn = document.getElementById('btnCopy');
+        const oldIcon = btn.innerHTML;
+        btn.innerHTML = '<span style="font-size:16px">✅</span>';
+        setTimeout(() => btn.innerHTML = oldIcon, 1000);
+    });
 }
 
 function toggleUnifiedMenu() {
