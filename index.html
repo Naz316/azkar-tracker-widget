@@ -7,13 +7,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #3B1414; /* Initial Red */
-            --accent: #cc0000; /* Initial Red */
+            --bg: #3B1414;
+            --accent: #cc0000;
             --card: rgba(255, 255, 255, 0.05);
             --text: #FFFFFF;
             --text-dim: #B1A2C1;
             --font-arabic: 'Amiri', serif;
-            --base-font-size: 22px; 
+            --base-font-size: 22px;
         }
 
         * { box-sizing: border-box; }
@@ -36,7 +36,7 @@
             padding: 20px;
             display: flex; flex-direction: column;
             position: relative;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, color 0.3s ease;
             border: none; 
         }
 
@@ -55,7 +55,7 @@
             background: none; border: none; cursor: pointer;
             width: 42px; height: 42px; padding: 0;
             display: flex; align-items: center; justify-content: center;
-            color: white; font-size: 32px;
+            color: var(--text); font-size: 32px;
         }
         .icon-btn img { width: 36px; height: 36px; object-fit: contain; }
 
@@ -69,7 +69,7 @@
             50% { transform: translateY(-8px); }
         }
 
-        /* TABS - now 5 columns */
+        /* TABS */
         .tabs {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
@@ -89,7 +89,7 @@
         .main-display {
             flex-grow: 1; overflow-y: auto; padding: 20px;
             text-align: center; display: flex; flex-direction: column;
-            background: rgba(0,0,0,0.15); border-radius: 20px;
+            background: var(--card); border-radius: 20px;
             margin-bottom: 15px;
             justify-content: flex-start;
         }
@@ -105,7 +105,6 @@
             transition: all 0.3s ease;
         }
 
-        /* Dynamic Typography Swap */
         .lang-ar .arabic { font-size: var(--base-font-size); color: var(--text); font-weight: 700; }
         .lang-ar .translation { font-size: calc(var(--base-font-size) * 0.65); color: var(--text-dim); font-weight: 400; }
         .lang-en .arabic { font-size: calc(var(--base-font-size) * 0.8); color: var(--text-dim); font-weight: 400; }
@@ -150,17 +149,41 @@
             background: #1A1A1A; padding: 18px; border-radius: 16px;
             visibility: hidden; opacity: 0; transition: 0.1s; z-index: 1000;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1);
-            width: 250px;
+            width: 280px;
         }
         .menu-popover.show { visibility: visible; opacity: 1; }
         
         .menu-section-title { color: white; font-size: 14px; font-weight: 700; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
-        .menu-divider { height: 2px; background: rgba(255,255,255,0.3); margin: 0 0 15px 0; border: none; width: 100%; }
+        .menu-divider { height: 1px; background: rgba(255,255,255,0.3); margin: 0 0 15px 0; border: none; width: 100%; }
         
         .color-menu { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; }
         .color-dot { width: 32px; height: 32px; border-radius: 50%; cursor: pointer; border: 2px solid rgba(255,255,255,0.1); transition: 0.15s; display: flex; align-items: center; justify-content: center; }
         .color-dot.active { border-color: white; }
         .color-dot.active::after { content: '✓'; color: white; font-size: 12px; font-weight: bold; }
+
+        /* Theme toggle row */
+        .theme-row {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 15px;
+        }
+        .theme-label {
+            color: white; font-size: 13px; font-weight: 600;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .theme-switch {
+            position: relative; display: inline-block; width: 52px; height: 26px;
+        }
+        .theme-switch input { opacity: 0; width: 0; height: 0; }
+        .theme-slider {
+            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #ccc; transition: 0.2s; border-radius: 26px;
+        }
+        .theme-slider:before {
+            position: absolute; content: ""; height: 22px; width: 22px; left: 2px; bottom: 2px;
+            background-color: white; transition: 0.2s; border-radius: 50%;
+        }
+        input:checked + .theme-slider { background-color: var(--accent); }
+        input:checked + .theme-slider:before { transform: translateX(26px); }
 
         /* SETTINGS UI */
         .settings-rows { display: flex; flex-direction: column; gap: 12px; }
@@ -202,20 +225,22 @@
         .main-display::-webkit-scrollbar { width: 4px; }
         .main-display::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
 
-        /* Share Popup - modern rounded design with logos */
+        /* Share Popup - now uses theme colors */
         .share-popup {
             position: absolute; bottom: 100px; right: 20px;
-            background: #1e1e2f; border-radius: 28px; padding: 20px;
+            background: var(--card); border-radius: 28px; padding: 20px;
             width: 300px; z-index: 1100; box-shadow: 0 20px 35px rgba(0,0,0,0.4);
-            border: 1px solid rgba(255,255,255,0.15);
+            border: 1px solid var(--accent);
             backdrop-filter: blur(2px);
             visibility: hidden; opacity: 0; transition: 0.15s ease;
             transform: scale(0.95);
+            color: var(--text);
         }
         .share-popup.show { visibility: visible; opacity: 1; transform: scale(1); }
         .share-popup-title {
-            text-align: center; color: white; font-weight: 700; font-size: 18px;
+            text-align: center; font-weight: 700; font-size: 18px;
             margin-bottom: 18px; letter-spacing: 0.5px;
+            color: var(--text);
         }
         .share-grid {
             display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px;
@@ -223,19 +248,19 @@
         }
         .share-icon {
             display: flex; flex-direction: column; align-items: center; gap: 8px;
-            cursor: pointer; color: white; font-size: 12px; font-weight: 500;
+            cursor: pointer; color: var(--text); font-size: 12px; font-weight: 500;
             transition: transform 0.1s ease;
         }
         .share-icon:hover { transform: scale(1.05); }
         .share-icon svg {
             width: 48px; height: 48px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 30px;
+            background: rgba(128,128,128,0.2); border-radius: 30px;
             padding: 10px;
             transition: background 0.2s;
+            stroke: var(--text);
         }
-        .share-icon:hover svg { background: rgba(255,255,255,0.2); }
-        .empty-fav { opacity: 0.8; font-style: italic; text-align: center; margin-top: 30px; }
+        .share-icon:hover svg { background: rgba(128,128,128,0.4); }
+        .empty-fav { opacity: 0.8; font-style: italic; text-align: center; margin-top: 30px; color: var(--text-dim); }
     </style>
 </head>
 <body class="lang-ar" id="bodyNode">
@@ -294,6 +319,16 @@
         <div class="menu-section-title"><span>🎨</span><span id="menuTitleColors">Colors</span></div>
         <hr class="menu-divider">
         <div class="color-menu" id="colorMenu"></div>
+        
+        <!-- Light/Dark mode toggle -->
+        <div class="theme-row">
+            <div class="theme-label"><span>🌓</span><span id="themeLabel">Dark Mode</span></div>
+            <label class="theme-switch">
+                <input type="checkbox" id="themeToggle">
+                <span class="theme-slider"></span>
+            </label>
+        </div>
+        
         <div class="menu-section-title"><span>⚙️</span><span id="menuTitleSettings">Settings</span></div>
         <hr class="menu-divider">
         <div class="settings-rows">
@@ -318,7 +353,7 @@
         </div>
     </div>
 
-    <!-- Share Popup - with official logos -->
+    <!-- Share Popup -->
     <div id="sharePopup" class="share-popup">
         <div class="share-popup-title" id="shareTitle">Share Dhikr</div>
         <div class="share-grid" id="shareGrid"></div>
@@ -519,7 +554,84 @@ const azkarData = [
 // ==================== FAVORITES & SHARE SYSTEM ====================
 let currentCat = 0, currentIndex = 0, currentCount = 0, lang = 'ar';
 let favorites = []; // { cat, idx, count }
+let currentAccent = '#cc0000';
+let isLightMode = false;
 
+// Load saved settings
+function loadSettings() {
+    const storedAccent = localStorage.getItem('azkar_accent');
+    if (storedAccent) currentAccent = storedAccent;
+    const storedLightMode = localStorage.getItem('azkar_lightMode');
+    if (storedLightMode !== null) isLightMode = storedLightMode === 'true';
+    document.getElementById('themeToggle').checked = isLightMode;
+    updateTheme();
+}
+
+function saveSettings() {
+    localStorage.setItem('azkar_accent', currentAccent);
+    localStorage.setItem('azkar_lightMode', isLightMode);
+}
+
+function updateTheme() {
+    const root = document.documentElement;
+    if (isLightMode) {
+        // Light mode: light background, dark text, card light
+        root.style.setProperty('--bg', '#f5f5f5');
+        root.style.setProperty('--text', '#1a1a1a');
+        root.style.setProperty('--text-dim', '#555555');
+        root.style.setProperty('--card', '#ffffff');
+        // Menu popover background in light mode
+        const menu = document.getElementById('unifiedMenu');
+        if (menu) menu.style.background = '#f0f0f0';
+        const menuSections = document.querySelectorAll('.menu-section-title, .setting-row, .theme-label');
+        menuSections.forEach(el => el.style.color = '#1a1a1a');
+        const menuDividers = document.querySelectorAll('.menu-divider');
+        menuDividers.forEach(d => d.style.background = '#ccc');
+    } else {
+        // Dark mode: original dark background, light text
+        root.style.setProperty('--bg', '#3B1414');
+        root.style.setProperty('--text', '#FFFFFF');
+        root.style.setProperty('--text-dim', '#B1A2C1');
+        root.style.setProperty('--card', 'rgba(0,0,0,0.15)');
+        const menu = document.getElementById('unifiedMenu');
+        if (menu) menu.style.background = '#1A1A1A';
+        const menuSections = document.querySelectorAll('.menu-section-title, .setting-row, .theme-label');
+        menuSections.forEach(el => el.style.color = 'white');
+        const menuDividers = document.querySelectorAll('.menu-divider');
+        menuDividers.forEach(d => d.style.background = 'rgba(255,255,255,0.3)');
+    }
+    root.style.setProperty('--accent', currentAccent);
+    // Update circle progress color
+    const ring = document.getElementById('progressRing');
+    if (ring) ring.style.stroke = currentAccent;
+    // Update active tab background
+    document.querySelectorAll('.tab.active').forEach(tab => {
+        tab.style.background = currentAccent;
+    });
+}
+
+function toggleLightMode() {
+    isLightMode = !isLightMode;
+    document.getElementById('themeToggle').checked = isLightMode;
+    saveSettings();
+    updateTheme();
+    // Update tooltip texts in menu if needed
+    const themeLabel = document.getElementById('themeLabel');
+    if (themeLabel) {
+        themeLabel.innerText = isLightMode ? (lang === 'ar' ? 'الوضع الفاتح' : 'Light Mode') : (lang === 'ar' ? 'الوضع الداكن' : 'Dark Mode');
+    }
+    render(); // re-render to apply text color changes
+}
+
+function applyTheme(accent, element) {
+    currentAccent = accent;
+    saveSettings();
+    updateTheme();
+    document.querySelectorAll('.color-dot').forEach(dot => dot.classList.remove('active'));
+    if (element) element.classList.add('active');
+}
+
+// Favorites functions (unchanged)
 function loadFavorites() {
     const stored = localStorage.getItem('azkar_favorites');
     if (stored) favorites = JSON.parse(stored);
@@ -528,11 +640,9 @@ function loadFavorites() {
 function saveFavorites() {
     localStorage.setItem('azkar_favorites', JSON.stringify(favorites));
 }
-
 function isFavorited(cat, idx) {
     return favorites.some(f => f.cat === cat && f.idx === idx);
 }
-
 function addFavorite(cat, idx) {
     if (!isFavorited(cat, idx)) {
         favorites.push({ cat, idx, count: 0 });
@@ -542,7 +652,6 @@ function addFavorite(cat, idx) {
     }
     return false;
 }
-
 function removeFavorite(cat, idx) {
     const index = favorites.findIndex(f => f.cat === cat && f.idx === idx);
     if (index !== -1) {
@@ -556,7 +665,6 @@ function removeFavorite(cat, idx) {
     }
     return false;
 }
-
 function toggleFavorite() {
     if (currentCat === 4) {
         if (favorites.length > 0 && currentIndex < favorites.length) {
@@ -570,13 +678,11 @@ function toggleFavorite() {
     }
     render();
 }
-
 function updateFavoriteButtonUI() {
     const btn = document.getElementById('btnFav');
     const svg = document.getElementById('favSvg');
     let isFav = false;
     if (currentCat === 4) {
-        // In favorites tab, heart is red only if there is at least one favorite item
         isFav = favorites.length > 0;
     } else {
         isFav = isFavorited(currentCat, currentIndex);
@@ -633,7 +739,6 @@ function render() {
     const category = getCategoryData(currentCat);
     const isEmptyFav = (currentCat === 4 && favorites.length === 0);
     
-    // Update main content
     if (isEmptyFav) {
         document.getElementById('arabicText').innerHTML = '<div class="empty-fav">⭐ ' + (lang === 'ar' ? 'لا توجد أذكار في المفضلة بعد. اضغط على زر القلب لإضافتها.' : 'No favorites yet. Tap the heart button to add.') + '</div>';
         document.getElementById('translationText').innerHTML = '';
@@ -659,19 +764,18 @@ function render() {
         updateCircleProgress(currentCount, targetRep);
     }
     
-    // Update tab active state (always)
     for(let i=0;i<5;i++) {
         const tabBtn = document.getElementById('tab'+i);
         if(tabBtn) tabBtn.classList.toggle('active', i === currentCat);
+        if (tabBtn && i === currentCat) tabBtn.style.background = currentAccent;
     }
     
-    // Update tab labels and other UI elements (always)
     for(let i=0;i<4;i++) document.getElementById('t'+i).innerText = (lang === 'ar') ? azkarData[i].nameAr : azkarData[i].nameEn;
     document.getElementById('t4').innerText = (lang === 'ar') ? 'المفضلة' : 'Favorites';
     
     const textBank = {
-        ar: { prog: "التقدم", rep: "التكرار", col: "الألوان", set: "الإعدادات", s1: "صوت النقرة", s2: "اهتزاز", s3: "تحويل تلقائي", s4: "حجم الخط", copy: "نسخ النص", share: "مشاركة", refr: "تحديث" },
-        en: { prog: "PROGRESS", rep: "REPEAT", col: "Colors", set: "Settings", s1: "Click Sound", s2: "Vibration", s3: "Auto Transfer", s4: "Font Size", copy: "Copy Text", share: "Share", refr: "Refresh" }
+        ar: { prog: "التقدم", rep: "التكرار", col: "الألوان", set: "الإعدادات", s1: "صوت النقرة", s2: "اهتزاز", s3: "تحويل تلقائي", s4: "حجم الخط", copy: "نسخ النص", share: "مشاركة", refr: "تحديث", theme: isLightMode ? "الوضع الفاتح" : "الوضع الداكن" },
+        en: { prog: "PROGRESS", rep: "REPEAT", col: "Colors", set: "Settings", s1: "Click Sound", s2: "Vibration", s3: "Auto Transfer", s4: "Font Size", copy: "Copy Text", share: "Share", refr: "Refresh", theme: isLightMode ? "Light Mode" : "Dark Mode" }
     }[lang];
     
     document.getElementById('lblProgress').innerText = textBank.prog;
@@ -685,6 +789,8 @@ function render() {
     document.getElementById('btnCopy').setAttribute('data-tooltip', textBank.copy);
     document.getElementById('btnShare').setAttribute('data-tooltip', textBank.share);
     document.getElementById('btnRefresh').setAttribute('data-tooltip', textBank.refr);
+    const themeLabel = document.getElementById('themeLabel');
+    if (themeLabel) themeLabel.innerText = textBank.theme;
     
     updateFavoriteButtonUI();
     updateColorTooltips();
@@ -773,13 +879,6 @@ function toggleUnifiedMenu() {
     document.getElementById('unifiedMenu').classList.toggle('show');
 }
 
-function applyTheme(bg, acc, element) {
-    document.documentElement.style.setProperty('--bg', bg);
-    document.documentElement.style.setProperty('--accent', acc);
-    document.querySelectorAll('.color-dot').forEach(dot => dot.classList.remove('active'));
-    element.classList.add('active');
-}
-
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 function playTapSound() {
     if(!document.getElementById('chkClick').checked) return;
@@ -823,7 +922,7 @@ function autoSelectByTime() {
     else currentCat = 0;
 }
 
-// Share popup with official logos
+// Share popup
 function toggleSharePopup() {
     const pop = document.getElementById('sharePopup');
     pop.classList.toggle('show');
@@ -843,7 +942,7 @@ function buildShareGrid() {
     if (category.arabic.length === 0) return;
     const text = (lang === 'ar') ? category.arabic[currentIndex] : category.trans[currentIndex];
     const shareText = encodeURIComponent(text.substring(0, 300));
-    const pageUrl = window.location.href;  // Raw URL, not encoded
+    const pageUrl = window.location.href;
     
     const platformNames = {
         ar: {
@@ -865,7 +964,6 @@ function buildShareGrid() {
     };
     const pn = platformNames[lang];
     
-    // SVG icons (simple official-like)
     const icons = {
         whatsapp: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21z"/><path d="M9 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1z"/><path d="M14 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1z"/><path d="M12 13c1.5 0 3-1 3-3"/></svg>',
         telegram: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>',
@@ -923,7 +1021,7 @@ function initColorMenu() {
         dot.style.background = c.acc;
         dot.setAttribute('data-ar', c.nameAr);
         dot.setAttribute('data-en', c.nameEn);
-        dot.onclick = () => applyTheme(c.bg, c.acc, dot);
+        dot.onclick = () => applyTheme(c.acc, dot);
         container.appendChild(dot);
     });
     updateColorTooltips();
@@ -933,6 +1031,8 @@ window.onload = function() {
     initColorMenu();
     loadFavorites();
     autoSelectByTime();
+    loadSettings();
+    document.getElementById('themeToggle').addEventListener('change', toggleLightMode);
     render();
 };
 </script>
