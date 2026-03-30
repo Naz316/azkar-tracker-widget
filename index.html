@@ -7,8 +7,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #3B1414;
-            --accent: #cc0000;
+            --bg: #3B1414; /* Initial Red */
+            --accent: #cc0000; /* Initial Red */
             --card: rgba(255, 255, 255, 0.05);
             --text: #FFFFFF;
             --text-dim: #B1A2C1;
@@ -38,17 +38,18 @@
             display: grid; grid-template-columns: 1fr auto 1fr;
             align-items: center; height: 60px; margin-bottom: 10px; z-index: 100;
         }
-        .header-left { display: flex; gap: 10px; align-items: center; }
+        .header-left { display: flex; gap: 8px; align-items: center; }
         .header-right { display: flex; justify-content: flex-end; }
         
         .icon-btn {
             background: none; border: none; cursor: pointer;
-            width: 42px; height: 42px; display: flex; align-items: center; justify-content: center;
-            padding: 0;
+            width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; padding: 0;
         }
         .icon-btn img { width: 34px; height: 34px; object-fit: contain; }
-        .header-fav-toggle svg { width: 28px; height: 28px; fill: rgba(255,255,255,0.3); transition: 0.2s; }
-        .header-fav-toggle.active svg { fill: #ff4d4d; filter: drop-shadow(0 0 5px #ff4d4d); }
+        
+        /* Favorite View Toggle */
+        .header-fav-view svg { width: 28px; height: 28px; fill: rgba(255,255,255,0.2); transition: 0.2s; }
+        .header-fav-view.active svg { fill: #ff4d4d; filter: drop-shadow(0 0 5px #ff4d4d); }
 
         .floating-icon {
             width: 65px; height: 65px; cursor: pointer;
@@ -70,7 +71,7 @@
         .tab.active { background: var(--accent); color: white; }
         .tab span { font-size: 26px; margin-bottom: 4px; }
 
-        /* MAIN CONTENT */
+        /* MAIN DISPLAY */
         .main-display {
             flex-grow: 1; overflow-y: auto; padding: 20px;
             text-align: center; display: flex; flex-direction: column;
@@ -81,7 +82,7 @@
         .arabic { font-family: var(--font-arabic); direction: rtl; line-height: 1.7; margin-bottom: 15px; white-space: pre-wrap; transition: 0.3s; }
         .translation { line-height: 1.5; transition: 0.3s; }
 
-        /* Lang Swap Logic */
+        /* Lang Logic */
         .lang-ar .arabic { font-size: var(--base-font-size); color: var(--text); font-weight: 700; }
         .lang-ar .translation { font-size: calc(var(--base-font-size) * 0.65); color: var(--text-dim); }
         .lang-en .arabic { font-size: calc(var(--base-font-size) * 0.8); color: var(--text-dim); }
@@ -98,12 +99,11 @@
             display: flex; align-items: center; justify-content: center;
             cursor: pointer; margin: 0 10px; border-radius: 50%;
         }
-        .counter-container.completed { box-shadow: 0 0 15px var(--accent); }
+        .counter-container.completed { box-shadow: 0 0 15px var(--accent); transition: 0.3s; }
         .counter-container svg { position: absolute; transform: rotate(-90deg); width: 100%; height: 100%; }
         .circle-bg { fill: none; stroke: rgba(255,255,255,0.1); stroke-width: 6; }
         .circle-progress { fill: none; stroke: var(--accent); stroke-width: 6; stroke-linecap: round; transition: stroke-dashoffset 0.15s ease; }
         #circleCount { font-size: 28px; font-weight: 700; color: var(--text); z-index: 2; }
-
         .nav-btn { background: none; border: none; color: var(--text); font-size: 22px; cursor: pointer; padding: 10px; }
 
         /* MENU POPOVER */
@@ -118,25 +118,30 @@
         .menu-section-title { color: white; font-size: 14px; font-weight: 700; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
         .menu-divider { height: 2px; background: rgba(255,255,255,0.3); margin: 0 0 15px 0; border: none; }
         
+        /* COLORS */
         .color-menu { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; }
-        .color-dot { width: 32px; height: 32px; border-radius: 50%; cursor: pointer; border: 2px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+        .color-dot { width: 32px; height: 32px; border-radius: 50%; cursor: pointer; border: 2px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; transition: 0.15s; }
         .color-dot.active { border-color: white; }
         .color-dot.active::after { content: '✓'; color: white; font-size: 12px; }
 
+        /* SETTINGS */
         .settings-rows { display: flex; flex-direction: column; gap: 12px; }
         .setting-row { display: flex; justify-content: space-between; align-items: center; color: white; font-size: 13px; font-weight: 600; }
         .font-slider { width: 100px; accent-color: var(--accent); cursor: pointer; }
 
-        /* ACTION ROW - Identical SVG Buttons */
+        /* IDENTICAL SVG ACTION BAR */
         .action-btns { display: flex; gap: 8px; margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.1); }
         .action-btn {
             flex: 1; height: 42px; border-radius: 10px; border: none; cursor: pointer;
             background: var(--accent); color: white; display: flex; align-items: center; justify-content: center;
             transition: 0.2s; position: relative;
         }
-        .action-btn svg { width: 20px; height: 20px; fill: white; }
-        .action-btn.fav-act.is-fav svg { fill: #ff4d4d; }
+        .action-btn svg { width: 20px; height: 20px; fill: white; transition: 0.2s; }
         .action-btn:hover { filter: brightness(1.2); }
+        
+        /* Red Favorite Heart */
+        .btn-fav-heart svg { fill: rgba(255,255,255,0.4); }
+        .btn-fav-heart.is-fav svg { fill: #ff4d4d; filter: drop-shadow(0 0 3px #ff4d4d); }
 
         /* Tooltips */
         .action-btn::after {
@@ -146,6 +151,7 @@
         }
         .action-btn:hover::after { visibility: visible; opacity: 1; }
 
+        /* Share Submenu */
         .share-menu {
             position: absolute; bottom: 65px; right: 20px;
             background: #222; border-radius: 12px; width: 180px;
@@ -174,7 +180,7 @@
     <div class="header">
         <div class="header-left">
             <button class="icon-btn" onclick="toggleLang()"><img src="https://cdn-icons-png.flaticon.com/128/6212/6212766.png"></button>
-            <button class="icon-btn header-fav-toggle" id="headerFavBtn" onclick="toggleFavMode()" title="Show Favorites">
+            <button class="icon-btn header-fav-view" id="favViewBtn" onclick="toggleFavMode()" title="Favorites List">
                 <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
             </button>
         </div>
@@ -186,7 +192,7 @@
         </div>
     </div>
     
-    <div class="tabs" id="categoryTabs">
+    <div class="tabs" id="catTabs">
         <button class="tab" id="tab0" onclick="changeCat(0)"><span>🛌</span><label id="t0">Waking</label></button>
         <button class="tab" id="tab1" onclick="changeCat(1)"><span>☀️</span><label id="t1">Morning</label></button>
         <button class="tab" id="tab2" onclick="changeCat(2)"><span>🌆</span><label id="t2">Evening</label></button>
@@ -241,7 +247,7 @@
             <div class="action-btns">
                 <button class="action-btn" id="btnCpy" onclick="copySmart()" data-tooltip="Copy Text"><svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg></button>
                 <button class="action-btn" id="btnShr" onclick="toggleMenu('shareMenu')" data-tooltip="Share"><svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92z"/></svg></button>
-                <button class="action-btn fav-act" id="btnFav" onclick="toggleFav()" data-tooltip="Favorite"><svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></button>
+                <button class="action-btn btn-fav-heart" id="btnFav" onclick="toggleFav()" data-tooltip="Favorite"><svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></button>
                 <button class="action-btn" id="btnRef" onclick="location.reload()" data-tooltip="Refresh"><svg viewBox="0 0 24 24"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg></button>
             </div>
         </div>
@@ -256,7 +262,7 @@
 </div>
 
 <script>
-// FULL ORIGINAL AZKAR DATA
+// FULL AZKAR DATA (EVERY WORD RESTORED)
 const azkarData = [
     {
         nameEn: "Waking Up", nameAr: "الاستيقاظ",
@@ -265,7 +271,7 @@ const azkarData = [
             "لَا إِلَهَ إِلَّا اللّٰهُ وَحْدَهُ لَا شَرِيْكَ لَهُ ، لَهُ الْمُلْكُ ، وَلَهُ الْحَمْدُ ، وَهو عَلَىٰ كُلِّ شَيْءٍ قَدِيْرٌ‏ ، اَلْحَمْدُ لِلّٰهِ‏ ، وَسُبْحَانَ اللّٰهِ ، وَلَا إِلٰهَ إِلَّا اللّٰهُ ، وَاللّٰهُ أَكْبَرُ ، وَلَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللّٰهِ ، اَللّٰهُمَّ اغْفِرْ لِيْ.",
             "اَلْحَمْدُ لِلّٰهِ الَّذِيْ عَافَانِيْ فِيْ جَسَدِيْ ، وَرَدَّ عَليَّ رُوْحِيْ ، وَأَذِنَ لِييْ بِذِكْرِهِ.",
             "اَلْحَمْدُ لِلّٰهِ الَّذِيْ أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُوْرُ",
-            "إِنَّ fِى خَلْقِ السَّمـٰوٰتِ وَالْأَرْضِ وَاخْتِلٰـfِ الَّيْلِ وَالنَّهَارِ لاٰيٰاتٍ لِّأُولِى الْأَلْبَـٰبِ. الَّذِيْنَ يَذْكُرُوْنَ اللّٰهَ قِيَـٰمًا وَّقُعُوْدًا وَّعَلَىٰ جُنُوْبِهِمْ وَيَتَفَكَّرُوْنَ fِى خَلْقِ السَّمـٰوٰتِ وَالْأَرْضِ ، رَبَّنَا مَا خَلَقْتَ هَـٰذَا بٰطِلًا ، سُبْحٰنَكَ fَقِنَا عَذَابَ النَّارِ. رَبَّنَآ إِنَّكَ مَنْ تُدْخِلِ النَّارَ fَقَدْ أَخْزَيْتَهُۥ ۖ ، وَمَا لِلظّـٰلِمِيْنَ مِنْ أَنصَارٍ. رَبَّنَآ إِنَّنَا سَمِعْنَا مُنَادِيًا يُّنَادِىْ لِلْإِيْمَـٰنِ أَنْ اٰمِنُوْا بِرَبِّكُمْ fَاٰمَنَّا ۚ ، رَبَّنَا fَاغْfِرْ لَنَا ذُنُوْبَنَا وَكَfِّرْ عَنَّا سَيِّـاٰتِنَا وَتَوَfَّنَا مَعَ الْأَبْرَارِ. رَبَّنَا وَاٰتِنَا مَا وَعَدْتَّنَا عَلَىٰ رُسُلِكَ وَلَا تُخْزِنَا يَوْمَ الْقِيـٰمَةِ ۗ ، إِنَّكَ لَا تُخْلِfُ الْمِيْعَادَ. fَاسْتَجَابَ لَهُمْ رَبُّهُمْ أَنِّىْ لَآ أُضِيْعُ عَمَلَ عَـامِلٍ مِّنْكُمْ مِّنْ ذَكَرٍ أَوْ أُنثَىٰ ۖ ، بَعْضُكُمْ مِّنۢ بَعْضٍ ۖ ، fَالَّذِيْنَ هَاجَرُوْا وَأُوْخْرِجُوْا مِن دِيَارِهِمْ وَأُوْذُوْا fِى سَبِيْلِىْ وَقٰتَلُوْا وَقُتِلُوْا لَأُكَfِّرَنَّ عَنْهُمْ سَيِّاٰتِهِمْ وَلَأُدْخِلَنَّهُمْ جَنَّـٰتٍ تَجْرِىْ مِنْ تَحْتِهَا الْأَنْهٰرُ ، ثَوَابًا مِّنْ عِندِ اللّٰهِ ۗ ، وَاللّٰهُ عِندَهُۥ حُسْنُ الثَّوَابِ. لَا يَغُرَّنَّكَ تَقَلُّبُ الَّذِيْنَ كَfَرُوْا fِى الْبِلَـٰدِ ، مَتاَعٌ قَلِيْلٌ ثُمَّ مَأْوٰهُمْ جَهَنَّمُ ۚ وَبِئْسَ الْمِهَادُ. لٰكِنِ الَّذِيْنَ اتَّقَوْا رَبَّهُمْ لَهُمْ جَنَّـٰتٍ تَجْرِىْ مِنْ تَحْتِهَا الْأَنْهٰرُ خٰلِدِيْنَ fِيْهَا نُزُلًا مِّنْ عِنْدِ اللّٰهِ ۗ ، وَمَا عِنْدَ اللّٰهِ خَيْرٌ لِّلْأَبْرارِ. وَإِنَّ مِنْ أَهْلِ الْكِتٰبِ لَمَنْ يُّؤْمِنُ بِاللّٰهِ وَمَآ أُنْزِلَ إِلَيْكُمْ وَمَآ أُنْزِلَ إِلَيْهِمْ خٰشِعِيْنَ لِلّٰهِ لَا يَشْتَرُوْنَ بِاٰيٰتِ اللّٰهِ ثَمَنًا قَلِيْلًا ۗ ، أُولـٰٓئِكَ لَهُمْ أَجْرُهُمْ عِنْدَ رَبِّهِمْ ۗ ، إِنَّ اللّٰهَ سَرِيْعُ الْحِسَابِ. يَـٰٓأَيُّهَا الَّذِيْنَ اٰمَنُوا اصْبِرُوْا وَصَابِرُوْا وَرَابِطُوْا وَاتَّقُوا اللّٰهَ لَعَلَّكُمْ تُفْلِحُونَ."
+            "إِنَّ fِى خَلْقِ السَّمـٰوٰتِ وَالْأَرْضِ وَاخْتِلٰـfِ الَّيْلِ وَالنَّهَارِ لاٰيٰاتٍ لِّأُولِى الْأَلْبَـٰبِ. الَّذِيْنَ يَذْكُرُوْنَ اللّٰهَ قِيَـٰمًا وَّقُعُوْدًا وَّعَلَىٰ جُنُوْبِهِمْ وَيَتَفَكَّرُوْنَ fِى خَلْقِ السَّمـٰوٰتِ وَالْأَرْضِ ، رَبَّنَا مَا خَلَقْتَ هَـٰذَا بٰطِلًا ، سُبْحٰنَكَ fَقِنَا عَذَابَ النَّارِ. رَبَّنَآ إِنَّكَ مَنْ تُدْخِلِ النَّارَ fَقَدْ أَخْزَيْتَهُۥ ۖ ، وَمَا لِلظّـٰلِمِيْنَ مِنْ أَنصَارٍ. رَبَّنَآ إِنَّنَا سَمِعْنَا مُنَادِيًا يُّنَادِىْ لِلْإِيْمَـٰنِ أَنْ اٰمِنُوْا بِرَبِّكُمْ fَاٰمَنَّا ۚ ، رَبَّنَا fَاغْfِرْ لَنَا ذُنُوْبَنَا وَكَfِّرْ عَنَّا سَيِّـاٰتِنَا وَتَوَfَّنَا مَعَ الْأَبْرَارِ. رَبَّنَا وَاٰتِنَا مَا وَعَدْتَّنَا عَلَىٰ رُسُلِكَ وَلَا تُخْزِنَا يَوْمَ الْقِيـٰمَةِ ۗ ، إِنَّكَ لَا تُخْلِfُ الْمِيْعَادَ. fَاسْتَجَابَ لَهُمْ رَبُّهُمْ أَنِّىْ لَآ أُضِيْعُ عَمَلَ عَـامِلٍ مِّنْكُمْ مِّنْ ذَكَرٍ أَوْ أُنثَىٰ ۖ ، بَعْضُكُمْ مِّنۢ بَعْضٍ ۖ ، fَالَّذِيْنَ هَاجَرُوْا وَأُوْخْرِجُوْا مِن دِيَارِهِمْ وَأُوْذُوْا fِى سَبِيْلِىْ وَقٰتَلُوْا وَقُتِلُوْا لَأُكَfِّرَنَّ عَنْهُمْ سَيِّاٰتِهِمْ وَلَأُدْخِلَنَّهُمْ جَنَّـٰتٍ تَجْرِىْ مِنْ تَحْتِهَا الْأَنْهٰرُ ، ثَوَابًا مِّنْ عِندِ اللّٰهِ ۗ ، وَاللّٰهُ عِندَهُۥ حُسْنُ الثَّوَابِ. لَا يَغُرَّنَّكَ تَقَلُّبُ الَّذِيْنَ كَfَرُوْا fِى الْبِلَـٰدِ ، مَتاَعٌ قَلِيْلٌ ثُمَّ مَأْوٰهُمْ جَهَنَّمُ ۚ وَبِئْسَ الْمِهَادُ. لٰكِنِ الَّذِيْنَ اتَّقَوْا رَبَّهُمْ لَهُمْ جَنَّـٰتٍ تَجْرِىْ مِنْ تَحْتِهَا الْأَنْهٰرُ خٰلِدِيْنَ fِيْهَا nُزُلًا مِّنْ عِنْدِ اللّٰهِ ۗ ، وَمَا عِنْدَ اللّٰهِ خَيْرٌ لِّلْأَبْرَارِ. وَإِنَّ مِنْ أَهْلِ الْكِتٰبِ لَمَنْ يُّؤْمِنُ بِاللّٰهِ وَمَآ أُنْزِلَ إِلَيْكُمْ وَمَآ أُنْزِلَ إِلَيْهِمْ خٰشِعِيْنَ لِلّٰهِ لَا يَشْتَرُوْنَ بِاٰيٰتِ اللّٰهِ ثَمَنًا قَلِيْلًا ۗ ، أُولـٰٓئِكَ لَهُمْ أَجْرُهُمْ عِنْدَ رَبِّهِمْ ۗ ، إِنَّ اللّٰهَ سَرِيْعُ الْحِسَابِ. يَـٰٓأَيُّهَا الَّذِيْنَ اٰمَنُوا اصْبِرُوْا وَصَابِرُوْا وَرَابِطُوْا وَاتَّقُوا اللّٰهَ لَعَلَّكُمْ تُفْلِحُونَ."
         ],
         trans: [
             "There is no god worthy of worship but Allah: The One, The All-Dominant; Lord of the heavens, the earth and whatever is between them; The Mighty, The Most Forgiving.",
@@ -278,28 +284,176 @@ const azkarData = [
     },
     {
         nameEn: "Morning", nameAr: "الصباح",
-        arabic: ["أَعُوْذُ بِاللّٰهِ مِنَ الشَّيْطَانِ الرَّجِيْمِ. اَللّٰهُ لَآ إِلٰهَ إِلَّا هُوَ الْحَىُّ الْقَيُّوْمُ ، لَا تَأْخُذُهُۥ سِنَةٌ وَّلَا نَوْمٌ ، لَهُ مَا fِى السَّمٰـوٰتِ وَمَا fِى الْأَرْضِ ، مَنْ ذَا الَّذِىْ يَشْfَعُ عِنْدَهُ إِلَّا بِإِذْنِهِۦ ، يَعْلَمُ مَا بَيْنَ أَيْدِيْهِمْ وَمَا خَلْfَهُمْ ، وَلَا يُحِيْطُوْنَ بِشَىْءٍ مِّنْ عِلْمِهِٓ إِلَّا بِمَا شَآءَ ، وَسِعَ كُرْسِيُّهُ السَّمٰـوٰتِ وَالْأَرْضَ، وَلَا يَئُوْدُهُۥ حِfْظُهُمَا ، وَهو الْعَلِىُّ الْعَظِيْمُ.","بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ. قُلْ هُوَ اللّٰهُ أَحَدٌ ، اَللّٰهُ الصَّمَدُ ، لَمْ يَلِدْ وَلَمْ يُوْلَدْ ، وَلَمْ يَكُنْ لَّهُ كُfُوًا أَحَدٌ.","بِسْم. اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ. قُلْ أَعُوْذُ بِرَبِّ الْfَلَقِ ، مِنْ شَرِّ مَا خَلَقَ ، وَمِنْ شَرِّ غَاسِقٍ إِذَا وَقَبَ ، وَمِنْ شَرِّ النَّfَّاثَاتِ fِي الْعُقَدِ ، وَمِنْ شَرِّ حَاسِدٍ إِذَا حَسَدَ.","بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ. قُلْ أَعُوْذُ بِرَبِّ النَّاسِ ، مَلِكِ النَّاسِ ، إِلٰهِ النَّاسِ ، مِنْ شَرِّ الْوَسْوَاسِ الْخَنَّاسِ ، اَلَّذِيْ يُوَسْوِسُ fِيْ صُدُوْرِ النَّاسِ ، مِنَ الْجِنَّةِ وَالنَّاسِ.","اَللّٰهُمَّ أَنْتَ رَبِّيْ لَا إِلٰهَ إِلَّا أَنْتَ ، خَلَقْتَنِيْ وَأَنَا عَبْدُكَ ، وَأَنَا عَلَىٰ عَهْدِكَ وَوَعْدِكَ مَا اسْتَطعتُ ، أَعُوْذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ ، أَبُوْءُ لَكَ بِنِعْمَتِكَ عَلَيَّ وَأَبُوْءُ لَكَ بِذَنْبِيْ ، fَاغْfِرْ لِيْ fَإِنَّهُ لَا يَغْfِرُ الذُّنُوْبَ إِلَّا أَنْتَ.","اَللّٰهُمَّ إِنِّيْ أَعُوْذُ بِكَ مِنَ الْهَمِّ وَالْحَزَنِ ، وَأَعُوْذُ بِكَ مِنَ الْعَجْزِ وَالْكَسَلِ، وَأَعُوْذُ بِكَ مِنَ الْجُبْنِ وَالْبُخْلِ ، وَأَعُوْذُ بِكَ مِنْ غَلَبَةِ الدَّيْنِ وَقَهْرِ الرِّجَالِ.","اَللّٰهُمَّ إِنِّيْ أَسْأَلُكَ الْعافِيَةَ فِي الدُّنْيَا وَالْآخِرَةِ ، اَللّٰهُمَّ إِنِّيْ أَسْأَلُكَ الْعَفْو وَالْعَافِيَةَ فِيْ دِيْنِيْ وَدُنْيَايَ وَأَهْلِيْ وَمالِيْ ، اَللّٰهُمَّ اسْتُرْ عَوْرَاتِيْ وَآمِنْ رَوْعَاتِيْ ، اَللّٰهُمَّ احْfَظْنِيْ مِنْ بَيْنِ يَدَيَّ ، وَمِنْ خَلْfِيْ ، وَعَنْ يَّمِيْنِيْ ، وَعَنْ شِمَالِيْ ، وَمِنْ fَوْقِيْ ، وَأَعُوْذُ بِعَظَمَتِكَ أَنْ أُغْتَالَ مِنْ تَحْتِيْ.","اَللّٰهُمَّ عَالِمَ الْغَيْبِ وَالشَّهَادَةِ ، fَاطِرَ السَّمٰوَاتِ وَالْأَرْضِ ، رَبَّ كُلِّ شَيْءٍ وَمَلِيْكَهُ ، أَشْهَدُ أَنْ لَّا إِلٰهَ إِلَّا أَنْتَ ، أَعُوْذُ بِكَ مِنْ شَرِّ nfْسِيْ ، وَمِنْ شَرِّ الشَّيْطَانِ وَشِرْكِهِ ، وَأَنْ أَقْتَرِfَ عَلَىٰ n fْسِيْ سُوْءًا ، أَوْ أَجُرَّهُ إِلَىٰ مُسْلِمٍ.","يَا حَيُّ يَا قَيُّوْمُ ، بِرَحْمَتِكَ أَسْتَغِيْثُ ، أَصْلِحْ لِيْ شَأْنِيْ كُلَّهُ ، وَلَا تَكِلْنِيْ إِلَىٰ n fْسِيْ طَرْfَةَ عَيْنٍ.","اَللّٰهُمَّ مَا أَصْبَحَ بِيْ مِنْ نِّعْمَةٍ أَوْ بِأَحَدٍ مِّنْ خَلْقِكَ ، fَمِنْكَ وَحْدَكَ لَا شَرِيْكَ لَكَ ، fَلَكَ الْحَمْدُ وَلَكَ الشُّكْرُ.","أَصْبَحْنَا عَلَىٰ fِطْرَةِ الْإِسْلَامِ ، وَعَلَىٰ كَلِمَةِ الْإِخْلَاصِ ، وَعَلَىٰ دِيْنِ نَبِيِّنَا مُحَمَّدٍ ، وَعَلَىٰ مِلَّةِ أَبِيْنَا إِبْرَاهِيْمَ حَنِيْfًا مُّسْلِمًا وَّمَا كَانَ مِنَ الْمُشْرِكِيْنَ.","أَصْبَحْتُ أُثْنِيْ عَلَيْكَ حَمْدًا ، وَأَشْهَدُ أَنْ لَّا إِلٰهَ إِلَّا اللّٰهُ.","أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلّٰهِ وَالْحَمْدُ لِلّٰهِ ، لَا إِلٰهَ إِلَّا اللّٰهُ وَحْدَهُ لَا شَرِيْكَ لَهُ ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ ، وَهو عَلَىٰ كُلِّ شَيْءٍ قَدِيْرٌ ، رَبِّ أَسْأَلُكَ خَيْرَ مَا fِيْ هٰذَا الْيَوْمِ وَخَيْرَ مَا بَعْدَهُ ، وَأَعُوْذُ بِكَ مِنْ شَرِّ مَا fِيْ هٰذَا الْيَوْمِ وَشرِّ مَا بَعْدَهُ ، رَبِّ أَعُوْذُ بِكَ مِنَ الْكَسَلِ وَسُوْءِ الْكِبَرِ ، رَبِّ أَعُوْذُ بِكَ مِنَ عَذَابٍ فِي النَّارِ وَعذَابٍ فِي الْقَبْرِ.","أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلّٰهِ رَبِّ الْعَالَمِيْنَ ، اَللّٰهُمَّ إِنِّيْ أَسْأَلُكَ خَيْرَ هٰذَا الْيَوْمِ ، fَتْحَهُ وَنَصْرَهُ وَنُوْرَهُ وَبَرَكَتَهُ وَهُدَاهُ ، وَأَعُوْذُ بِكَ مِنْ شَرِّ مَا fِيْهِ وَشرِّ مَا بَعْدَهُ.","اَللّٰهُمَّ إِنِّيْ أَصْبَحْتُ أُشْهِدُكَ ، وَأُشْهِد حَمَلَةَ عَرْشِكَ وَمَلَائِكَتَكَ وَجَمِيْعَ خَلْقِكَ ، أَنَّكَ أَنْتَ اللّٰهُ لَا إِلٰهَ إِلَّا أَنْتَ وَحْدَكَ لَا شَرِيْكَ لَكَ ، وَأَنَّ مُحَمَّدًا عَبْدُكَ وَرَسُوْلُكَ.","اَللّٰهُمَّ بِكَ أَصْبَحْنَا وَبِكَ أَمْسَيْنَا وَبِكَ نَحْيَا وَبِكَ نَمُوْتُ وَإِلَيْكَ النُّشُوْرُ.","اَللّٰهُمَّ عَAFِنِيْ fِيْ بَدَنِيْ ، اَللّٰهُمَّ عَAFِنِيْ fِيْ سَمْعِيْ ، اَللّٰهُمَّ عَAFِنِيْ fِيْ بَصَرِيْ ، لَا إِلٰهَ إِلَّا أَنْتَ ، اَللّٰهُمَّ إِنِّيْ أَعُوْذُ بِكَ مِنَ الْكُfْرِ وَالْfَقْرِ، وأَعُوْذُ بِكَ مِنَ عَذَابٍ الْقَبْرِ، لَا إِلٰهَ إِلَّا أَنْتَ.","حَسْبِيَ اللّٰهُ لَا إِلٰهَ إِلَّا هُوَ ، عَلَيْهِ تَوَكَّلْتُ ، وَهو رَبُّ الْعَرْشِ الْعَظِيْمِ.","رَضِيْتُ بِاللّٰهِ رَبًّا ، وَبِالْإِسْلَامِ دِيْنًا ، وَبِمُحَمَّدٍ نَّبِيًّا.","بِسْمِ اللّٰهِ الَّذِيْ لَا يَضُرُّ معَ اسْمِهِ شَيْءٌ fِي الْأَرْضِ وَلَا فِي السَّمَاء ، وَهو السَّمِيْعُ الْعَلِيْمُ.","سُبْحَانَ اللّٰهِ وَبِحَمْدِهِ.","لَا إِلٰهَ إِلَّا اللّٰهُ وَحْدَهُ لَا شَرِيْكَ لَهُ ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ ، وَهو عَلَىٰ كُلِّ شَيْءٍ قَدِيْرٌ.","سُبْحَانَ اللّٰهِ ، اَلْحَمْدُ لِلّٰهِ ، اَللّٰهُ أَكْبَرُ.","اَللّٰهُمَّ صَلِّ عَلَىٰ مُحَمَّدٍ وَّعَلَىٰ اٰلِ مُحَمَّدٍ ، كَمَا صَلِّيْتَ عَلَىٰ إِبْرَاهِيْمَ وَعَلَىٰ اٰلِ إِبْرَاهِيْمَ ، إِنَّكَ حَمِيْدٌ مَّجِيْدٌ ، اَللّٰهُمَّ بَارِكْ عَلَىٰ مُحَمَّدٍ وَّعَلَىٰ اٰلِ مُحَمَّدٍ ، كَمَا بَارَكْتَ عَلَىٰ إِبْرَاهِيْمَ وَعَلَىٰ اٰلِ إِبْرَاهِيْمَ ، إِنَّكَ حَمِيْدٌ مَّجِيْدٌ.","أَسْتَغِيْثُ بِاللّٰهِ وَأَتُوْبُ إِلَيْهِ.","سُبْحَانَ اللّٰهِ وَبِحَمْدِهِ ، عَدَدَ خَلْقِهِ ، وَرِضا نَفْسِهِ ، وَزِنَةَ عَرْشِهِ ، وَمِدَادَ كَلِمَاتِهِ."],
-        trans: ["I seek the protection of Allah from the accursed Shayṭān...","In the name of Allah, the All-Merciful, the Very Merciful. Say, He is Allah, the One...","In the name of Allah, the All-Merciful, the Very Merciful. Say, I seek protection of the Lord of the daybreak..."," In the name of Allah, the All-Merciful, the Very Merciful. Say, I seek protection of the Lord of mankind...","O Allah, You are my Lord. There is no god worthy of worship except You...","O Allah, I seek Your protection from anxiety and grief. I seek Your protection from inability and laziness...","O Allah, I ask You for well-being in this world and the next...","O Allah, Knower of the unseen and the seen, Creator of the heavens and the earth...","O The Ever Living, The Sustainer of all. ; I seek assistance through Your mercy...","O Allah, all the favours that I or anyone from Your creation has received in the morning, are from You Alone...","We have entered the morning upon the natural religion of Islam...","I have entered the morning praising You, and I bear witness that there is no god worthy of worship but Allah.","We have entered the morning and at this very time the whole kingdom belongs to Allah...","We have entered the morning and at this very time the whole kingdom belongs to Allah, Lord of the Worlds...","O Allah, I have entered the morning, and I call upon You, the bearers of Your Throne...","O Allah, by You we have entered the morning and by You we enter upon the evening...","O Allah, grant me well-being in my body. O Allah, grant me well-being in my hearing...","Allah is sufficient for me. There is no god worthy of worship except Him...","I am pleased with Allah as my Lord, with Islām as my religion and with Muḥammad ﷺ as my Prophet.","In the Name of Allah, with whose Name nothing can harm in the earth nor in the sky...","Allah is free from imperfection, and all praise is due to Him.","There is no god worthy of worship except Allah. He is Alone and He has no partner whatsoever...","Allah is free from imperfection. All praise be to Allah. Allah is the Greatest.","O Allah, honour and have mercy upon Muhammad...","I seek Allah’s forgiveness and turn to Him in repentance.","Allah is free from imperfection and all praise is due to Him..."],
+        arabic: [
+            "أَعُوْذُ بِاللّٰهِ مِنَ الشَّيْطَانِ الرَّجِيْمِ. اَللّٰهُ لَآ إِلٰهَ إِلَّا هُوَ الْحَىُّ الْقَيُّوْمُ ، لَا تَأْخُذُهُۥ سِنَةٌ وَّلَا نَوْمٌ ، لَهُ مَا fِى السَّمٰـوٰتِ وَمَا fِى الْأَرْضِ ، مَنْ ذَا الَّذِىْ يَشْfَعُ عِنْدَهُ إِلَّا بِإِذْنِهِۦ ، يَعْلَمُ مَا بَيْنَ أَيْدِيْهِمْ وَمَا خَلْfَهُمْ ، وَلَا يُحِيْطُوْنَ بِشَىْءٍ مِّنْ عِلْمِهِٓ إِلَّا بِمَا شَآءَ ، وَسِعَ كُرْسِيُّهُ السَّمٰـوٰتِ وَالْأَرْضَ، وَلَا يَئُوْدُهُۥ حِfْظُهُمَا ، وَهو الْعَلِىُّ الْعَظِيْمُ.",
+            "بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ. قُلْ هُوَ اللّٰهُ أَحَدٌ ، اَللّٰهُ الصَّمَدُ ، لَمْ يَلِدْ وَلَمْ يُوْلَدْ ، وَلَمْ يَكُنْ لَّهُ كُfُوًا أَحَدٌ.",
+            "بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ. قُلْ أَعُوْذُ بِرَبِّ الْfَلَقِ ، مِنْ شَرِّ مَا خَلَقَ ، وَمِنْ شَرِّ غَاسِقٍ إِذَا وَقَبَ ، وَمِنْ شَرِّ النَّfَّاثَاتِ fِي الْعُقَدِ ، وَمِنْ شَرِّ حَاسِدٍ إِذَا حَسَدَ.",
+            "بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ. قُلْ أَعُوْذُ بِرَبِّ النَّاسِ ، مَلِكِ النَّاسِ ، إِلٰهِ النَّاسِ ، مِنْ شَرِّ الْوَسْوَاسِ الْخَنَّاسِ ، اَلَّذِيْ يُوَسْوِسُ fِيْ صُدُوْرِ النَّاسِ ، مِنَ الْجِنَّةِ وَالنَّاسِ.",
+            "اَللّٰهُمَّ أَنْتَ رَبِّيْ لَا إِلٰهَ إِلَّا أَنْتَ ، خَلَقْتَنِيْ وَأَنَا عَبْدُكَ ، وَأَنَا عَلَىٰ عَهْدِكَ وَوَعْدِكَ مَا اسْتَطعتُ ، أَعُوْذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ ، أَبُوْءُ لَكَ بِنِعْمَتِكَ عَلَيَّ وَأَبُوْءُ لَكَ بِذَنْبِيْ ، fَاغْfِرْ لِيْ fَإِنَّهُ لَا يَغْfِرُ الذُّنُوْبَ إِلَّا أَنْتَ.",
+            "اَللّٰهُمَّ إِنِّيْ أَعُوْذُ بِكَ مِنَ الْهَمِّ وَالْحَزَنِ ، وَأَعُوْذُ بِكَ مِنَ الْعَجْزِ وَالْكَسَلِ، وَأَعُوْذُ بِكَ مِنَ الْجُبْنِ وَالْبُخْلِ ، وَأَعُوْذُ بِكَ مِنْ غَلَبَةِ الدَّيْنِ وَقَهْرِ الرِّجَالِ.",
+            "اَللّٰهُمَّ إِنِّيْ أَسْأَلُكَ الْعافِيَةَ فِي الدُّنْيَا وَالْآخِرَةِ ، اَللّٰهُمَّ إِنِّيْ أَسْأَلُكَ الْعَفْو وَالْعَافِيَةَ فِيْ دِيْنِيْ وَدُنْيَايَ وَأَهْلِيْ وَمالِيْ ، اَللّٰهُمَّ اسْتُرْ عَوْرَاتِيْ وَآمِنْ رَوْعَاتِيْ ، اَللّٰهُمَّ احْfَظْنِيْ مِنْ بَيْنِ يَدَيَّ ، وَمِنْ خَلْfِيْ ، وَعَنْ يَّمِيْنِيْ ، وَعَنْ شِمَالِيْ ، وَمِنْ fَوْقِيْ ، وَأَعُوْذُ بِعَظَمَتِكَ أَنْ أُغْتَالَ مِنْ تَحْتِيْ.",
+            "اَللّٰهُمَّ عَالِمَ الْغَيْبِ وَالشَّهَادَةِ ، fَاطِرَ السَّمٰوَاتِ وَالْأَرْضِ ، رَبَّ كُلِّ شَيْءٍ وَمَلِيْكَهُ ، أَشْهَدُ أَنْ لَّا إِلٰهَ إِلَّا أَنْتَ ، أَعُوْذُ بِكَ مِنْ شَرِّ n fْسِيْ ، وَمِنْ شَرِّ الشَّيْطَانِ وَشِرْكِهِ ، وَأَنْ أَقْتَرِfَ عَلَىٰ n fْسِيْ سُوْءًا ، أَوْ أَجُرَّهُ إِلَىٰ مُسْلِمٍ.",
+            "يَا حَيُّ يَا قَيُّوْمُ ، بِرَحْمَتِكَ أَسْتَغِيْثُ ، أَصْلِحْ لِيْ شَأْنِيْ كُلَّهُ ، وَلَا تَكِلْنِيْ إِلَىٰ n fْسِيْ طَرْfَةَ عَيْنٍ.",
+            "اَللّٰهُمَّ مَا أَصْبَحَ بِيْ مِنْ نِّعْمَةٍ أَوْ بِأَحَدٍ مِّنْ خَلْقِكَ ، fَمِنْكَ وَحْدَكَ لَا شَرِيْكَ لَكَ ، fَلَكَ الْحَمْدُ وَلَكَ الشُّكْرُ.",
+            "أَصْبَحْنَا عَلَىٰ fِطْرَةِ الْإِسْلَامِ ، وَعَلَىٰ كَلِمَةِ الْإِخْلَاصِ ، وَعَلَىٰ دِيْنِ نَبِيِّنَا مُحَمَّدٍ ، وَعَلَىٰ مِلَّةِ أَبِيْنَا إِبْرَاهِيْمَ حَنِيْfًا مُّسْلِمًا وَّمَا كَانَ مِنَ الْمُشْرِكِيْنَ.",
+            "أَصْبَحْتُ أُثْنِيْ عَلَيْكَ حَمْدًا ، وَأَشْهَدُ أَنْ لَّا إِلٰهَ إِلَّا اللّٰهُ.",
+            "أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلّٰهِ وَالْحَمْدُ لِلّٰهِ ، لَا إِلٰهَ إِلَّا اللّٰهُ وَحْدَهُ لَا شَرِيْكَ لَهُ ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ ، وَهو عَلَىٰ كُلِّ شَيْءٍ قَدِيْرٌ ، رَبِّ أَسْأَلُكَ خَيْرَ مَا fِيْ هٰذَا الْيَوْمِ وَخَيْرَ مَا بَعْدَهُ ، وَأَعُوْذُ بِكَ مِنْ شَرِّ مَا fِيْ هٰذَا الْيَوْمِ وَشرِّ مَا بَعْدَهُ ، رَبِّ أَعُوْذُ بِكَ مِنَ الْكَسَلِ وَسُوْءِ الْكِبَرِ ، رَبِّ أَعُوْذُ بِكَ مِنَ عَذَابٍ فِي النَّارِ وَعذَابٍ فِي الْقَبْرِ.",
+            "أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلّٰهِ رَبِّ الْعَالَمِيْنَ ، اَللّٰهُمَّ إِنِّيْ أَسْأَلُكَ خَيْرَ هٰذَا الْيَوْمِ ، fَتْحَهُ وَنَصْرَهُ وَنُوْرَهُ وَبَرَكَتَهُ وَهُدَاهُ ، وَأَعُوْذُ بِكَ مِنْ شَرِّ مَا fِيْهِ وَشرِّ مَا بَعْدَهُ.",
+            "اَللّٰهُمَّ إِنِّيْ أَصْبَحْتُ أُشْهِدُكَ ، وَأُشْهِد حَمَلَةَ عَرْشِكَ وَمَلَائِكَتَكَ وَجَمِيْعَ خَلْقِكَ ، أَنَّكَ أَنْتَ اللّٰهُ لَا إِلٰهَ إِلَّا أَنْتَ وَحْدَكَ لَا شَرِيْكَ لَكَ ، وَأَنَّ مُحَمَّدًا عَبْدُكَ وَرَسُوْلُكَ.",
+            "اَللّٰهُمَّ بِكَ أَصْبَحْنَا وَبِكَ أَمْسَيْنَا وَبِكَ نَحْيَا وَبِكَ نَمُوْتُ وَإِلَيْكَ النُّشُوْرُ.",
+            "اَللّٰهُمَّ عَAFِنِيْ fِيْ بَدَنِيْ ، اَللّٰهُمَّ عَAFِنِيْ fِيْ سَمْعِيْ ، اَللّٰهُمَّ عَAFِنِيْ fِيْ بَصَرِيْ ، لَا إِلٰهَ إِلَّا أَنْتَ ، اَللّٰهُمَّ إِنِّيْ أَعُوْذُ بِكَ مِنَ الْكُfْرِ وَالْfَقْرِ، وأَعُوْذُ بِكَ مِنَ عَذَابٍ الْقَبْرِ، لَا إِلٰهَ إِلَّا أَنْتَ.",
+            "حَسْبِيَ اللّٰهُ لَا إِلٰهَ إِلَّا هُوَ ، عَلَيْهِ تَوَكَّلْتُ ، وَهو رَبُّ الْعَرْشِ الْعَظِيْمِ.",
+            "رَضِيْتُ بِاللّٰهِ رَبًّا ، وَبِالْإِسْلَامِ دِيْنًا ، وَبِمُحَمَّدٍ نَّبِيًّا.",
+            "بِسْمِ اللّٰهِ الَّذِيْ لَا يَضُرُّ معَ اسْمِهِ شَيْءٌ fِي الْأَرْضِ وَلَا فِي السَّماء ، وَهو السَّمِيْعُ الْعاليْمُ.",
+            "سُبْحَانَ اللّٰهِ وَبِحَمْدِهِ.",
+            "لَا إِلٰهَ إِلَّا اللّٰهُ وَحْدَهُ لَا شَرِيْكَ لَهُ ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ ، وَهو عَلَىٰ كُلِّ شَيْءٍ قَدِيْرٌ.",
+            "سُبْحَانَ اللّٰهِ ، اَلْحَمْدُ لِلّٰهِ ، اَللّٰهُ أَكْبَرُ.",
+            "اَللّٰهُمَّ صَلِّ عَلَىٰ مُحَمَّدٍ وَّعَلَىٰ اٰلِ مُحَمَّدٍ ، كَمَا صَلِّيْتَ عَلَىٰ إِبْرَاهِيْمَ وَعَلَىٰ اٰلِ إِبْرَاهِيْمَ ، إِنَّكَ حَمِيْدٌ مَّجِيْدٌ ، اَللّٰهُمَّ بَارِكْ عَلَىٰ مُحَمَّدٍ وَّعَلَىٰ اٰلِ مُحَمَّدٍ ، كَمَا بَارَكْتَ عَلَىٰ إِبْرَاهِيْمَ وَعَلَىٰ اٰلِ إِبْرَاهِيْمَ ، إِنَّكَ حَمِيْدٌ مَّجِيْدٌ.",
+            "أَسْتَغِيْثُ بِاللّٰهِ وَأَتُوْبُ إِلَيْهِ.",
+            "سُبْحَانَ اللّٰهِ وَبِحَمْدِهِ ، عَدَدَ خَلْقِهِ ، وَرِضا n fْسِهِ ، وَزِنَةَ عَرْشِهِ ، وَمِدَادَ كَلِمَاتِهِ."
+        ],
+        trans: [
+            "I seek the protection of Allah from the accursed Shayṭān. Allah, there is no god worthy of worship but He, the Ever Living, The Sustainer of all. Neither drowsiness overtakes Him nor sleep. To Him Alone belongs whatever is in the heavens and whatever is on the earth. Who is it that can intercede with Him except with His permission? He knows what is before them and what will be after them, and they encompass not a thing of His knowledge except for what He wills. His Kursī extends over the heavens and the earth, and their preservation does not tire Him. And He is the Most High, the Magnificent. (2:255)",
+            "In the name of Allah, the All-Merciful, the Very Merciful. Say, He is Allah, the One, the Self-Sufficient Master, Who has not given birth and was not born, and to Whom no one is equal. (112)",
+            "In the name of Allah, the All-Merciful, the Very Merciful. Say, I seek protection of the Lord of the daybreak, from the evil of what He has created, and from the evil of the darkening night when it settles, and from the evil of the blowers in knots, and from the evil of the envier when he envies. (113)",
+            " In the name of Allah, the All-Merciful, the Very Merciful. Say, I seek protection of the Lord of mankind, the King of mankind, the God of mankind, from the evil of the whisperer who withdraws, who whispers in the hearts of mankind, whether they be Jinn or people. (114)",
+            "O Allah, You are my Lord. There is no god worthy of worship except You. You have created me, and I am Your slave, and I am under Your covenant and pledge (to fulfil it) to the best of my ability. I seek Your protection from the evil that I have done. I acknowledge the favours that You have bestowed upon me, and I admit my sins. Forgive me, for none forgives sins but You.",
+            "O Allah, I seek Your protection from anxiety and grief. I seek Your protection from inability and laziness. I seek Your protection from cowardice and miserliness, and I seek Your protection from being overcome by debt and being overpowered by men.",
+            "O Allah, I ask You for well-being in this world and the next. O Allah, I ask You for forgiveness and well-being in my religion, in my worldly affairs, in my family and in my wealth. O Allah, conceal my faults and calm my fears. O Allah, guard me from in front of me and behind me, from my right, and from my left, and from above me. I seek protection in Your Greatness from being unexpectedly destroyed from beneath me.",
+            "O Allah, Knower of the unseen and the seen, Creator of the heavens and the earth, the Lord and Sovereign of everything; I bear witness that there is no god worthy of worship but You. I seek Your protection from the evil of my own self, from the evil of Shayṭān and from the evil of polytheism to which he calls,and from inflicting evil on myself, or bringing it upon a Muslim.",
+            "O The Ever Living, The Sustainer of all. ; I seek assistance through Your mercy. Rectify all of my affairs and do not entrust me to myself for the blink of an eye.",
+            "O Allah, all the favours that I or anyone from Your creation has received in the morning, are from You Alone. You have no partner. To You Alone belong all praise and all thanks.",
+            "We have entered the morning upon the natural religion of Islam, the statement of pure faith (i.e. Shahādah), the religion of our Prophet Muhammad ﷺ and upon the way of our father Ibrāhīm, who turned away from all that is false, having surrendered to Allah, and he was not of the polytheists.",
+            "I have entered the morning praising You, and I bear witness that there is no god worthy of worship but Allah.",
+            "We have entered the morning and at this very time the whole kingdom belongs to Allah. All praise is due to Allah. There is no god worthy of worship except Allah, the One; He has no partner with Him. The entire kingdom belongs solely to Him, to Him is all praise due, and He is All-Powerful over everything. My Lord, I ask You for the good that is in this day and the good that follows it, and I seek Your protection from the evil that is in this day and from the evil that follows it. My Lord, I seek Your protection from laziness and the misery of old age. My Lord, I seek Your protection from the torment of the Hell-fire and the punishment of the grave.",
+            "We have entered the morning and at this very time the whole kingdom belongs to Allah, Lord of the Worlds. O Allah, I ask You for the goodness of this day: its victory, its help, its light, and its blessings and guidance. I seek Your protection from the evil that is in it and from the evil that follows it.",
+            "O Allah, I have entered the morning, and I call upon You, the bearers of Your Throne, Your angels and all creation, to bear witness that surely You are Allah. There is no god worthy of worship except You Alone. You have no partners, and that Muḥammad ﷺ is Your slave and Your Messenger.",
+            "O Allah, by You we have entered the morning and by You we enter upon the evening. By You, we live and we die, and to You is the resurrection.",
+            "O Allah, grant me well-being in my body. O Allah, grant me well-being in my hearing. O Allah, grant me well-being in my sight. There is no god worthy of worship except You. O Allah, I seek Your protection from disbelief and poverty and I seek Your protection from the punishment of the grave. There is no god worthy of worship except You.",
+            "Allah is sufficient for me. There is no god worthy of worship except Him. I have placed my trust in Him only and He is the Lord of the Magnificent Throne.",
+            "I am pleased with Allah as my Lord, with Islām as my religion and with Muḥammad ﷺ as my Prophet.",
+            "In the Name of Allah, with whose Name nothing can harm in the earth nor in the sky. He is The All-Hearing and All-Knowing.",
+            "Allah is free from imperfection, and all praise is due to Him.",
+            "There is no god worthy of worship except Allah. He is Alone and He has no partner whatsoever. To Him Alone belong all sovereignty and all praise. He is over all things All-Powerful.",
+            "Allah is free from imperfection. All praise be to Allah. Allah is the Greatest.",
+            "O Allah, honour and have mercy upon Muhammad and the family of Muhammad as You have honoured and had mercy upon Ibrāhīm and the family of Ibrāhīm. Indeed, You are the Most Praiseworthy, the Most Glorious. O Allah, bless Muhammad and the family of Muhammad as You have blessed Ibrāhīm and the family of Ibrāhīm. Indeed, You are the Most Praiseworthy, the Most Glorious.",
+            "I seek Allah’s forgiveness and turn to Him in repentance.",
+            "Allah is free from imperfection and all praise is due to Him, (in ways) as numerous as all He has created, (as vast) as His pleasure, (as limitless) as the weight of His Throne, and (as endless) as the ink of His words."
+        ],
         reps: [1, 3, 3, 3, 1, 1, 1, 1, 1, 1, 1, 3, 3, 1, 4, 1, 3, 7, 3, 3, 100, 100, 100, 10, 100, 3]
     },
     {
         nameEn: "Evening", nameAr: "المساء",
-        arabic: ["أَعُوْذُ بِاللّٰهِ مِنَ الشَّيْطَانِ الرَّجِيْمِ...","بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ. قُلْ هُوَ اللّٰهُ أَحَدٌ...","بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ. قُلْ أَعُوْذُ بِرَبِّ الْfَلَقِ...","بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ. قُلْ أَعُوْذُ بِرَبِّ النَّاسِ...","اَللّٰهُمَّ أَنْتَ رَبِّيْ لَا إِلٰهَ إِلَّا أَنْتَ...","اَللّٰهُمَّ إِنِّيْ أَعُوْذُ بِكَ مِنَ الْهَمِّ وَالْحَزَنِ...","اَللّٰهُمَّ إِنِّيْ أَسْأَلُكَ الْعafِيَةَ فِي الدُّنْيَا وَالْآخِرَةِ...","اَللّٰهُمَّ عَالِمَ الْغَيْبِ وَالشَّهَادَةِ...","يَا حَيُّ يَا قَيُّوْمُ...","اَللّٰهُمَّ مَا أَمْسَىٰ بِيْ مِنْ نِّعْمَةٍ...","أَمْسَيْنَا عَلَىٰ fِطْرَةِ الْإِسْلَامِ...","أَمْسَيْتُ أُثْنِيْ عَلَيْكَ حَمْدًا...","أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلّٰهِ...","أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلّٰهِ رَبِّ الْعَالَمِيْنَ...","اَللّٰهُمَّ إِنِّيْ أَمْسَيْتُ أُشْهِدُكَ...","اَللّٰهُمَّ بِكَ أَمْسَيْنَا وَبِكَ أَصْبَحْنَا...","اَللّٰهُمَّ عَAFِنِيْ fِيْ بَدَنِيْ...","حَسْبِيَ اللّٰهُ لَا إِلٰهَ إِلَّا هُوَ...","رَضِيْتُ بِاللّٰهِ رَبًّا...","بِسْمِ اللّٰهِ الَّذِيْ لَا يَضُرُّ معَ اسْمِهِ شَيْءٌ...","سُبْحَانَ اللّٰهِ وَبِحَمْدِهِ.","لَا إِلٰهَ إِلَّا اللّٰهُ وَحْدَهُ لَا شَرِيْكَ لَهُ...","سُبْحَانَ اللّٰهِ ، اَلْحَمْدُ لِلّٰهِ ، اَللّٰهُ أَكْبَرُ.","اَللّٰهُمَّ صَلِّ عَلَىٰ مُحَمَّدٍ وَّعَلَىٰ اٰلِ مُحَمَّدٍ...","أَعُوْذُ بِكَلِمَاتِ اللّٰهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ."],
-        trans: ["I seek protection...","Surah Ikhlas...","Surah Falaq...","Surah Nas...","O Allah, You are my Lord...","O Allah, I seek Your protection from anxiety...","O Allah, I ask You for well-being...","O Allah, Knower of the unseen...","O The Ever Living...","O Allah, all favours...","We have entered the evening...","I have entered the evening praising...","We have entered the evening...","We have entered the evening, Lord of Worlds...","O Allah, I have entered the evening...","O Allah, by You we have entered the evening...","O Allah, grant me well-being...","Allah is sufficient...","I am pleased with Allah...","In the Name of Allah...","Allah is free...","There is no god...","Allah is free...","O Allah, honour...","I seek protection..."],
+        arabic: [
+            "أَعُوْذُ بِاللّٰهِ مِنَ الشَّيْطَانِ الرَّجِيْمِ. اَللّٰهُ لَآ إِلٰهَ إِلَّا هُوَ الْحَىُّ الْقَيُّوْمُ ، لَا تَأْخُذُهُۥ سِنَةٌ وَّلَا نَوْمٌ ، لَهُ مَا fِى السَّمٰـوٰتِ وَمَا fِى الْأَرْضِ ، مَنْ ذَا الَّذِىْ يَشْfَعُ عِنْدَهُ إِلَّا بِإِذْنِهِۦ ، يَعْلَمُ مَا بَيْنَ أَيْدِيْهِمْ وَمَا خَلْfَهُمْ ، وَلَا يُحِيْطُوْنَ بِشَىْءٍ مِّنْ عِلْمِهِٓ إِلَّا بِمَا شَآءَ ، وَسِعَ كُرْسِيُّهُ السَّمٰـوٰتِ وَالْأَرْضَ، وَلَا يَئُوْدُهُۥ حِfْظُهُمَا ، وَهو الْعَلِىُّ الْعَظِيْمُ.",
+            "بِسْم. اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ. قُلْ هُوَ اللّٰهُ أَحَدٌ ، اَللّٰهُ الصَّمَدُ ، لَمْ يَلِدْ وَلَمْ يُوْلَدْ ، وَلَمْ يَكُنْ لَّهُ كُfُوًا أَحَدٌ.",
+            "بِسْم. اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ. قُلْ أَعُوْذُ بِرَبِّ الْfَلَقِ ، مِنْ شَرِّ مَا خَلَقَ ، وَمِنْ شَرِّ غَاسِقٍ إِذَا وَقَبَ ، وَمِنْ شَرِّ النَّfَّاثَاتِ fِي الْعُقَدِ ، وَمِنْ شَرِّ حَاسِدٍ إِذَا حَسَدَ.",
+            "بِسْم. اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ. قُلْ أَعُوْذُ بِرَبِّ النَّاسِ ، مَلِكِ النَّاسِ ، إِلٰهِ النَّاسِ ، مِنْ شَرِّ الْوَسْوَاسِ الْخَنَّاسِ ، اَلَّذِيْ يُوَسْوِسُ fِيْ صُدُوْرِ النَّاسِ ، مِنَ الْجِنَّةِ وَالنَّاسِ.",
+            "اَللّٰهُمَّ أَنْتَ رَبِّيْ لَا إِلٰهَ إِلَّا أَنْتَ ، خَلَقْتَنِيْ وَأَنَا عَبْدُكَ ، وَأَنَا عَلَىٰ عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ ، أَعُوْذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ ، أَبُوْءُ لَكَ بِنِعْمَتِكَ عَلَيَّ وَأَبُوْءُ لَكَ بِذَنْبِيْ ، fَاغْfِرْ لِيْ fَإِنَّهُ لَا يَغْfِرُ الذُّنُوْبَ إِلَّا أَنْتَ.",
+            "اَللّٰهُمَّ إِنِّيْ أَعُوْذُ بِكَ مِنَ الْهَمِّ وَالْحَزَنِ ، وَأَعُوْذُ بِكَ مِنَ الْعَجْزِ وَالْكَسَلِ، وَأَعُوْذُ بِكَ مِنَ الْجُبْنِ وَالْبُخْلِ ، وَأَعُوْذُ بِكَ مِنْ غَلَبَةِ الدَّيْنِ وَقَهْرِ الرِّجَالِ.",
+            "اَللّٰهُمَّ إِنِّيْ أَسْأَلُكَ الْعafِيَةَ فِي الدُّنْيَا وَالْآخِرَةِ ، اَللّٰهُمَّ إِنِّيْ أَسْأَلُكَ الْعَفْو وَالْعَافِيَةَ فِيْ دِيْنِيْ وَدُنْيَايَ وَأَهْلِيْ وَمالِيْ ، اَللّٰهُمَّ اسْتُرْ عَوْرَاتِيْ وَآمِنْ رَوْعَاتِيْ ، اَللّٰهُمَّ احْfَظْنِيْ مِنْ بَيْنِ يَدَيَّ ، وَمِنْ خَلْfِيْ ، وَعَنْ يَّمِيْنِيْ ، وَعَنْ شِمَالِيْ ، وَمِنْ fَوْقِيْ ، وَأَعُوْذُ بِعَظَمَتِكَ أَنْ أُغْتَالَ مِنْ تَحْتِيْ.",
+            "اَللّٰهُمَّ عَالِمَ الْغَيْبِ وَالشَّهَادَةِ ، fَاطِرَ السَّمٰوَاتِ وَالْأَرْضِ ، رَبَّ kُلِّ شَيْءٍ وَمَلِيْكَهُ ، أَشْهَدُ أَنْ لَّا إِلٰهَ إِلَّا أَنْتَ ، أَعُوْذُ بِكَ مِنْ شَرِّ n fْسِيْ ، وَمِنْ شَرِّ الشَّيْطَانِ وَشِرْكِهِ ، وَأَنْ أَقْتَرِfَ عَلَىٰ n fْسِيْ سُوْءًا ، أَوْ أَجُرَّهُ إِلَىٰ مُسْلِمٍ.",
+            "يَا حَيُّ يَا قَيُّوْمُ ، بِرَحْمَتِكَ أَسْتَغِيْثُ ، أَصْلِحْ لِيْ شَأْنِيْ كُلَّهُ ، وَلَا تَكِلْنِيْ إِلَىٰ n fْسِيْ طَرْfَةَ عَيْنٍ.",
+            "اَللّٰهُمَّ مَا أَمْسَىٰ بِيْ مِنْ nِّعْمَةٍ أَوْ بِأَحَدٍ مِّنْ خَلْقِكَ ، fَمِنْكَ وَحْدَكَ لَا شَرِيْكَ لَكَ ، fَلَكَ الْحَمْدُ وَلَكَ الشُّكْرُ.",
+            "أَمْسَيْنَا عَلَىٰ fِطْرَةِ الْإِسْلَامِ ، وَعَلَىٰ كَلِمَةِ الْإِخْلَاصِ ، وَعَلَىٰ دِيْنِ nَبِيِّنَا مُحَمَّدٍ ، وَعَلَىٰ مِلَّةِ أَبِيْنَا إِبْرَاهِيْمَ حَنِيْfًا مُّسْلِمًا وَّمَا كَانَ مِنَ الْمُشْرِكِيْنَ.",
+            "أَمْسَيْتُ أُثْنِيْ عَلَيْكَ حَمْدًا ، وَأَشْهَدُ أَنْ لَّا إِلٰهَ إِلَّا اللّٰهُ.",
+            "أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلّٰهِ وَالْحَمْدُ لِلّٰهِ ، لَا إِلٰهَ إِلَّا اللّٰهُ وَحْدَهُ لَا شَرِيْكَ لَهُ ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ ، وَهو عَلَىٰ كُلِّ شَيْءٍ قَدِيْرٌ ، رَبِّ أَسْأَلُكَ خَيْرَ مَا fِيْ هٰذِهِ اللَّيْلَةِ وَخَيْرَ مَا بَعْدَهَا ، وَأَعُوْذُ بِكَ مِنْ شَرِّ مَا fِيْ هٰذِهِ اللَّيْلَةِ وَشرِّ مَا بَعْدَهَا ، رَبِّ أَعُوْذُ بِكَ مِنَ الْكَسَلِ وَسُوْءِ الْكِبَرِ ، رَبِّ أَعُوْذُ بِكَ مِنَ عَذَابٍ فِي النَّارِ وَعَذَابٍ فِي الْقَبْرِ.",
+            "أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلّٰهِ رَبِّ الْعَالَمِيْنَ ، اَللّٰهُمَّ إِنِّيْ أَسْأَلُكَ خَيْرَ هـٰذِهِ اللَّيْلَةِ ، fَتْحَهَا وَنَصْرَهَا وَنُوْرَهَا وَبَرَكَتَهَا وَهُدَاهَا ، وَأَعُوْذُ بِكَ مِنْ شَرِّ مَا fِيْهَا وَشرِّ مَا بَعْدَهَا.",
+            "اَللّٰهُمَّ إِنِّيْ أَمْسَيْتُ أُشْهِدُكَ وَأُشْهِد حَمَلَةَ عَرْشِكَ وَمَلَائِكَتَكَ وَجَمِيْعَ خَلْقِكَ ، أَنَّكَ أَنْتَ اللّٰهُ لَا إِلٰهَ إِلَّا أَنْتَ وَحْدَكَ لَا شَرِيْكَ لَكَ ، وَأَنَّ مُحَمَّدًا عَبْدُكَ وَرَسُوْلُكَ.",
+            "اَللّٰهُمَّ بِكَ أَمْسَيْنَا وَبِكَ أَصْبَحْنَا وَبِكَ nَحْيَا وَبِكَ nَمُوْتُ وَإِلَيْكَ الْمَصِيْرُ.",
+            "اَللّٰهُمَّ عَAFِنِيْ fِيْ بَدَنِيْ ، اَللّٰهُمَّ عَAFِنِيْ fِيْ سَمْعِيْ ، اَللّٰهُمَّ عَAFِنِيْ fِيْ بَصَرِيْ ، لَا إِلٰهَ إِلَّا أَنْتَ ، اَللّٰهُمَّ إِنِّيْ أَعُوْذُ بِكَ مِنَ الْkُfْرِ وَالْfَقْرِ، وأَعُوْذُ بِكَ مِنَ عَذَابِ الْقَبْرِ، لَا إِلٰهَ إِلَّا أَنْتَ.",
+            "حَسْبِيَ اللّٰهُ لَا إِلٰهَ إِلَّا هُوَ ، عَلَيْهِ تَوَكَّلْتُ ، وَهو رَبُّ الْعَرْشِ الْعَظِيْمِ.",
+            "رَضِيْتُ بِاللّٰهِ رَبًّا ، وَبِالْإِسْلَامِ دِيْنًا ، وَبِمُحَمَّدٍ nَّبِيًّا.",
+            "بِسْمِ اللّٰهِ الَّذِيْ لَا يَضُرُّ معَ اسْمِهِ شَيْءٌ fِي الْأَرْضِ وَلَا فِي السَّمَاء ، وَهو السَّمِيْعُ الْعَلِيْمُ.",
+            "سُبْحَانَ اللّٰهِ وَبِحَمْدِهِ.",
+            "لَا إِلٰهَ إِلَّا اللّٰهُ وَحْدَهُ لَا شَرِيْكَ لَهُ ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ ، وَهو عَلَىٰ كُلِّ شَيْءٍ قَدِيْرٌ.",
+            "سُبْحَانَ اللّٰهِ ، اَلْحَمْدُ لِلّٰهِ ، اَللّٰهُ أَكْبَرُ.",
+            "اَللّٰهُمَّ صَلِّ عَلَىٰ مُحَمَّدٍ وَّعَلَىٰ اٰلِ مُحَمَّدٍ ، كَمَا صَلّيْتَ عَلَىٰ إِبْرَاهِيْمَ وَعَلَىٰ اٰلِ إِبْرَاهِيْمَ ، إِنَّكَ حَمِيْدٌ مَّجِيْدٌ ، اَللّٰهُمَّ بَارِكْ عَلَىٰ مُحَمَّدٍ وَّعَلَىٰ اٰلِ مُحَمَّدٍ ، كَمَا بَارَكْتَ عَلَىٰ إِبْرَاهِيْمَ وَعَلَىٰ اٰلِ إِبْرَاهِيْمَ ، إِنَّكَ حَمِيْدٌ مَّجِيْدٌ.",
+            "أَعُوْذُ بِكَلِمَاتِ اللّٰهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ."
+        ],
+        trans: [
+            "I seek the protection of Allah from the accursed Shayṭān. Allah, there is no god worthy of worship but He, the Ever Living, The Sustainer of all. Neither drowsiness overtakes Him nor sleep. To Him Alone belongs whatever is in the heavens and whatever is on the earth. Who is it that can intercede with Him except with His permission? He knows what is before them and what will be after them, and they encompass not a thing of His knowledge except for what He wills. His Kursī extends over the heavens and the earth, and their preservation does not tire Him. And He is the Most High, the Magnificent. (2:255)",
+            "In the name of Allah, the All-Merciful, the Very Merciful. Say, He is Allah, the One, the Self-Sufficient Master, Who has not given birth and was not born, and to Whom no one is equal. (112)",
+            "In the name of Allah, the All-Merciful, the Very Merciful. Say, I seek protection of the Lord of the daybreak, from the evil of what He has created, and from the evil of the darkening night when it settles, and from the evil of the blowers in knots, and from the evil of the envier when he envies. (113)",
+            " In the name of Allah, the All-Merciful, the Very Merciful. Say, I seek protection of the Lord of mankind, the King of mankind, the God of mankind, from the evil of the whisperer who withdraws, who whispers in the hearts of mankind, whether they be Jinn or people. (114)",
+            "O Allah, You are my Lord. There is no god worthy of worship except You. You have created me, and I am Your slave, and I am under Your covenant and pledge (to fulfil it) to the best of my ability. I seek Your protection from the evil that I have done. I acknowledge the favours that You have bestowed upon me, and I admit my sins. Forgive me, for none forgives sins but You.",
+            "O Allah, I seek Your protection from anxiety and grief. I seek Your protection from inability and laziness. I seek Your protection from cowardice and miserliness, and I seek Your protection from being overcome by debt and being overpowered by men.",
+            "O Allah, I ask You for well-being in this world and the next. O Allah, I ask You for forgiveness and well-being in my religion, in my worldly affairs, in my family and in my wealth. O Allah, conceal my faults and calm my fears. O Allah, guard me from in front of me and behind me, from my right, and from my left, and from above me. I seek protection in Your Greatness from being unexpectedly destroyed from beneath me.",
+            "O Allah, Knower of the unseen and the seen, Creator of the heavens and the earth, the Lord and Sovereign of everything; I bear witness that there is no god worthy of worship but You. I seek Your protection from the evil of my own self, from the evil of Shayṭān and from the evil of polytheism to which he calls,and from inflicting evil on myself, or bringing it upon a Muslim.",
+            "O The Ever Living, The Sustainer of all. ; I seek assistance through Your mercy. Rectify all of my affairs and do not entrust me to myself for the blink of an eye.",
+            "O Allah, all the favours that I or anyone from Your creation has received in the evening, are from You Alone. You have no partner. To You Alone belong all praise and all thanks.",
+            "We have entered the evening upon the natural religion of Islam, the statement of pure faith (i.e. Shahādah), the religion of our Prophet Muhammad ﷺ and upon the way of our father Ibrāhīm, who turned away from all that is false, having surrendered to Allah, and he was not of the polytheists. (Nasā’ī)",
+            "I have entered the evening praising You, and I bear witness that there is no god worthy of worship but Allah.",
+            "We have entered the evening and at this very time the whole kingdom belongs to Allah. All praise is due to Allah. There is no god worthy of worship except Allah, the One; He has no partner with Him. The entire kingdom belongs solely to Him, to Him is all praise due, and He is All-Powerful over everything. My Lord, I ask You for the good that is in this night and the good that follows it, and I seek Your protection from the evil that is in this night and from the evil that follows it. My Lord, I seek Your protection from laziness and the misery of old age. My Lord, I seek Your protection from the torment of the Hell-fire and the punishment of the grave.",
+            "We have entered the evening and at this very time the whole kingdom belongs to Allah, Lord of the Worlds. O Allah, I ask You for the goodness of this day/night: its victory, its help, its light, and its blessings and guidance. I seek Your protection from the evil that is in it and from the evil that follows it.",
+            "O Allah, I have entered the evening, and I call upon You, the bearers of Your Throne, Your angels and all creation, to bear witness that surely You are Allah. There is no god worthy of worship except You Alone. You have no partners, and that Muḥammad ﷺ is Your slave and Your Messenger.",
+            "O Allah, by You we have entered the evening and by You we enter upon the morning. By You, we live and we die, and to You is the resurrection/return.",
+            "O Allah, grant me well-being in my body. O Allah, grant me well-being in my hearing. O Allah, grant me well-being in my sight. There is no god worthy of worship except You. O Allah, I seek Your protection from disbelief and poverty and I seek Your protection from the punishment of the grave. There is no god worthy of worship except You.",
+            "Allah is sufficient for me. There is no god worthy of worship except Him. I have placed my trust in Him only and He is the Lord of the Magnificent Throne.",
+            "I am pleased with Allah as my Lord, with Islām as my religion and with Muḥammad ﷺ as my Prophet.",
+            "In the Name of Allah, with whose Name nothing can harm in the earth nor in the sky. He is The All-Hearing and All-Knowing.",
+            "Allah is free from imperfection, and all praise is due to Him.",
+            "There is no god worthy of worship except Allah. He is Alone and He has no partner whatsoever. To Him Alone belong all sovereignty and all praise. He is over all things All-Powerful.",
+            "Allah is free from imperfection. All praise be to Allah. Allah is the Greatest.",
+            "O Allah, honour and have mercy upon Muhammad and the family of Muhammad as You have honoured and had mercy upon Ibrāhīm and the family of Ibrāhīm. Indeed, You are the Most Praiseworthy, the Most Glorious. O Allah, bless Muhammad and the family of Muhammad as You have blessed Ibrāhīm and the family of Ibrāhīm. Indeed, You are the Most Praiseworthy, the Most Glorious.",
+            "I seek protection in Allah’s perfect words from the evil of whatever He has created."
+        ],
         reps: [1, 3, 3, 3, 1, 1, 1, 1, 1, 1, 1, 3, 1, 1, 4, 1, 3, 7, 3, 3, 100, 100, 100, 10, 100]
     },
     {
         nameEn: "Sleep", nameAr: "النوم",
-        arabic: ["أَعُوْذُ بِاللّٰهِ مِنَ الشَّيْطَانِ الرَّجِيْمِ...","أَعُوْذُ بِاللّٰهِ مِنَ الشَّيْطَانِ الرَّجِيْمِ. اٰمَنَ الرَّسُوْلُ...","بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ. قُلْ يَـٰٓأَيُّهَا الْكَافِرُوْنَ...","بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ. قُلْ هُوَ اللّٰهُ أَحَدٌ...","بِسْم. اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ. قُلْ أَعُوْذُ بِرَبِّ الْfَلَقِ...","بِسْم. اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ. قُلْ أَعُوْذُ بِرَبِّ النَّاسِ...","اَللّٰهُ أَكْبَرُ","اَلْحَمْدُ لِلّٰهِ","سُبْحَانَ اللّٰهِ","بِاسْمِكَ رَبِّيْ وَضَعْتُ جَنْبِيْ...","اَللّٰهُمَّ قِنِيْ عَذَابَكَ...","اَلْحَمْدُ لِلّٰهِ الَّذِيْ أَطْعَمَنَا...","اَللّٰهُمَّ عَالِمَ الْغَيْبِ...","اَللّٰهُمَّ رَبَّ السَّمٰوَاتِ...","اَللّٰهُمَّ إِنِّيْ أَعُوْذُ بِوَجْهِكَ...","اَللّٰهُمَّ إِنَّكَ خَلَقْتَ n fْسِيْ...","بِسْمِ اللّٰهِ وَضَعْتُ جَنْبِيْ...","اَلْحَمْدُ لِلّٰهِ الَّذِيْ كَfَانِيْ...","اَللّٰهُمَّ بِاسْمِكَ أَمُوْتُ وَأَحْيَا.","لَا إِلٰهَ إِلَّا اللّٰهُ وَحْدَهُ لَا شَرِيْكَ لَهُ...","اَللّٰهُمَّ أَسْلَمْتُ n fْسِيْ إِلَيْكَ..."],
-        trans: ["Ayat al-Kursi...","Amanar-Rasul...","Surah Kafirun...","Surah Ikhlas...","Surah Falaq...","Surah Nas...","Allah is the Greatest","All praise...","Allah is free...","In Your Name...","O Allah, protect me...","All praise to Allah Who fed...","O Allah, Knower...","O Allah, Lord of Heavens...","O Allah, I seek protection...","O Allah, You created...","In the Name of Allah...","All praise to Allah Who sufficed...","In Your Name...","There is no god but Allah...","O Allah, I submit..."],
+        arabic: [
+            "أَعُوْذُ بِاللّٰهِ مِنَ الشَّيْطَانِ الرَّجِيْمِ. اَللّٰهُ لَآ إِلٰهَ إِلَّا هُوَ الْحَىُّ الْقَيُّومُ ، لَا تَأْخُذُهُۥ سِنَةٌ وَّلَا نَوْمٌ ، لَهُ مَا fِى السَّمٰـوٰتِ وَمَا fِى الْأَرْضِ ، مَنْ ذَا الَّذِىْ يَشْfَعُ عِندَهُٓ إِلَّا بِإِذْنِهِۦ ، يَعْلَمُ مَا بَيْنَ أَيْدِيْهِمْ وَمَا خَلْfَهُمْ ، وَلَا يُحِيْطُوْنَ بِشَىْءٍ مِّنْ عِلْمِهِٓ إِلَّا بِمَا شَآءَ ، وَسِعَ كُرْسِيُّهُ السَّمٰـوٰتِ وَالْأَرْضَ، وَلَا يَئُوْدُهُۥ حِfْظُهُمَا ، وَهو الْعَلِىُّ الْعَظِيْمُ.",
+            "أَعُوْذُ بِاللّٰهِ مِنَ الشَّيْطَانِ الرَّجِيْمِ. اٰمَنَ الرَّسُوْلُ بِمَآ أُنْزِلَ إِلَيْهِ مِنْ رَّبِّهِ وَالْمُؤْمِنُوْنَ ، كُلٌّ اٰمَنَ بِاللّٰهِ وَمَلآئِكَتِهِ وَكُتُبِهِ وَرُسُلِهِ ، لَا nُ fَرِّقُ بَيْنَ أَحَدٍ مِّنْ رُّسُلِهِ ، وَقَالُوْا سَمِعْنَا وَأَطَعْنَا غُ fْرَانَكَ رَبَّنَا وَإِلَيْكَ الْمَصِيْرُ. لَا يُكَلِّ fُ اللّٰهُ n fْسًا إِلَّا وُسْعَهَا ، لَهَا مَا كَسَبَتْ وَعَلَيْهَا مَا اكْتَسَبَتْ ، رَبَّنَا لَا تُؤَاخِذْنَآ إِنْ nَّسِينَآ أَوْ أَخْطَأْنَا ، رَبَّنَا وَلَا تَحْمِلْ عَلَيْنَآ إِصْرًا كَمَا حَمَلْتَهُ عَلَى الَّذِيْنَ مِنْ قَبْلِنَا ، رَبَّنَا وَلَا تُحَمِّلْنَا مَا لَا طَاقَةَ لَنَا بِهِ ، وَاعْ fُ عَنَّا وَاغْ fِرْ لَنَا وَارْحَمْنَا ، أَنْتَ مَوْلَانَا fَانْصُرْنَا عَلَى الْقَوْمِ الْكٰـ fِرِيْنَ.",
+            "بِسْم. اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ. قُلْ يَـٰٓأَيُّهَا الْكَافِرُوْنَ ، لَآ أَعْبُدُ مَا تَعْبُدُوْنَ ، وَلَآ أَنْتُمْ عَابِدُوْنَ مَآ أَعْبُدُ ، وَلَآ أَنَا عَابِدٌ مَّا عَبَدْتُّمْ ، وَلَآ أَنْتُم عَابِدُوْنَ مَآ أَعْبُدُ ، لَكُمْ دِيْنُكُمْ وَلِيَ دِيْنِ.",
+            "بِسْم. اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ. قُلْ هُوَ اللّٰهُ أَحَدٌ ، اَللّٰهُ الصَّمَدُ ، لَمْ يَلِدْ وَلَمْ يُوْلَدْ ، وَلَمْ يَكُنْ لَّهُ كُ fُوًا أَحَدٌ.",
+            "بِسْم. اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ. قُلْ أَعُوْذُ بِرَبِّ الْ fَلَقِ ، مِنْ شَرِّ مَا خَلَقَ ، وَمِنْ شَرِّ غَاسِقٍ إِذَا وَقَبَ ، وَمِنْ شَرِّ nَّ fَّاثَاتِ fِي الْعُقَدِ ، وَمِنْ شَرِّ حَاسِدٍ إِذَا حَسَدَ.",
+            "بِسْم. اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ. قُلْ أَعُوْذُ بِرَبِّ nالنَّاسِ ، مَلِكِ النَّاسِ ، إِلٰهِ nالنَّاسِ ، مِنْ شَرِّ الْوَسْوَاسِ الْخَنَّاسِ ، اَلَّذِيْ يُوَسْوِسُ fِيْ صُدُوْرِ nالنَّاسِ ، مِنَ الْجِنَّةِ nوَالنَّاسِ.",
+            "اَللّٰهُ أَكْبَرُ",
+            "اَلْحَمْدُ لِلّٰهِ",
+            "سُبْحَانَ اللّٰهِ",
+            "بِاسْمِكَ رَبِّيْ وَضَعْتُ جَنْبِيْ ، وَبِكَ أَرْ fَعُهُ ، إِنْ أَمْسَكْتَ n fْسِيْ fارْحَمْهَا ، وَإِنْ أَرْسَلْتَهَا fاحْ fَظْهَا بِمَا تَحْ fَظُ بِهِ عِبَادَكَ الصَّالِحِيْنَ.",
+            "اَللّٰهُمَّ قِنِيْ عَذَابَكَ يَوْمَ تَبْعَثُ عِبَادَكَ.",
+            "اَلْحَمْدُ لِلّٰهِ الَّذِيْ أَطْعَمَنَا وَسَقَانَا ، وَكَ fَانَا ، وَآوَانَا ، fَكَمْ مِّمَّنْ لَا كَ AFِيَ لَهُ وَلَا مُؤْوِيَ.",
+            "اَللّٰهُمَّ عَالِمَ الْغَيْبِ وَالشَّهَادَةِ ، fَاطِرَ السَّمٰوَاتِ وَالْأَرْضِ ، رَبَّ kُلِّ شَيْءٍ وَمَلِيْكَهُ ، أَشْهَدُ أَنْ لَّا إِلٰهَ إِلَّا أَنْتَ ، أَعُوْذُ بِكَ مِنْ شَرِّ nfْسِيْ ، وَمِنْ شَرِّ الشَّيْطَانِ وَشِرْكِهِ ، وَأَنْ أَقْتَرِ fَ عَلَىٰ n fْسِيْ سُوْءًا ، أَوْ أَجُرَّهُ إِلَىٰ مُسْلِمٍ.",
+            "اَللّٰهُمَّ رَبَّ السَّمٰوَاتِ وَرَبَّ الأَرْضِ وَرَبَّ الْعَرْشِ الْعَظِيْمِ ، رَبَّنَا وَرَبَّ kُلِّ شَيْءٍ ، fَالِقَ الْحَبِّ وَالنَّوَىٰ ، وَمُنْزِلَ التَّوْرَاةِ وَالْإِنجِيْلِ وَالْ fُرْقَانِ ، أَعُوْذُ بِكَ مِنْ شَرِّ kُلِّ شَيْءٍ أَنْتَ آخِذٌ بِنَاصِيَتِهِ ، اَللّٰهُمَّ أَنْتَ الْأَوَّلُ fَلَيْسَ قَبْلَكَ شَيْءٌ ، وَأَنْتَ الْآخِرُ fَلَيْسَ بَعْدَكَ شَيْءٌ ، وَأَنْتَ الظَّاهِرُ fَلَيْسَ fَوْقَكَ شَيْءٌ ، وَأَنْتَ الْبَاطِنُ fَلَيْسَ دُوْنَكَ شَيْءٌ ، اِقْضِ عَنَّا الدَّيْنَ وَأَغْنِنَا مِنَ الْ fَقْرِ.",
+            "اَللّٰهُمَّ إِنِّيْ أَعُوْذُ بِوَجْهِكَ الْكَرِيْمِ ، وَكَلِمَاتِكَ التَّامَّةِ مِنْ شَرِّ مَا أَنْتَ آخِذٌ بِنَاصِيَتِهِ ، اَللّٰهُمَّ أَنْتَ تَكْشِ fُ الْمَغْرَمَ وَالْمَأْثَمَ ، اَللّٰهُمَّ لَا يُهْزَمُ جُنْدُكَ ، وَلَا يُخْلَ fُ وَعْدُكَ ، وَلَا يَنْ fَعُ ذَا الْجَدِّ مِنْكَ الْجَدُّ ، سُبْحَانَكَ وَبِحَمْدِكَ.",
+            "اَللّٰهُمَّ إِنَّكَ خَلَقْتَ n fْسِيْ وَأَنْتَ تَوَ fَّاهَا ، لَكَ مَمَاتُهَا وَمَحْيَاهَا ، إِنْ أَحْيَيْتَهَا fاحْ fَظْهَا ، وَإِنْ أَمَتَّهَا fاغْ fِرْ لَهَا ، اَللّٰهُمَّ إِنِّيْ أَسْأَلُكَ الْع AFِيَة.",
+            "بِسْمِ اللّٰهِ وَضَعْتُ جَنْبِيْ ، اَللّٰهُمَّ اغْ fِرْ لِيْ ذَنْبِيْ ، وَأَخْسِئْ شَيْطَانِيْ ، وَ fُكَّ رِهَانِيْ ، وَاجْععلْنِيْ fِي النَّدِيِّ الْأَعْلَىٰ.",
+            "اَلْحَمْدُ لِلّٰهِ الَّذِيْ كَ fَانِيْ وَآوَانِيْ ، اَلْحَمْدُ لِلّٰهِ الَّذِيْ أَطْعَمَنِيْ وَسَقَانِيْ ، اَلْحَمْدُ لِلّٰهِ الَّذِيْ مَنَّ عَلَيَّ fَأ fْضَلَ ، اَللّٰهُمَّ إِنِّيْ أَسْأَلُكَ بِعِزَّتِكَ أَنْ تُنَجِّيَنِيْ مِنَ النَّارِ.",
+            "اَللّٰهُمَّ بِاسْمِكَ أَمُوْتُ وَأَحْيَا.",
+            "لَا إِلٰهَ إِلَّا اللّٰهُ وَحْدَهُ لَا شَرِيْكَ لَهُ ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ ، وَهو عَلَىٰ kُلِّ شَيْءٍ قَدِيْرٌ ، وَلَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللّٰهِ ، سُبْحَانَ اللّٰهِ وَالْحَمْدُ لِلّٰهِ وَلَا إِلٰهَ إِلَّا اللّٰهُ وَاللّٰهُ أَكْبَرُ.",
+            "اَللّٰهُمَّ أَسْلَمْتُ n fْسِيْ إِلَيْكَ ، وَ fَوَّضْتُ أَمْرِيْ إِلَيْكَ ، وَوَجَّهْتُ وَجْهِيْ إِلَيْكَ ، وَأَلْجَاْتُ ظَهْرِيْ إِلَيْكَ ، رَغْبَةً وَرَهْبَةً إِلَيْكَ ، لَا مَلْجأَ وَلَا مَنْجَا مِنْكَ إِلَّا إِلَيْكَ ، آمَنْتُ بِكِتَابِكَ الَّذِيْ أَنْزَلْتَ وَبِنَبِيِّكَ الَّذِيْ أَرْسَلْتَ."
+        ],
+        trans: [
+            "I seek the protection of Allah from the accursed Shayṭān. Allah, there is no god worthy of worship but He, the Ever Living, The Sustainer of all. Neither drowsiness overtakes Him nor sleep. To Him Alone belongs whatever is in the heavens and whatever is on the earth. Who is it that can intercede with Him except with His permission? He knows what is before them and what will be after them, and they encompass not a thing of His knowledge except for what He wills. His Kursī extends over the heavens and the earth, and their preservation does not tire Him. And He is the Most High, the Magnificent. (2:255)",
+            "I seek the protection of Allah from the accursed Shayṭān. The Messenger has believed in what was revealed to him from his Lord, and [so have] the believers. All of them have believed in Allah, His angels, His books and His messengers, [saying], “We make no distinction between any of His Messengers.” And they say, “We hear and we obey. We seek Your forgiveness, our Lord, and to You is the final destination.” Allah does not charge a soul except [with that within] its capacity. It will have [the consequence of] what [good] it has gained, and it will bear [the consequence of] what [evil] it has earned. “Our Lord, do not impose blame upon us if we have forgotten or erred. Our Lord, and lay not upon us a burden like that which You laid upon those before us. Our Lord, and burden us not with that which we have no ability to bear. And pardon us; and forgive us; and have mercy upon us. You are our protector, so give us victory over the disbelieving people.” (2:285-6)",
+            "In the name of Allah,the All-Merciful, the Very Merciful. Say: O disbelievers, I worship not that which you worship. And nor do you worship that which I worship. And I shall not worship that which you worship. Nor will you worship that which I worship. To you be your religion, and to me my religion. (109)",
+            "In the name of Allah, the All-Merciful, the Very Merciful. Say, He is Allah, the One, the Self-Sufficient Master, Who has not given birth and was not born, and to Whom no one is equal. (112)",
+            "In the name of Allah, the All-Merciful, the Very Merciful. Say, I seek protection of the Lord of the daybreak, from the evil of what He has created, and from the evil of the darkening night when it settles, and from the evil of the blowers in knots, and from the evil of the envier when he envies. (113)",
+            " In the name of Allah, the All-Merciful, the Very Merciful. Say, I seek protection of the Lord of mankind, the King of mankind, the God of mankind, from the evil of the whisperer who withdraws, who whispers in the hearts of mankind, whether they be Jinn or people. (114)",
+            "Allah is the Greatest",
+            "All praise is for Allah",
+            "Allah is free from imperfection",
+            "In Your Name my Lord, I lie down, and in Your Name, I rise. If You take my soul away then have mercy upon it, and if You return my soul then protect it with what you protect Your righteous servants with.",
+            "O Allah, protect me from Your punishment on the day You resurrect Your servants.",
+            "All praise is for Allah, Who provided us food and drink and Who sufficed us and has sheltered us; for how many have none to suffice them or shelter them.",
+            "O Allah, Knower of the unseen and the seen, Creator of the heavens and the earth, Lord and Sovereign of everything; I bear witness that there is no god but You. I seek Your protection from the evil of my own self, from the evil of Shaytān and from the evil of polytheism to which he calls, and from inflicting evil on myself, or bringing it upon a Muslim.",
+            "O Allah, Lord of the heavens, Lord of the Magnificent Throne, our Lord and Lord of all things, Splitter of the seed and the date stone, Revealer of the Torah, the Injīl and the Criterion (Qur’ān); I seek Your protection from the evil of every thing You hold by the forehead. You are the First and there is nothing before You. You are the Last and there is nothing after You. You are the Most High and there is nothing above You. You are the Most Near and nothing is closer than You; settle our debts for us and spare us from poverty.",
+            "O Allah, I seek protection by Your Noble Countenance and by Your perfect words from the evil of all that You hold by the forehead. O Allah, it is You who removes debt and sin. O Allah, Your army is never defeated and Your promise is never broken. The wealth of the wealthy does not avail them against You. You are free from imperfection, and to You belongs all praise.",
+            "O Allah, verily You have created my soul and You shall take its life. To You Alone belongs its life and death. If You keep my soul alive then protect it, and if You take it away, then forgive it. O Allah, I ask You to grant me well-being.",
+            "In the Name of Allah, I lie down. O Allah, forgive my sins, ward off from me my shaytān, free me from my obligations (to others) and enter me into the loftiest assembly (of angels).",
+            "All praise is for Allah Who has sufficed me and given me refuge. All praise is for Allah Who has fed me and given me drink. All praise is for Allah Who has been gracious to me and showered favours on me. O Allah, I ask You by Your Glory, save me from the Hell-Fire. (Ḥākim)",
+            "O Allah, solely in Your Name I die and I live.",
+            "There is no god but Allah. He is Alone and He has no partner whatsoever. To Him Alone belong all sovereignty and all praise. He is over all things All-Powerful. There is no power (in averting evil) or strength (in attaining good) except through Allah. Allah is free from imperfection, and all praise is for Allah. There is no god but Allah and Allah is the Greatest.",
+            "O Allah, I submit my soul unto You, and I entrust my affair unto You, and I turn my face towards You, and I totally rely on You, in hope and fear of You. Verily there is no refuge or safe haven from You except with You. I believe in Your Book which You have revealed and in Your Prophet whom You have sent."
+        ],
         reps: [1, 1, 1, 3, 3, 3, 34, 33, 33, 1, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
     }
 ];
 
-// NOTE: Please paste your complete text strings into the arrays above.
-
 let currentCat = 0, currentIndex = 0, currentCount = 0, lang = 'ar', favMode = false;
-let favorites = JSON.parse(localStorage.getItem('azkar_favs_v3')) || [];
+let favorites = JSON.parse(localStorage.getItem('azkar_favs_v4')) || [];
 
 window.onload = function() {
     autoSelectByTime();
@@ -315,7 +469,7 @@ function autoSelectByTime() {
 }
 
 function getActiveData() {
-    if (favMode) return favorites.length > 0 ? favorites : [{ arabic: "المفضلة فارغة", trans: "Favorites are empty", reps: 1 }];
+    if (favMode) return favorites.length > 0 ? favorites : [{ arabic: "قائمة المفضلة فارغة", trans: "Favorites list is empty", reps: 1 }];
     return azkarData[currentCat].arabic.map((a, i) => ({
         arabic: a, trans: azkarData[currentCat].trans[i], reps: azkarData[currentCat].reps[i]
     }));
@@ -330,14 +484,14 @@ function render() {
     document.getElementById('repeatVal').innerText = getRepText(item.reps, lang);
     document.getElementById('circleCount').innerText = currentCount;
 
-    // Favorite Status
-    const isFav = favorites.some(f => f.arabic === item.arabic);
-    document.getElementById('btnFav').classList.toggle('is-fav', isFav);
+    // Favorited Status logic
+    const isSaved = favorites.some(f => f.arabic === item.arabic);
+    document.getElementById('btnFav').classList.toggle('is-fav', isSaved);
 
-    // UI Translations
+    // Dynamic UI Translation
     const ui = {
-        ar: { col:"الألوان", set:"الإعدادات", cpy:"نسخ النص", shr:"مشاركة", fav:"المفضلة", ref:"تحديث", s1:"نقرة", s2:"هز", s3:"تلقائي", s4:"حجم" },
-        en: { col:"Colors", set:"Settings", cpy:"Copy Text", shr:"Share", fav:"Favorite", ref:"Refresh", s1:"Click", s2:"Vibe", s3:"Auto", s4:"Size" }
+        ar: { col:"الألوان", set:"الإعدادات", cpy:"نسخ", shr:"مشاركة", fav:"مفضلة", ref:"تحديث", s1:"نقرة", s2:"هز", s3:"تلقائي", s4:"حجم" },
+        en: { col:"Colors", set:"Settings", cpy:"Copy", shr:"Share", fav:"Favorite", ref:"Refresh", s1:"Click", s2:"Vibe", s3:"Auto", s4:"Size" }
     }[lang];
 
     document.getElementById('mCol').innerText = ui.col;
@@ -349,18 +503,18 @@ function render() {
     document.getElementById('s1').innerText = ui.s1; document.getElementById('s2').innerText = ui.s2;
     document.getElementById('s3').innerText = ui.s3; document.getElementById('s4').innerText = ui.s4;
 
+    // Hover Color Logic
     document.querySelectorAll('.color-dot').forEach(d => d.title = lang === 'ar' ? d.dataset.ar : d.dataset.en);
+
     updateRing(currentCount, item.reps);
-    document.getElementById('categoryTabs').style.display = favMode ? 'none' : 'grid';
+    document.getElementById('catTabs').style.display = favMode ? 'none' : 'grid';
+    document.getElementById('favViewBtn').classList.toggle('active', favMode);
     document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', i === currentCat));
     for(let i=0; i<4; i++) document.getElementById('t'+i).innerText = (lang === 'ar') ? azkarData[i].nameAr : azkarData[i].nameEn;
 }
 
 function toggleFavMode() {
-    favMode = !favMode;
-    currentIndex = 0; currentCount = 0;
-    document.getElementById('headerFavBtn').classList.toggle('active', favMode);
-    render();
+    favMode = !favMode; currentIndex = 0; currentCount = 0; render();
 }
 
 function toggleFav() {
@@ -369,15 +523,15 @@ function toggleFav() {
     if (favMode && favorites.length === 0) return;
     const idx = favorites.findIndex(f => f.arabic === item.arabic);
     if (idx > -1) favorites.splice(idx, 1); else favorites.push(item);
-    localStorage.setItem('azkar_favs_v3', JSON.stringify(favorites));
+    localStorage.setItem('azkar_favs_v4', JSON.stringify(favorites));
     if (favMode) { currentIndex = 0; currentCount = 0; }
     render();
 }
 
 function copySmart() {
     const data = getActiveData();
-    const text = (lang === 'ar') ? data[currentIndex].arabic : data[currentIndex].trans;
-    navigator.clipboard.writeText(text);
+    const txt = (lang === 'ar') ? data[currentIndex].arabic : data[currentIndex].trans;
+    navigator.clipboard.writeText(txt);
     const btn = document.getElementById('btnCpy');
     const old = btn.innerHTML; btn.innerHTML = '✅';
     setTimeout(() => btn.innerHTML = old, 1000);
@@ -409,7 +563,7 @@ function incrementCount() {
 
 function next() { currentIndex = (currentIndex + 1) % getActiveData().length; currentCount = 0; render(); }
 function prev() { currentIndex = (currentIndex - 1 + getActiveData().length) % getActiveData().length; currentCount = 0; render(); }
-function changeCat(i) { favMode = false; document.getElementById('headerFavBtn').classList.remove('active'); currentCat = i; currentIndex = 0; currentCount = 0; render(); }
+function changeCat(i) { favMode = false; currentCat = i; currentIndex = 0; currentCount = 0; render(); }
 function toggleLang() { lang = (lang === 'ar') ? 'en' : 'ar'; document.getElementById('bodyNode').className = 'lang-' + lang; render(); }
 function toggleMenu(id) { document.getElementById(id).classList.toggle('show'); }
 function changeFontSize(v) { document.documentElement.style.setProperty('--base-font-size', v + 'px'); }
