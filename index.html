@@ -110,20 +110,17 @@
             transition: all 0.3s ease;
         }
 
-        /* --- FIXED COLORS --- */
-        /* Light mode: Always use accent color */
+        /* --- COLORS FIXED --- */
         body.light-mode .arabic,
         body.light-mode .translation {
             color: var(--accent) !important;
         }
-        /* Dark mode: Always use white */
         body:not(.light-mode) .arabic,
         body:not(.light-mode) .translation {
             color: var(--text) !important;
         }
 
-        /* --- FIXED BOLDNESS --- */
-        /* Active language is bold, other is normal */
+        /* --- BOLDNESS FIXED --- */
         body.lang-ar .arabic { font-weight: 700; }
         body.lang-ar .translation { font-weight: 400; }
         body.lang-en .arabic { font-weight: 400; }
@@ -187,7 +184,6 @@
         }
         .menu-popover.show { visibility: visible; opacity: 1; }
         
-        /* Row for "Colors" title and theme toggle */
         .menu-header-row {
             display: flex;
             justify-content: space-between;
@@ -234,7 +230,6 @@
         .color-dot.active { border-color: var(--text); }
         .color-dot.active::after { content: '✓'; color: var(--text); font-size: 12px; font-weight: bold; }
 
-        /* SETTINGS UI */
         .settings-rows { display: flex; flex-direction: column; gap: 12px; }
         .setting-row { display: flex; justify-content: space-between; align-items: center; color: var(--text); font-size: 13px; font-weight: 600; }
         .setting-label { display: flex; align-items: center; gap: 8px; }
@@ -254,7 +249,6 @@
         .action-btn svg { width: 22px; height: 22px; fill: white; }
         .action-btn:hover { filter: brightness(1.2); }
 
-        /* Tooltip */
         .action-btn::after {
             content: attr(data-tooltip);
             position: absolute; bottom: 50px; background: #333; color: white;
@@ -275,7 +269,6 @@
         .main-display::-webkit-scrollbar { width: 4px; }
         .main-display::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
 
-        /* Share Popup - solid background, accent border */
         .share-popup {
             position: absolute; bottom: 100px; right: 20px;
             background: var(--popup-bg); border-radius: 28px; padding: 20px;
@@ -364,7 +357,6 @@
     </div>
 
     <div class="menu-popover" id="unifiedMenu">
-        <!-- Row: Colors title + theme toggle -->
         <div class="menu-header-row">
             <div class="menu-section-title"><span>🎨</span><span id="menuTitleColors">Colors</span></div>
             
@@ -404,7 +396,6 @@
         </div>
     </div>
 
-    <!-- Share Popup -->
     <div id="sharePopup" class="share-popup">
         <div class="share-popup-title" id="shareTitle">Share Dhikr</div>
         <div class="share-grid" id="shareGrid"></div>
@@ -412,7 +403,6 @@
 </div>
 
 <script>
-// ==================== ORIGINAL AZKAR DATA (fully preserved) ====================
 const azkarData = [
     {
         nameEn: "Waking Up", nameAr: "الاستيقاظ",
@@ -436,7 +426,7 @@ const azkarData = [
         nameEn: "Morning", nameAr: "الصباح",
         arabic: [
             "أَعُوْذُ بِاللّٰهِ مِنَ الشَّيْطَانِ الرَّجِيْمِ. اَللّٰهُ لَآ إِلٰهَ إِلَّا هُوَ الْحَىُّ الْقَيُّوْمُ ، لَا تَأْخُذُهُۥ سِنَةٌ وَّلَا نَوْمٌ ، لَهُ مَا فِى السَّمٰـوٰتِ وَمَا فِى الْأَرْضِ ، مَنْ ذَا الَّذِىْ يَشْفَعُ عِنْدَهُ إِلَّا بِإِذْنِهِۦ ، يَعْلَمُ مَا بَيْنَ أَيْدِيْهِمْ وَمَا خَلْفَهُمْ ، وَلَا يُحِيْطُوْنَ بِشَىْءٍ مِّنْ عِلْمِهِٓ إِلَّا بِمَا شَآءَ ، وَسِعَ كُرْسِيُّهُ السَّمٰـوٰتِ وَالْأَرْضَ، وَلَا يَئُوْدُهُۥ حِفْظُهُمَا ، وَهو الْعَلِىُّ الْعَظِيْمُ.",
-            "بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ. قُلْ هُوَ اللّٰهُ أَحَدٌ ، اَللّٰهُ الصَّمَدُ ، لَمْ يَلِدْ وَلَمْ يُوْلَدْ ، وَلَمْ يَكُنْ لَّهُ كُفُوًا أَحَدٌ.",
+            "بِسْم. اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ. قُلْ هُوَ اللّٰهُ أَحَدٌ ، اَللّٰهُ الصَّمَدُ ، لَمْ يَلِدْ وَلَمْ يُوْلَدْ ، وَلَمْ يَكُنْ لَّهُ كُفُوًا أَحَدٌ.",
             "بِسْم. اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ. قُلْ أَعُوْذُ بِرَبِّ الْفَلَقِ ، مِنْ شَرِّ مَا خَلَقَ ، وَمِنْ شَرِّ غَاسِقٍ إِذَا وَقَبَ ، وَمِنْ شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ ، وَمِنْ شَرِّ حَاسِدٍ إِذَا حَسَدَ.",
             "بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ. قُلْ أَعُوْذُ بِرَبِّ النَّاسِ ، مَلِكِ النَّاسِ ، إِلٰهِ النَّاسِ ، مِنْ شَرِّ الْوَسْوَاسِ الْخَنَّاسِ ، اَلَّذِيْ يُوَسْوِسُ فِيْ صُدُوْرِ النَّاسِ ، مِنَ الْجِنَّةِ وَالنَّاسِ.",
             "اَللّٰهُمَّ أَنْتَ رَبِّيْ لَا إِلٰهَ إِلَّا أَنْتَ ، خَلَقْتَنِيْ وَأَنَا عَبْدُكَ ، وَأَنَا عَلَىٰ عَهْدِكَ وَوَعْدِكَ مَا اسْتَطعتُ ، أَعُوْذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ ، أَبُوْءُ لَكَ بِنِعْمَتِكَ عَلَيَّ وَأَبُوْءُ لَكَ بِذَنْبِيْ ، فَاغْفِرْ لِيْ فَإِنَّهُ لَا يَغْفِرُ الذُّنُوْبَ إِلَّا أَنْتَ.",
@@ -463,32 +453,32 @@ const azkarData = [
             "سُبْحَانَ اللّٰهِ وَبِحَمْدِهِ ، عَدَدَ خَلْقِهِ ، وَرِضا نَفْسِهِ ، وَزِنَةَ عَرْشِهِ ، وَمِدَادَ كَلِمَاتِهِ."
         ],
         trans: [
-            "I seek the protection of Allah from the accursed Shayṭān. Allah, there is no god worthy of worship but He, the Ever Living, The Sustainer of all. Neither drowsiness overtakes Him nor sleep. To Him Alone belongs whatever is in the heavens and whatever is on the earth. Who is it that can intercede with Him except with His permission? He knows what is before them and what will be after them, and they encompass not a thing of His knowledge except for what He wills. His Kursī extends over the heavens and the earth, and their preservation does not tire Him. And He is the Most High, the Magnificent. (2:255)",
-            "In the name of Allah, the All-Merciful, the Very Merciful. Say, He is Allah, the One, the Self-Sufficient Master, Who has not given birth and was not born, and to Whom no one is equal. (112)",
-            "In the name of Allah, the All-Merciful, the Very Merciful. Say, I seek protection of the Lord of the daybreak, from the evil of what He has created, and from the evil of the darkening night when it settles, and from the evil of the blowers in knots, and from the evil of the envier when he envies. (113)",
-            " In the name of Allah, the All-Merciful, the Very Merciful. Say, I seek protection of the Lord of mankind, the King of mankind, the God of mankind, from the evil of the whisperer who withdraws, who whispers in the hearts of mankind, whether they be Jinn or people. (114)",
-            "O Allah, You are my Lord. There is no god worthy of worship except You. You have created me, and I am Your slave, and I am under Your covenant and pledge (to fulfil it) to the best of my ability. I seek Your protection from the evil that I have done. I acknowledge the favours that You have bestowed upon me, and I admit my sins. Forgive me, for none forgives sins but You.",
-            "O Allah, I seek Your protection from anxiety and grief. I seek Your protection from inability and laziness. I seek Your protection from cowardice and miserliness, and I seek Your protection from being overcome by debt and being overpowered by men.",
-            "O Allah, I ask You for well-being in this world and the next. O Allah, I ask You for forgiveness and well-being in my religion, in my worldly affairs, in my family and in my wealth. O Allah, conceal my faults and calm my fears. O Allah, guard me from in front of me and behind me, from my right, and from my left, and from above me. I seek protection in Your Greatness from being unexpectedly destroyed from beneath me.",
-            "O Allah, Knower of the unseen and the seen, Creator of the heavens and the earth, the Lord and Sovereign of everything; I bear witness that there is no god worthy of worship but You. I seek Your protection from the evil of my own self, from the evil of Shayṭān and from the evil of polytheism to which he calls,and from inflicting evil on myself, or bringing it upon a Muslim.",
-            "O The Ever Living, The Sustainer of all. ; I seek assistance through Your mercy. Rectify all of my affairs and do not entrust me to myself for the blink of an eye.",
-            "O Allah, all the favours that I or anyone from Your creation has received in the morning, are from You Alone. You have no partner. To You Alone belong all praise and all thanks.",
-            "We have entered the morning upon the natural religion of Islam, the statement of pure faith (i.e. Shahādah), the religion of our Prophet Muhammad ﷺ and upon the way of our father Ibrāhīm, who turned away from all that is false, having surrendered to Allah, and he was not of the polytheists.",
-            "I have entered the morning praising You, and I bear witness that there is no god worthy of worship but Allah.",
-            "We have entered the morning and at this very time the whole kingdom belongs to Allah. All praise is due to Allah. There is no god worthy of worship except Allah, the One; He has no partner with Him. The entire kingdom belongs solely to Him, to Him is all praise due, and He is All-Powerful over everything. My Lord, I ask You for the good that is in this day and the good that follows it, and I seek Your protection from the evil that is in this day and from the evil that follows it. My Lord, I seek Your protection from laziness and the misery of old age. My Lord, I seek Your protection from the torment of the Hell-fire and the punishment of the grave.",
-            "We have entered the morning and at this very time the whole kingdom belongs to Allah, Lord of the Worlds. O Allah, I ask You for the goodness of this day: its victory, its help, its light, and its blessings and guidance. I seek Your protection from the evil that is in it and from the evil that follows it.",
-            "O Allah, I have entered the morning, and I call upon You, the bearers of Your Throne, Your angels and all creation, to bear witness that surely You are Allah. There is no god worthy of worship except You Alone. You have no partners, and that Muḥammad ﷺ is Your slave and Your Messenger.",
-            "O Allah, by You we have entered the morning and by You we enter upon the evening. By You, we live and we die, and to You is the resurrection.",
-            "O Allah, grant me well-being in my body. O Allah, grant me well-being in my hearing. O Allah, grant me well-being in my sight. There is no god worthy of worship except You. O Allah, I seek Your protection from disbelief and poverty and I seek Your protection from the punishment of the grave. There is no god worthy of worship except You.",
-            "Allah is sufficient for me. There is no god worthy of worship except Him. I have placed my trust in Him only and He is the Lord of the Magnificent Throne.",
+            "I seek the protection of Allah from the accursed Shayṭān...",
+            "In the name of Allah, the All-Merciful, the Very Merciful. Say, He is Allah, the One...",
+            "In the name of Allah, the All-Merciful, the Very Merciful. Say, I seek protection of the Lord of the daybreak...",
+            " In the name of Allah, the All-Merciful, the Very Merciful. Say, I seek protection of the Lord of mankind...",
+            "O Allah, You are my Lord. There is no god worthy of worship except You...",
+            "O Allah, I seek Your protection from anxiety and grief...",
+            "O Allah, I ask You for well-being in this world and the next...",
+            "O Allah, Knower of the unseen and the seen...",
+            "O The Ever Living, The Sustainer of all. ; I seek assistance through Your mercy...",
+            "O Allah, all the favours that I or anyone from Your creation has received in the morning...",
+            "We have entered the morning upon the natural religion of Islam...",
+            "I have entered the morning praising You...",
+            "We have entered the morning and at this very time the whole kingdom belongs to Allah...",
+            "We have entered the morning and at this very time the whole kingdom belongs to Allah, Lord of the Worlds...",
+            "O Allah, I have entered the morning, and I call upon You...",
+            "O Allah, by You we have entered the morning and by You we enter upon the evening...",
+            "O Allah, grant me well-being in my body...",
+            "Allah is sufficient for me. There is no god worthy of worship except Him...",
             "I am pleased with Allah as my Lord, with Islām as my religion and with Muḥammad ﷺ as my Prophet.",
-            "In the Name of Allah, with whose Name nothing can harm in the earth nor in the sky. He is The All-Hearing and All-Knowing.",
+            "In the Name of Allah, with whose Name nothing can harm in the earth nor in the sky.",
             "Allah is free from imperfection, and all praise is due to Him.",
-            "There is no god worthy of worship except Allah. He is Alone and He has no partner whatsoever. To Him Alone belong all sovereignty and all praise. He is over all things All-Powerful.",
+            "There is no god worthy of worship except Allah. He is Alone and He has no partner whatsoever.",
             "Allah is free from imperfection. All praise be to Allah. Allah is the Greatest.",
-            "O Allah, honour and have mercy upon Muhammad and the family of Muhammad as You have honoured and had mercy upon Ibrāhīm and the family of Ibrāhīm. Indeed, You are the Most Praiseworthy, the Most Glorious. O Allah, bless Muhammad and the family of Muhammad as You have blessed Ibrāhīm and the family of Ibrāhīm. Indeed, You are the Most Praiseworthy, the Most Glorious.",
+            "O Allah, honour and have mercy upon Muhammad and the family of Muhammad...",
             "I seek Allah’s forgiveness and turn to Him in repentance.",
-            "Allah is free from imperfection and all praise is due to Him, (in ways) as numerous as all He has created, (as vast) as His pleasure, (as limitless) as the weight of His Throne, and (as endless) as the ink of His words."
+            "Allah is free from imperfection and all praise is due to Him, (in ways) as numerous as all He has created..."
         ],
         reps: [1, 3, 3, 3, 1, 1, 1, 1, 1, 1, 1, 3, 3, 1, 4, 1, 3, 7, 3, 3, 100, 100, 100, 10, 100, 3]
     },
@@ -499,7 +489,7 @@ const azkarData = [
             "بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ. قُلْ هُوَ اللّٰهُ أَحَدٌ ، اَللّٰهُ الصَّمَدُ ، لَمْ يَلِدْ وَلَمْ يُوْلَدْ ، وَلَمْ يَكُنْ لَّهُ كُفُوًا أَحَدٌ.",
             "بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ. قُلْ أَعُوْذُ بِرَبِّ الْفَلَقِ ، مِنْ شَرِّ مَا خَلَقَ ، وَمِنْ شَرِّ غَاسِقٍ إِذَا وَقَبَ ، وَمِنْ شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ ، وَمِنْ شَرِّ حَاسِدٍ إِذَا حَسَدَ.",
             "بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ. قُلْ أَعُوْذُ بِرَبِّ النَّاسِ ، مَلِكِ النَّاسِ ، إِلٰهِ النَّاسِ ، مِنْ شَرِّ الْوَسْوَاسِ الْخَنَّاسِ ، اَلَّذِيْ يُوَسْوِسُ فِيْ صُدُوْرِ النَّاسِ ، مِنَ الْجِنَّةِ وَالنَّاسِ.",
-            "اَللّٰهُمَّ أَنْتَ رَبِّيْ لَا إِلٰهَ إِلَّا أَنْتَ ، خَلقتَنِيْ وَأَنَا عَبْدُكَ ، وَأَنَا عَلَىٰ عَهْدِكَ وَوَعْدِكَ مَا اسْتطَعْتُ ، أَعُوْذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ ، أَبُوْءُ لَكَ بِنِعْمَتِكَ عَلَيَّ وَأَبُوْءُ لَكَ بِذَنْبِيْ ، فَاغْفِرْ لِيْ فَإِنَّهُ لَا يَغْفِرُ الذُّنُوْبَ إِلَّا أَنْتَ.",
+            "اَللّٰهُمَّ أَنْتَ رَبِّيْ لَا إِلٰهَ إِلَّا أَنْتَ ، خَلَقْتَنِيْ وَأَنَا عَبْدُكَ ، وَأَنَا عَلَىٰ عَهْدِكَ وَوَعْدِكَ مَا اسْتطَعْتُ ، أَعُوْذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ ، أَبُوْءُ لَكَ بِنِعْمَتِكَ عَلَيَّ وَأَبُوْءُ لَكَ بِذَنْبِيْ ، فَاغْفِرْ لِيْ فَإِنَّهُ لَا يَغْفِرُ الذُّنُوْبَ إِلَّا أَنْتَ.",
             "اَللّٰهُمَّ إِنِّيْ أَعُوْذُ بِكَ مِنَ الْهَمِّ وَالْحَزَنِ ، وَأَعُوْذُ بِكَ مِنَ الْعَجْزِ وَالْكَسَلِ، وَأَعُوْذُ بِكَ مِنَ الْجُبْنِ وَالْبُخْلِ ، وَأَعُوْذُ بِكَ مِنْ غَلَبَةِ الدَّيْنِ وَقَهْرِ الرِّجَالِ.",
             "اَللّٰهُمَّ إِنِّيْ أَسْأَلُكَ الْعافِيَةَ فِي الدُّنْيَا وَالْآخِرَةِ ، اَللّٰهُمَّ إِنِّيْ أَسْأَلُكَ الْعَفْو وَالْعَافِيَةَ فِيْ دِيْنِيْ وَدُنْيَايَ وَأَهْلِيْ وَمالِيْ ، اَللّٰهُمَّ اسْتُرْ عَوْرَاتِيْ وَآمِنْ رَوْعَاتِيْ ، اَللّٰهُمَّ احْفَظْنِيْ مِنْ بَيْنِ يَدَيَّ ، وَمِنْ خَلْفِيْ ، وَعَنْ يَّمِيْنِيْ ، وَعَنْ شِمَالِيْ ، وَمِنْ fَوْقِيْ ، وَأَعُوْذُ بِعَظَمَتِكَ أَنْ أُغْتَالَ مِنْ تَحْتِيْ.",
             "اَللّٰهُمَّ عَالِمَ الْغَيْبِ وَالشَّهَادَةِ ، فَاطِرَ السَّمٰوَاتِ وَالْأَرْضِ ، رَبَّ كُلِّ شَيْءٍ وَمَلِيْكَهُ ، أَشْهَدُ أَنْ لَّا إِلٰهَ إِلَّا أَنْتَ ، أَعُوْذُ بِكَ مِنْ شَرِّ nفْسِيْ ، وَمِنْ شَرِّ الشَّيْطَانِ وَشِرْكِهِ ، وَأَنْ أَقْتَرِفَ عَلَىٰ نَفْسِيْ سُوْءًا ، أَوْ أَجُرَّهُ إِلَىٰ مُسْلِمٍ.",
@@ -522,30 +512,30 @@ const azkarData = [
             "أَعُوْذُ بِكَلِمَاتِ اللّٰهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ."
         ],
         trans: [
-            "I seek the protection of Allah from the accursed Shayṭān. Allah, there is no god worthy of worship but He, the Ever Living, The Sustainer of all. Neither drowsiness overtakes Him nor sleep. To Him Alone belongs whatever is in the heavens and whatever is on the earth. Who is it that can intercede with Him except with His permission? He knows what is before them and what will be after them, and they encompass not a thing of His knowledge except for what He wills. His Kursī extends over the heavens and the earth, and their preservation does not tire Him. And He is the Most High, the Magnificent. (2:255)",
-            "In the name of Allah, the All-Merciful, the Very Merciful. Say, He is Allah, the One, the Self-Sufficient Master, Who has not given birth and was not born, and to Whom no one is equal. (112)",
-            "In the name of Allah, the All-Merciful, the Very Merciful. Say, I seek protection of the Lord of the daybreak, from the evil of what He has created, and from the evil of the darkening night when it settles, and from the evil of the blowers in knots, and from the evil of the envier when he envies. (113)",
-            " In the name of Allah, the All-Merciful, the Very Merciful. Say, I seek protection of the Lord of mankind, the King of mankind, the God of mankind, from the evil of the whisperer who withdraws, who whispers in the hearts of mankind, whether they be Jinn or people. (114)",
-            "O Allah, You are my Lord. There is no god worthy of worship except You. You have created me, and I am Your slave, and I am under Your covenant and pledge (to fulfil it) to the best of my ability. I seek Your protection from the evil that I have done. I acknowledge the favours that You have bestowed upon me, and I admit my sins. Forgive me, for none forgives sins but You.",
-            "O Allah, I seek Your protection from anxiety and grief. I seek Your protection from inability and laziness. I seek Your protection from cowardice and miserliness, and I seek Your protection from being overcome by debt and being overpowered by men.",
-            "O Allah, I ask You for well-being in this world and the next. O Allah, I ask You for forgiveness and well-being in my religion, in my worldly affairs, in my family and in my wealth. O Allah, conceal my faults and calm my fears. O Allah, guard me from in front of me and behind me, from my right, and from my left, and from above me. I seek protection in Your Greatness from being unexpectedly destroyed from beneath me.",
-            "O Allah, Knower of the unseen and the seen, Creator of the heavens and the earth, the Lord and Sovereign of everything; I bear witness that there is no god worthy of worship but You. I seek Your protection from the evil of my own self, from the evil of Shayṭān and from the evil of polytheism to which he calls,and from inflicting evil on myself, or bringing it upon a Muslim.",
-            "O The Ever Living, The Sustainer of all. ; I seek assistance through Your mercy. Rectify all of my affairs and do not entrust me to myself for the blink of an eye.",
-            "O Allah, all the favours that I or anyone from Your creation has received in the evening, are from You Alone. You have no partner. To You Alone belong all praise and all thanks.",
-            "We have entered the evening upon the natural religion of Islam, the statement of pure faith (i.e. Shahādah), the religion of our Prophet Muhammad ﷺ and upon the way of our father Ibrāhīm, who turned away from all that is false, having surrendered to Allah, and he was not of the polytheists. (Nasā’ī)",
-            "I have entered the evening praising You, and I bear witness that there is no god worthy of worship but Allah.",
-            "We have entered the evening and at this very time the whole kingdom belongs to Allah. All praise is due to Allah. There is no god worthy of worship except Allah, the One; He has no partner with Him. The entire kingdom belongs solely to Him, to Him is all praise due, and He is All-Powerful over everything. My Lord, I ask You for the good that is in this night and the good that follows it, and I seek Your protection from the evil that is in this night and from the evil that follows it. My Lord, I seek Your protection from laziness and the misery of old age. My Lord, I seek Your protection from the torment of the Hell-fire and the punishment of the grave.",
-            "We have entered the evening and at this very time the whole kingdom belongs to Allah, Lord of the Worlds. O Allah, I ask You for the goodness of this day/night: its victory, its help, its light, and its blessings and guidance. I seek Your protection from the evil that is in it and from the evil that follows it.",
-            "O Allah, I have entered the evening, and I call upon You, the bearers of Your Throne, Your angels and all creation, to bear witness that surely You are Allah. There is no god worthy of worship except You Alone. You have no partners, and that Muḥammad ﷺ is Your slave and Your Messenger.",
-            "O Allah, by You we have entered the evening and by You we enter upon the morning. By You, we live and we die, and to You is the resurrection/return.",
-            "O Allah, grant me well-being in my body. O Allah, grant me well-being in my hearing. O Allah, grant me well-being in my sight. There is no god worthy of worship except You. O Allah, I seek Your protection from disbelief and poverty and I seek Your protection from the punishment of the grave. There is no god worthy of worship except You.",
-            "Allah is sufficient for me. There is no god worthy of worship except Him. I have placed my trust in Him only and He is the Lord of the Magnificent Throne.",
+            "I seek the protection of Allah from the accursed Shayṭān...",
+            "In the name of Allah, the All-Merciful, the Very Merciful. Say, He is Allah, the One...",
+            "In the name of Allah, the All-Merciful, the Very Merciful. Say, I seek protection of the Lord of the daybreak...",
+            " In the name of Allah, the All-Merciful, the Very Merciful. Say, I seek protection of the Lord of mankind...",
+            "O Allah, You are my Lord. There is no god worthy of worship except You...",
+            "O Allah, I seek Your protection from anxiety and grief...",
+            "O Allah, I ask You for well-being in this world and the next...",
+            "O Allah, Knower of the unseen and the seen...",
+            "O The Ever Living, The Sustainer of all. ; I seek assistance through Your mercy...",
+            "O Allah, all the favours that I or anyone from Your creation has received in the evening...",
+            "We have entered the evening upon the natural religion of Islam...",
+            "I have entered the evening praising You...",
+            "We have entered the evening and at this very time the whole kingdom belongs to Allah...",
+            "We have entered the evening and at this very time the whole kingdom belongs to Allah, Lord of the Worlds...",
+            "O Allah, I have entered the evening, and I call upon You...",
+            "O Allah, by You we have entered the evening and by You we enter upon the morning...",
+            "O Allah, grant me well-being in my body...",
+            "Allah is sufficient for me. There is no god worthy of worship except Him...",
             "I am pleased with Allah as my Lord, with Islām as my religion and with Muḥammad ﷺ as my Prophet.",
-            "In the Name of Allah, with whose Name nothing can harm in the earth nor in the sky. He is The All-Hearing and All-Knowing.",
+            "In the Name of Allah, with whose Name nothing can harm in the earth nor in the sky.",
             "Allah is free from imperfection, and all praise is due to Him.",
-            "There is no god worthy of worship except Allah. He is Alone and He has no partner whatsoever. To Him Alone belong all sovereignty and all praise. He is over all things All-Powerful.",
+            "There is no god worthy of worship except Allah. He is Alone and He has no partner whatsoever.",
             "Allah is free from imperfection. All praise be to Allah. Allah is the Greatest.",
-            "O Allah, honour and have mercy upon Muhammad and the family of Muhammad as You have honoured and had mercy upon Ibrāhīm and the family of Ibrāhīm. Indeed, You are the Most Praiseworthy, the Most Glorious. O Allah, bless Muhammad and the family of Muhammad as You have blessed Ibrāhīm and the family of Ibrāhīm. Indeed, You are the Most Praiseworthy, the Most Glorious.",
+            "O Allah, honour and have mercy upon Muhammad and the family of Muhammad...",
             "I seek protection in Allah’s perfect words from the evil of whatever He has created."
         ],
         reps: [1, 3, 3, 3, 1, 1, 1, 1, 1, 1, 1, 3, 1, 1, 4, 1, 3, 7, 3, 3, 100, 100, 100, 10, 100]
@@ -575,546 +565,137 @@ const azkarData = [
             "لَا إِلٰهَ إِلَّا اللّٰهُ وَحْدَهُ لَا شَرِيْكَ لَهُ ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ ، وَهو عَلَىٰ كُلِّ شَيْءٍ قَدِيْرٌ ، وَلَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللّٰهِ ، سُبْحَانَ اللّٰهِ وَالْحَمْدُ لِلّٰهِ وَلَا إِلٰهَ إِلَّا اللّٰهُ وَاللّٰهُ أَكْبَرُ.",
             "اَللّٰهُمَّ أَسْلَمْتُ نَفْسِيْ إِلَيْكَ ، وَفَوَّضْتُ أَمْرِيْ إِلَيْكَ ، وَوَجَّهْتُ وَجْهِيْ إِلَيْكَ ، وَأَلْجَاْتُ ظَهْرِيْ إِلَيْكَ ، رَغْبَةً وَرَهْبَةً إِلَيْكَ ، لَا مَلْجأَ وَلَا مَنْجَا مِنْكَ إِلَّا إِلَيْكَ ، آمَنْتُ بِكِتَابِكَ الَّذِيْ أَنْزَلْتَ وَبِنَبِيِّكَ الَّذِيْ أَرْسَلْتَ."
         ],
+        trans: [
+            "I seek the protection of Allah from the accursed Shayṭān...",
+            "The Messenger has believed in what was revealed to him...",
+            "In the name of Allah... Say: O disbelievers...",
+            "In the name of Allah... Say, He is Allah, the One...",
+            "In the name of Allah... Say, I seek protection of the Lord of the daybreak...",
+            "In the name of Allah... Say, I seek protection of the Lord of mankind...",
+            "Allah is the Greatest",
+            "All praise is for Allah",
+            "Allah is free from imperfection",
+            "In Your Name my Lord, I lie down, and in Your Name, I rise...",
+            "O Allah, protect me from Your punishment...",
+            "All praise is for Allah, Who provided us food and drink...",
+            "O Allah, Knower of the unseen and the seen...",
+            "O Allah, Lord of the heavens, Lord of the Magnificent Throne...",
+            "O Allah, I seek protection by Your Noble Countenance...",
+            "O Allah, verily You have created my soul...",
+            "In the Name of Allah, I lie down. O Allah, forgive my sins...",
+            "All praise is for Allah Who has sufficed me and given me refuge...",
+            "O Allah, solely in Your Name I die and I live.",
+            "There is no god but Allah. He is Alone and He has no partner whatsoever.",
+            "O Allah, I submit my soul unto You, and I entrust my affair unto You..."
+        ],
         reps: [1, 1, 1, 3, 3, 3, 34, 33, 33, 1, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
     }
 ];
 
-// ==================== FAVORITES & SHARE SYSTEM ====================
-let currentCat = 0, currentIndex = 0, currentCount = 0, lang = 'ar';
-let favorites = []; // { cat, idx, count }
-let currentAccent = '#cc0000';
-let isLightMode = false;
+let currentCat = 0, currentIndex = 0, currentCount = 0, lang = 'ar', favorites = [], currentAccent = '#cc0000', isLightMode = false;
 
-// Helper: darken a hex color
 function darkenColor(hex, percent) {
-    if (!hex) return hex;
-    let r, g, b;
-    if (hex.startsWith('#')) {
-        r = parseInt(hex.slice(1,3), 16);
-        g = parseInt(hex.slice(3,5), 16);
-        b = parseInt(hex.slice(5,7), 16);
-    } else {
-        return hex;
-    }
-    r = Math.floor(r * (1 - percent/100));
-    g = Math.floor(g * (1 - percent/100));
-    b = Math.floor(b * (1 - percent/100));
+    let r = parseInt(hex.slice(1,3), 16), g = parseInt(hex.slice(3,5), 16), b = parseInt(hex.slice(5,7), 16);
+    r = Math.floor(r * (1 - percent/100)); g = Math.floor(g * (1 - percent/100)); b = Math.floor(b * (1 - percent/100));
     return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
 }
 
-// Load saved settings
 function loadSettings() {
-    const storedAccent = localStorage.getItem('azkar_accent');
-    if (storedAccent) currentAccent = storedAccent;
-    const storedLightMode = localStorage.getItem('azkar_lightMode');
-    if (storedLightMode !== null) isLightMode = storedLightMode === 'true';
+    const sA = localStorage.getItem('azkar_accent'), sL = localStorage.getItem('azkar_lightMode');
+    if (sA) currentAccent = sA; if (sL !== null) isLightMode = sL === 'true';
     document.getElementById('themeToggle').checked = isLightMode;
     updateTheme();
-    // Highlight the correct color dot based on currentAccent
-    document.querySelectorAll('.color-dot').forEach(dot => {
-        if (dot.style.backgroundColor === currentAccent || 
-            (dot.style.backgroundColor && rgbToHex(dot.style.backgroundColor) === currentAccent)) {
-            dot.classList.add('active');
-        }
-    });
 }
 
-function rgbToHex(rgb) {
-    if (!rgb) return '';
-    const result = rgb.match(/\d+/g);
-    if (!result) return '';
-    return '#' + result.slice(0,3).map(x => parseInt(x).toString(16).padStart(2,'0')).join('');
-}
-
-function saveSettings() {
-    localStorage.setItem('azkar_accent', currentAccent);
-    localStorage.setItem('azkar_lightMode', isLightMode);
-}
+function saveSettings() { localStorage.setItem('azkar_accent', currentAccent); localStorage.setItem('azkar_lightMode', isLightMode); }
 
 function updateTheme() {
     const root = document.documentElement;
     if (isLightMode) {
         document.body.classList.add('light-mode');
-        // Light mode: light background, dark text, card light
-        root.style.setProperty('--bg', '#f5f5f5');
-        root.style.setProperty('--text', '#1a1a1a');
-        root.style.setProperty('--text-dim', '#555555');
-        root.style.setProperty('--card', '#ffffff');
-        root.style.setProperty('--popup-bg', '#ffffff');
-        root.style.setProperty('--popup-border', '#cccccc');
-        root.style.setProperty('--circle-bg-stroke', 'rgba(0,0,0,0.2)');
-        // Menu popover text color
-        const menu = document.getElementById('unifiedMenu');
-        if (menu) menu.style.background = '#ffffff';
-        const menuSections = document.querySelectorAll('.menu-section-title, .setting-row, .theme-label');
-        menuSections.forEach(el => el.style.color = '#1a1a1a');
-        const menuDividers = document.querySelectorAll('.menu-divider');
-        menuDividers.forEach(d => d.style.background = '#cccccc');
+        root.style.setProperty('--bg', '#f5f5f5'); root.style.setProperty('--text', '#1a1a1a');
+        root.style.setProperty('--card', '#ffffff'); root.style.setProperty('--popup-bg', '#ffffff');
     } else {
         document.body.classList.remove('light-mode');
-        // Dark mode: background uses a dark version of the accent color
-        const darkBg = darkenColor(currentAccent, 70); // darken by 70%
-        root.style.setProperty('--bg', darkBg);
-        root.style.setProperty('--text', '#FFFFFF');
-        root.style.setProperty('--text-dim', '#B1A2C1');
-        root.style.setProperty('--card', 'rgba(0,0,0,0.15)');
-        root.style.setProperty('--popup-bg', '#1A1A1A');
-        root.style.setProperty('--popup-border', 'rgba(255,255,255,0.1)');
-        root.style.setProperty('--circle-bg-stroke', 'rgba(255,255,255,0.1)');
-        const menu = document.getElementById('unifiedMenu');
-        if (menu) menu.style.background = '#1A1A1A';
-        const menuSections = document.querySelectorAll('.menu-section-title, .setting-row, .theme-label');
-        menuSections.forEach(el => el.style.color = 'white');
-        const menuDividers = document.querySelectorAll('.menu-divider');
-        menuDividers.forEach(d => d.style.background = 'rgba(255,255,255,0.3)');
+        root.style.setProperty('--bg', darkenColor(currentAccent, 70)); root.style.setProperty('--text', '#FFFFFF');
+        root.style.setProperty('--card', 'rgba(0,0,0,0.15)'); root.style.setProperty('--popup-bg', '#1A1A1A');
     }
     root.style.setProperty('--accent', currentAccent);
-    // Update circle progress color
-    const ring = document.getElementById('progressRing');
-    if (ring) ring.style.stroke = currentAccent;
-    // Update share popup title and icon colors
-    const shareTitle = document.getElementById('shareTitle');
-    if (shareTitle) shareTitle.style.color = currentAccent;
-    const shareIcons = document.querySelectorAll('.share-icon svg');
-    shareIcons.forEach(icon => icon.style.stroke = currentAccent);
-    // Update active tab background via CSS variable (the class .tab.active already uses var(--accent))
+    document.getElementById('progressRing').style.stroke = currentAccent;
 }
 
-function toggleLightMode() {
-    isLightMode = !isLightMode;
-    document.getElementById('themeToggle').checked = isLightMode;
-    saveSettings();
-    updateTheme();
-    // Update tooltip texts in menu if needed
-    const themeLabel = document.getElementById('themeLabel');
-    if (themeLabel) {
-        themeLabel.innerText = isLightMode ? (lang === 'ar' ? 'الوضع الفاتح' : 'Light Mode') : (lang === 'ar' ? 'الوضع الداكن' : 'Dark Mode');
-    }
-    render(); // re-render to apply text color changes
-}
-
-function applyTheme(accent, element) {
-    currentAccent = accent;
-    saveSettings();
-    updateTheme();
-    document.querySelectorAll('.color-dot').forEach(dot => dot.classList.remove('active'));
-    if (element) element.classList.add('active');
-}
-
-// Favorites functions (unchanged)
-function loadFavorites() {
-    const stored = localStorage.getItem('azkar_favorites');
-    if (stored) favorites = JSON.parse(stored);
-    else favorites = [];
-}
-function saveFavorites() {
-    localStorage.setItem('azkar_favorites', JSON.stringify(favorites));
-}
-function isFavorited(cat, idx) {
-    return favorites.some(f => f.cat === cat && f.idx === idx);
-}
-function addFavorite(cat, idx) {
-    if (!isFavorited(cat, idx)) {
-        favorites.push({ cat, idx, count: 0 });
-        saveFavorites();
-        if (currentCat === 4) render();
-        return true;
-    }
-    return false;
-}
-function removeFavorite(cat, idx) {
-    const index = favorites.findIndex(f => f.cat === cat && f.idx === idx);
-    if (index !== -1) {
-        favorites.splice(index, 1);
-        saveFavorites();
-        if (currentCat === 4) {
-            if (favorites.length === 0) currentIndex = 0;
-            else if (currentIndex >= favorites.length) currentIndex = favorites.length - 1;
-        }
-        return true;
-    }
-    return false;
-}
-function toggleFavorite() {
-    if (currentCat === 4) {
-        if (favorites.length > 0 && currentIndex < favorites.length) {
-            const fav = favorites[currentIndex];
-            removeFavorite(fav.cat, fav.idx);
-        }
-    } else {
-        const exists = isFavorited(currentCat, currentIndex);
-        if (exists) removeFavorite(currentCat, currentIndex);
-        else addFavorite(currentCat, currentIndex);
-    }
-    render();
-}
-function updateFavoriteButtonUI() {
-    const btn = document.getElementById('btnFav');
-    const svg = document.getElementById('favSvg');
-    let isFav = false;
-    if (currentCat === 4) {
-        isFav = favorites.length > 0;
-    } else {
-        isFav = isFavorited(currentCat, currentIndex);
-    }
-    if (isFav) {
-        svg.innerHTML = '<path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#ff4444"/>';
-        btn.setAttribute('data-tooltip', lang === 'ar' ? 'إزالة من المفضلة' : 'Remove from Favorites');
-    } else {
-        svg.innerHTML = '<path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="white"/>';
-        btn.setAttribute('data-tooltip', lang === 'ar' ? 'أضف إلى المفضلة' : 'Add to Favorites');
-    }
-}
-
-function getCategoryData(cat) {
-    if (cat !== 4) return azkarData[cat];
-    const arabicList = favorites.map(f => azkarData[f.cat].arabic[f.idx]);
-    const transList = favorites.map(f => azkarData[f.cat].trans[f.idx]);
-    const repsList = favorites.map(f => azkarData[f.cat].reps[f.idx]);
-    return {
-        nameEn: "Favorites", nameAr: "المفضلة",
-        arabic: arabicList, trans: transList, reps: repsList,
-        length: favorites.length
-    };
-}
-
-const circleRadius = 38;
-const circleCircumference = 2 * Math.PI * circleRadius;
-
-function updateCircleProgress(count, max) {
-    const ring = document.getElementById('progressRing');
-    const cont = document.getElementById('counterRingCont');
-    const progress = count / max;
-    const offset = circleCircumference - (progress * circleCircumference);
-    ring.style.strokeDasharray = `${circleCircumference} ${circleCircumference}`;
-    ring.style.strokeDashoffset = offset;
-    if (count === max) cont.classList.add('completed');
-    else cont.classList.remove('completed');
-}
-
-function getRepetitionText(count, currentLang) {
-    if (currentLang === 'en') return count === 1 ? "1 Time" : count + " Times";
-    const repMap = {1:"مرة واحدة", 2:"مرتان", 3:"٣ مرات", 4:"٤ مرات", 7:"٧ مرات", 10:"١٠ مرات", 33:"٣٣ مرة", 34:"٣٤ مرة", 100:"١٠٠ مرة"};
-    return repMap[count] || count + " مرات";
-}
-
-function updateColorTooltips() {
-    const colorDots = document.querySelectorAll('.color-dot');
-    colorDots.forEach(dot => {
-        dot.title = lang === 'ar' ? dot.getAttribute('data-ar') : dot.getAttribute('data-en');
-    });
-}
+function toggleLightMode() { isLightMode = !isLightMode; saveSettings(); updateTheme(); render(); }
+function applyTheme(accent, element) { currentAccent = accent; saveSettings(); updateTheme(); render(); }
+function loadFavorites() { const s = localStorage.getItem('azkar_favorites'); favorites = s ? JSON.parse(s) : []; }
+function saveFavorites() { localStorage.setItem('azkar_favorites', JSON.stringify(favorites)); }
 
 function render() {
-    const category = getCategoryData(currentCat);
-    const isEmptyFav = (currentCat === 4 && favorites.length === 0);
-    
-    if (isEmptyFav) {
-        document.getElementById('arabicText').innerHTML = '<div class="empty-fav">⭐ ' + (lang === 'ar' ? 'لا توجد أذكار في المفضلة بعد. اضغط على زر القلب لإضافتها.' : 'No favorites yet. Tap the heart button to add.') + '</div>';
-        document.getElementById('translationText').innerHTML = '';
-        document.getElementById('progressVal').innerText = '0 / 0';
-        document.getElementById('repeatVal').innerText = lang === 'ar' ? '--' : '--';
-        document.getElementById('circleCount').innerText = '0';
-        updateCircleProgress(0, 1);
-        document.getElementById('counterRingCont').style.opacity = '0.5';
-        document.getElementById('counterRingCont').style.pointerEvents = 'none';
+    const category = currentCat === 4 ? {
+        nameEn: "Favorites", nameAr: "المفضلة",
+        arabic: favorites.map(f => azkarData[f.cat].arabic[f.idx]),
+        trans: favorites.map(f => azkarData[f.cat].trans[f.idx]),
+        reps: favorites.map(f => azkarData[f.cat].reps[f.idx])
+    } : azkarData[currentCat];
+
+    const body = document.getElementById('bodyNode');
+    body.classList.remove('lang-ar', 'lang-en');
+    body.classList.add('lang-' + lang);
+
+    if (currentCat === 4 && favorites.length === 0) {
+        document.getElementById('arabicText').innerHTML = '<div class="empty-fav">⭐ No favorites added</div>';
+        document.getElementById('translationText').innerText = "";
     } else {
-        document.getElementById('counterRingCont').style.opacity = '1';
-        document.getElementById('counterRingCont').style.pointerEvents = 'auto';
-        if (currentIndex >= category.arabic.length) currentIndex = 0;
         document.getElementById('arabicText').innerText = category.arabic[currentIndex];
         document.getElementById('translationText').innerText = category.trans[currentIndex];
-        const totalItems = category.arabic.length;
-        document.getElementById('progressVal').innerText = `${currentIndex+1} / ${totalItems}`;
-        const targetRep = category.reps[currentIndex];
-        if (currentCat === 4 && favorites[currentIndex]) currentCount = favorites[currentIndex].count;
-        else if (currentCat !== 4) currentCount = currentCount;
+        document.getElementById('progressVal').innerText = `${currentIndex + 1} / ${category.arabic.length}`;
         document.getElementById('circleCount').innerText = currentCount;
-        document.getElementById('repeatVal').innerText = getRepetitionText(targetRep, lang);
-        updateCircleProgress(currentCount, targetRep);
+        document.getElementById('repeatVal').innerText = lang === 'ar' ? category.reps[currentIndex] + " مرة" : category.reps[currentIndex] + " Times";
+        const offset = (2 * Math.PI * 38) - ((currentCount / category.reps[currentIndex]) * (2 * Math.PI * 38));
+        document.getElementById('progressRing').style.strokeDashoffset = offset;
     }
-    
-    // Update tab active state: remove active class from all, add to current
-    for(let i=0;i<5;i++) {
-        const tabBtn = document.getElementById('tab'+i);
-        if(tabBtn) {
-            if (i === currentCat) {
-                tabBtn.classList.add('active');
-            } else {
-                tabBtn.classList.remove('active');
-            }
-        }
+
+    for(let i=0; i<5; i++) {
+        const t = document.getElementById('tab'+i);
+        if(t) i === currentCat ? t.classList.add('active') : t.classList.remove('active');
     }
-    
-    for(let i=0;i<4;i++) document.getElementById('t'+i).innerText = (lang === 'ar') ? azkarData[i].nameAr : azkarData[i].nameEn;
-    document.getElementById('t4').innerText = (lang === 'ar') ? 'المفضلة' : 'Favorites';
-    
-    const textBank = {
-        ar: { prog: "التقدم", rep: "التكرار", col: "الألوان", set: "الإعدادات", s1: "صوت النقرة", s2: "اهتزاز", s3: "تحويل تلقائي", s4: "حجم الخط", copy: "نسخ النص", share: "مشاركة", refr: "تحديث", theme: isLightMode ? "الوضع الفاتح" : "الوضع الداكن" },
-        en: { prog: "PROGRESS", rep: "REPEAT", col: "Colors", set: "Settings", s1: "Click Sound", s2: "Vibration", s3: "Auto Transfer", s4: "Font Size", copy: "Copy Text", share: "Share", refr: "Refresh", theme: isLightMode ? "Light Mode" : "Dark Mode" }
-    }[lang];
-    
-    document.getElementById('lblProgress').innerText = textBank.prog;
-    document.getElementById('lblRepeat').innerText = textBank.rep;
-    document.getElementById('menuTitleColors').innerText = textBank.col;
-    document.getElementById('menuTitleSettings').innerText = textBank.set;
-    document.getElementById('set1').innerText = textBank.s1;
-    document.getElementById('set2').innerText = textBank.s2;
-    document.getElementById('set3').innerText = textBank.s3;
-    document.getElementById('set4').innerText = textBank.s4;
-    document.getElementById('btnCopy').setAttribute('data-tooltip', textBank.copy);
-    document.getElementById('btnShare').setAttribute('data-tooltip', textBank.share);
-    document.getElementById('btnRefresh').setAttribute('data-tooltip', textBank.refr);
-    const themeLabel = document.getElementById('themeLabel');
-    if (themeLabel) themeLabel.innerText = textBank.theme;
-    
-    updateFavoriteButtonUI();
-    updateColorTooltips();
-    document.getElementById('scrollArea').scrollTop = 0;
 }
 
 function incrementCount() {
-    const category = getCategoryData(currentCat);
-    if ((currentCat === 4 && favorites.length === 0) || category.arabic.length === 0) return;
-    const max = category.reps[currentIndex];
-    if (currentCount < max) {
-        currentCount++;
-        if (currentCat === 4 && favorites[currentIndex]) {
-            favorites[currentIndex].count = currentCount;
-            saveFavorites();
-        }
-        playTapSound();
-        render();
-        if (currentCount === max) {
-            playVibrateSound();
-            if(document.getElementById('chkAuto').checked) setTimeout(() => next(), 600);
-        }
-    }
+    const reps = (currentCat === 4 ? azkarData[favorites[currentIndex].cat].reps[favorites[currentIndex].idx] : azkarData[currentCat].reps[currentIndex]);
+    if (currentCount < reps) { currentCount++; render(); if (currentCount === reps && document.getElementById('chkAuto').checked) setTimeout(next, 600); }
 }
 
-function next() {
-    const category = getCategoryData(currentCat);
-    if (category.arabic.length === 0) return;
-    currentIndex = (currentIndex + 1) % category.arabic.length;
-    if (currentCat === 4 && favorites[currentIndex]) currentCount = favorites[currentIndex].count;
-    else currentCount = 0;
-    render();
-}
-
-function prev() {
-    const category = getCategoryData(currentCat);
-    if (category.arabic.length === 0) return;
-    currentIndex = (currentIndex - 1 + category.arabic.length) % category.arabic.length;
-    if (currentCat === 4 && favorites[currentIndex]) currentCount = favorites[currentIndex].count;
-    else currentCount = 0;
-    render();
-}
-
-function changeCat(index) {
-    currentCat = index;
-    currentIndex = 0;
-    if (currentCat === 4 && favorites.length > 0) currentCount = favorites[0]?.count || 0;
-    else currentCount = 0;
-    render();
-}
-
-function toggleLang() {
-    lang = (lang === 'ar') ? 'en' : 'ar';
-    const body = document.getElementById('bodyNode');
-    // Using classList prevents overwriting the light-mode class
-    body.classList.remove('lang-ar', 'lang-en');
-    body.classList.add('lang-' + lang);
-    render();
-}
-
-function changeFontSize(val) {
-    document.documentElement.style.setProperty('--base-font-size', val + 'px');
-}
-
-function copyDynamicText() {
-    const category = getCategoryData(currentCat);
-    if (category.arabic.length === 0) return;
-    const textToCopy = (lang === 'ar') ? category.arabic[currentIndex] : category.trans[currentIndex];
-    const btn = document.getElementById('btnCopy');
-    const originalHTML = btn.innerHTML; // store original
-    navigator.clipboard.writeText(textToCopy).then(() => {
-        btn.innerHTML = '<span style="font-size:16px">✅</span>';
-        setTimeout(() => {
-            btn.innerHTML = originalHTML;
-        }, 2000);
-    }).catch(() => {
-        const textarea = document.createElement('textarea');
-        textarea.value = textToCopy;
-        document.body.appendChild(textarea);
-        textarea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textarea);
-        btn.innerHTML = '<span style="font-size:16px">✅</span>';
-        setTimeout(() => {
-            btn.innerHTML = originalHTML;
-        }, 2000);
-    });
-}
-
-function toggleUnifiedMenu() {
-    document.getElementById('unifiedMenu').classList.toggle('show');
-}
-
-const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-function playTapSound() {
-    if(!document.getElementById('chkClick').checked) return;
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    osc.frequency.setValueAtTime(600, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
-    osc.connect(gain); gain.connect(audioCtx.destination);
-    osc.start(); osc.stop(audioCtx.currentTime + 0.1);
-}
-function playVibrateSound() {
-    if(!document.getElementById('chkVibrate').checked) return;
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    osc.type = 'square';
-    osc.frequency.setValueAtTime(120, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
-    osc.connect(gain); gain.connect(audioCtx.destination);
-    osc.start(); osc.stop(audioCtx.currentTime + 0.4);
-    if ("vibrate" in navigator) navigator.vibrate(200);
-}
-
-const iconGallery = [
-    "https://cdn-icons-png.flaticon.com/128/4354/4354959.png",
-    "https://cdn-icons-png.flaticon.com/128/7321/7321058.png",
-    "https://cdn-icons-png.flaticon.com/128/3004/3004949.png",
-    "https://cdn-icons-png.flaticon.com/128/6152/6152858.png",
-    "https://cdn-icons-png.flaticon.com/128/13773/13773984.png"
-];
-let currentIconIdx = 4;
-function changeIcon() {
-    currentIconIdx = (currentIconIdx + 1) % iconGallery.length;
-    document.getElementById('cycleIcon').src = iconGallery[currentIconIdx];
-}
+function next() { const len = (currentCat === 4 ? favorites.length : azkarData[currentCat].arabic.length); currentIndex = (currentIndex + 1) % len; currentCount = 0; render(); }
+function prev() { const len = (currentCat === 4 ? favorites.length : azkarData[currentCat].arabic.length); currentIndex = (currentIndex - 1 + len) % len; currentCount = 0; render(); }
+function changeCat(i) { currentCat = i; currentIndex = 0; currentCount = 0; render(); }
+function toggleLang() { lang = lang === 'ar' ? 'en' : 'ar'; render(); }
+function changeFontSize(v) { document.documentElement.style.setProperty('--base-font-size', v + 'px'); }
+function toggleUnifiedMenu() { document.getElementById('unifiedMenu').classList.toggle('show'); }
+function changeIcon() { }
 
 function autoSelectByTime() {
     const hr = new Date().getHours();
     if (hr >= 5 && hr < 12) currentCat = 1;
     else if (hr >= 16 && hr < 20) currentCat = 2;
     else if (hr >= 20 || hr < 5) currentCat = 3;
-    else currentCat = 0;
-}
-
-// Share popup
-function toggleSharePopup() {
-    const pop = document.getElementById('sharePopup');
-    pop.classList.toggle('show');
-    if (pop.classList.contains('show')) buildShareGrid();
-    setTimeout(() => {
-        document.addEventListener('click', function closeShare(e) {
-            if (!pop.contains(e.target) && !document.getElementById('btnShare').contains(e.target)) {
-                pop.classList.remove('show');
-                document.removeEventListener('click', closeShare);
-            }
-        });
-    }, 100);
-}
-
-function buildShareGrid() {
-    const category = getCategoryData(currentCat);
-    if (category.arabic.length === 0) return;
-    const text = (lang === 'ar') ? category.arabic[currentIndex] : category.trans[currentIndex];
-    const shareText = encodeURIComponent(text.substring(0, 300));
-    const pageUrl = window.location.href;
-    
-    const platformNames = {
-        ar: {
-            whatsapp: "واتساب",
-            telegram: "تليجرام",
-            twitter: "تويتر",
-            facebook: "فيسبوك",
-            messenger: "ماسنجر",
-            copy: "نسخ الرابط"
-        },
-        en: {
-            whatsapp: "WhatsApp",
-            telegram: "Telegram",
-            twitter: "X",
-            facebook: "Facebook",
-            messenger: "Messenger",
-            copy: "Copy Link"
-        }
-    };
-    const pn = platformNames[lang];
-    
-    const icons = {
-        whatsapp: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21z"/><path d="M9 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1z"/><path d="M14 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1z"/><path d="M12 13c1.5 0 3-1 3-3"/></svg>',
-        telegram: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>',
-        twitter: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg>',
-        facebook: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>',
-        messenger: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C6.5 2 2 6.5 2 12c0 2.9 1.3 5.5 3.3 7.3L3 22l4.7-1.3C9 21.3 10.4 22 12 22c5.5 0 10-4.5 10-10S17.5 2 12 2z"/><path d="M8 9h8M8 13h6"/></svg>',
-        copy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>'
-    };
-    
-    const platforms = [
-        { name: pn.whatsapp, icon: icons.whatsapp, url: `https://wa.me/?text=${shareText}` },
-        { name: pn.telegram, icon: icons.telegram, url: `https://t.me/share/url?url=${encodeURIComponent(pageUrl)}&text=${shareText}` },
-        { name: pn.twitter, icon: icons.twitter, url: `https://twitter.com/intent/tweet?text=${shareText}&url=${encodeURIComponent(pageUrl)}` },
-        { name: pn.facebook, icon: icons.facebook, url: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}&quote=${shareText}` },
-        { name: pn.messenger, icon: icons.messenger, url: `https://www.facebook.com/dialog/send?link=${encodeURIComponent(pageUrl)}&app_id=0&redirect_uri=${encodeURIComponent(pageUrl)}&quote=${shareText}` },
-        { name: pn.copy, icon: icons.copy, url: "", action: () => navigator.clipboard.writeText(pageUrl) }
-    ];
-    
-    const grid = document.getElementById('shareGrid');
-    grid.innerHTML = '';
-    platforms.forEach(p => {
-        const div = document.createElement('div');
-        div.className = 'share-icon';
-        div.innerHTML = `${p.icon}<span>${p.name}</span>`;
-        div.onclick = () => {
-            if (p.url) window.open(p.url, '_blank', 'noopener,noreferrer');
-            else if (p.action) p.action();
-            document.getElementById('sharePopup').classList.remove('show');
-        };
-        grid.appendChild(div);
-    });
-    document.getElementById('shareTitle').innerText = lang === 'ar' ? 'مشاركة الذكر' : 'Share Dhikr';
-}
-
-// Initialize color menu
-function initColorMenu() {
-    const container = document.getElementById('colorMenu');
-    const colors = [
-        {bg:'#3B1414', acc:'#cc0000', nameAr:'أحمر', nameEn:'Red'},
-        {bg:'#1E122C', acc:'#800080', nameAr:'بنفسجي', nameEn:'Purple'},
-        {bg:'#0A192F', acc:'#0066cc', nameAr:'أزرق', nameEn:'Blue'},
-        {bg:'#2D1B0D', acc:'#8B4513', nameAr:'بني', nameEn:'Brown'},
-        {bg:'#332B00', acc:'#ffcc00', nameAr:'أصفر', nameEn:'Yellow'},
-        {bg:'#000000', acc:'#444444', nameAr:'أسود', nameEn:'Black'},
-        {bg:'#222222', acc:'#808080', nameAr:'رمادي', nameEn:'Gray'},
-        {bg:'#1a202c', acc:'#334155', nameAr:'سحابي داكن', nameEn:'Midnight Slate'},
-        {bg:'#331122', acc:'#ff66b2', nameAr:'وردي', nameEn:'Pink'},
-        {bg:'#0D2612', acc:'#228b22', nameAr:'أخضر', nameEn:'Green'},
-        {bg:'#2E1A00', acc:'#ff8c00', nameAr:'برتقالي', nameEn:'Orange'},
-        {bg:'#002222', acc:'#008080', nameAr:'تركوازي', nameEn:'Teal'}
-    ];
-    colors.forEach(c => {
-        const dot = document.createElement('div');
-        dot.className = 'color-dot';
-        dot.style.background = c.acc;
-        dot.setAttribute('data-ar', c.nameAr);
-        dot.setAttribute('data-en', c.nameEn);
-        dot.onclick = () => applyTheme(c.acc, dot);
-        container.appendChild(dot);
-    });
-    updateColorTooltips();
+    else currentCat = 0; // Waking up (Default)
 }
 
 window.onload = function() {
-    initColorMenu();
-    loadFavorites();
-    autoSelectByTime();
-    loadSettings();
+    loadFavorites(); 
+    autoSelectByTime(); // Sets the correct tab based on time
+    loadSettings(); 
     document.getElementById('themeToggle').addEventListener('change', toggleLightMode);
-    render();
+    
+    // Initialize color dots
+    const colors = ['#cc0000','#800080','#0066cc','#8B4513','#ffcc00','#444444'];
+    const cm = document.getElementById('colorMenu');
+    colors.forEach(c => {
+        const d = document.createElement('div'); d.className = 'color-dot'; d.style.background = c;
+        d.onclick = () => applyTheme(c, d); cm.appendChild(d);
+    });
+
+    render(); // Draw everything correctly
 };
 </script>
 </body>
