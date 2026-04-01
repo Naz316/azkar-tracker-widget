@@ -93,15 +93,22 @@
         /* MAIN CONTENT */
         .main-display {
             flex-grow: 1; overflow-y: auto; padding: 20px;
-            text-align: center; display: flex; flex-direction: column;
+            text-align: center; display: flex;
             background: var(--card); border-radius: 20px;
             margin-bottom: 15px;
             justify-content: flex-start;
         }
         
+        /* Container for Arabic and English texts - ensures consistent spacing */
+        .text-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+        }
         .arabic {
             font-family: var(--font-arabic); 
-            direction: rtl; line-height: 1.7; margin-bottom: 15px;
+            direction: rtl; line-height: 1.7;
             white-space: pre-wrap;
             transition: all 0.3s ease;
         }
@@ -202,30 +209,68 @@
             align-items: center;
             gap: 8px;
         }
-        .theme-toggle-wrapper {
+        
+        /* New theme toggle with sun/moon icons */
+        .theme-toggle {
             display: flex;
             align-items: center;
             gap: 8px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 30px;
+            padding: 4px;
         }
-        .theme-label {
-            color: var(--text);
-            font-size: 12px;
-            font-weight: 600;
+        .theme-toggle-icon {
+            font-size: 18px;
+            width: 28px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s;
+            opacity: 0.6;
+        }
+        .theme-toggle-icon.active {
+            opacity: 1;
+            filter: drop-shadow(0 0 2px var(--accent));
         }
         .theme-switch {
-            position: relative; display: inline-block; width: 52px; height: 26px;
+            position: relative;
+            display: inline-block;
+            width: 52px;
+            height: 26px;
         }
-        .theme-switch input { opacity: 0; width: 0; height: 0; }
+        .theme-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
         .theme-slider {
-            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
-            background-color: #ccc; transition: 0.2s; border-radius: 26px;
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.2s;
+            border-radius: 26px;
         }
         .theme-slider:before {
-            position: absolute; content: ""; height: 22px; width: 22px; left: 2px; bottom: 2px;
-            background-color: white; transition: 0.2s; border-radius: 50%;
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: 0.2s;
+            border-radius: 50%;
         }
-        input:checked + .theme-slider { background-color: var(--accent); }
-        input:checked + .theme-slider:before { transform: translateX(26px); }
+        /* Dark mode = checked (thumb right) */
+        input:checked + .theme-slider {
+            background-color: var(--accent);
+        }
+        input:checked + .theme-slider:before {
+            transform: translateX(26px);
+        }
 
         .menu-divider { height: 1px; background: var(--text-dim); margin: 12px 0; border: none; width: 100%; opacity: 0.3; }
         
@@ -309,6 +354,17 @@
         }
         .share-icon:hover svg { background: rgba(128,128,128,0.4); }
         .empty-fav { opacity: 0.8; font-style: italic; text-align: center; margin-top: 30px; color: var(--text-dim); }
+
+        /* Confetti canvas (full screen, low z-index for celebration) */
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+        }
     </style>
 </head>
 <body class="lang-ar" id="bodyNode">
@@ -337,8 +393,10 @@
     </div>
 
     <div class="main-display" id="scrollArea">
-        <div class="arabic" id="arabicText"></div>
-        <div class="translation" id="translationText"></div>
+        <div class="text-container" id="textContainer">
+            <div class="arabic" id="arabicText"></div>
+            <div class="translation" id="translationText"></div>
+        </div>
     </div>
 
     <div class="footer-controls">
@@ -368,13 +426,14 @@
         <div class="menu-header-row">
             <div class="menu-section-title"><span>🎨</span><span id="menuTitleColors">Colors</span></div>
             
-            <div class="theme-toggle-wrapper">
-                <span>🌓</span>
-                <span class="theme-label" id="themeLabel">Dark Mode</span>
+            <!-- New theme toggle with sun/moon icons -->
+            <div class="theme-toggle">
+                <span class="theme-toggle-icon sun" id="sunIcon">☀️</span>
                 <label class="theme-switch">
                     <input type="checkbox" id="themeToggle">
                     <span class="theme-slider"></span>
                 </label>
+                <span class="theme-toggle-icon moon" id="moonIcon">🌙</span>
             </div>
         </div>
         <hr class="menu-divider">
@@ -409,6 +468,9 @@
         <div class="share-popup-title" id="shareTitle">Share Dhikr</div>
         <div class="share-grid" id="shareGrid"></div>
     </div>
+
+    <!-- Confetti canvas -->
+    <canvas id="confetti-canvas"></canvas>
 </div>
 
 <script>
@@ -631,7 +693,8 @@ function loadSettings() {
     if (storedAccent) currentAccent = storedAccent;
     const storedLightMode = localStorage.getItem('azkar_lightMode');
     if (storedLightMode !== null) isLightMode = storedLightMode === 'true';
-    document.getElementById('themeToggle').checked = isLightMode;
+    // Checkbox should be checked when DARK mode (isLightMode = false)
+    document.getElementById('themeToggle').checked = !isLightMode;
     updateTheme();
     // Highlight the correct color dot based on currentAccent
     document.querySelectorAll('.color-dot').forEach(dot => {
@@ -673,6 +736,9 @@ function updateTheme() {
         menuSections.forEach(el => el.style.color = '#1a1a1a');
         const menuDividers = document.querySelectorAll('.menu-divider');
         menuDividers.forEach(d => d.style.background = '#cccccc');
+        // Update toggle icons active state
+        document.getElementById('sunIcon')?.classList.add('active');
+        document.getElementById('moonIcon')?.classList.remove('active');
     } else {
         document.body.classList.remove('light-mode');
         // Dark mode: background uses a dark version of the accent color
@@ -690,6 +756,9 @@ function updateTheme() {
         menuSections.forEach(el => el.style.color = 'white');
         const menuDividers = document.querySelectorAll('.menu-divider');
         menuDividers.forEach(d => d.style.background = 'rgba(255,255,255,0.3)');
+        // Update toggle icons active state
+        document.getElementById('sunIcon')?.classList.remove('active');
+        document.getElementById('moonIcon')?.classList.add('active');
     }
     root.style.setProperty('--accent', currentAccent);
     // Update circle progress color
@@ -705,7 +774,7 @@ function updateTheme() {
 
 function toggleLightMode() {
     isLightMode = !isLightMode;
-    document.getElementById('themeToggle').checked = isLightMode;
+    document.getElementById('themeToggle').checked = !isLightMode;
     saveSettings();
     updateTheme();
     // Update tooltip texts in menu if needed
@@ -828,6 +897,93 @@ function updateColorTooltips() {
     });
 }
 
+// Confetti effect
+function startConfetti() {
+    const canvas = document.getElementById('confetti-canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    let particles = [];
+    const colors = ['#f00', '#0f0', '#00f', '#ff0', '#f0f', '#0ff', '#fa0', '#f60'];
+    const numParticles = 150;
+    for (let i = 0; i < numParticles; i++) {
+        particles.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height - canvas.height,
+            size: Math.random() * 6 + 2,
+            color: colors[Math.floor(Math.random() * colors.length)],
+            speedX: (Math.random() - 0.5) * 5,
+            speedY: Math.random() * 8 + 5,
+            rotation: Math.random() * 360,
+            spin: (Math.random() - 0.5) * 10
+        });
+    }
+    let animationId;
+    let startTime = performance.now();
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        let allOffScreen = true;
+        for (let p of particles) {
+            p.x += p.speedX;
+            p.y += p.speedY;
+            p.rotation += p.spin;
+            if (p.y < canvas.height + p.size) allOffScreen = false;
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate(p.rotation * Math.PI / 180);
+            ctx.fillStyle = p.color;
+            ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size);
+            ctx.restore();
+        }
+        if (allOffScreen || (performance.now() - startTime > 3000)) {
+            cancelAnimationFrame(animationId);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            return;
+        }
+        animationId = requestAnimationFrame(animate);
+    }
+    animate();
+    // Also play clapping sound
+    try {
+        const ctxAudio = new (window.AudioContext || window.webkitAudioContext)();
+        const now = ctxAudio.currentTime;
+        // Clapping sound – short bursts of noise
+        for (let i = 0; i < 6; i++) {
+            const osc = ctxAudio.createOscillator();
+            const gain = ctxAudio.createGain();
+            osc.type = 'square';
+            osc.frequency.value = 800 + Math.random() * 400;
+            gain.gain.setValueAtTime(0.2, now + i * 0.1);
+            gain.gain.exponentialRampToValueAtTime(0.0001, now + i * 0.1 + 0.15);
+            osc.connect(gain);
+            gain.connect(ctxAudio.destination);
+            osc.start(now + i * 0.1);
+            osc.stop(now + i * 0.1 + 0.15);
+        }
+    } catch(e) { /* ignore */ }
+}
+
+function celebrateCategoryComplete() {
+    startConfetti();
+}
+
+function swapTextOrder() {
+    const container = document.getElementById('textContainer');
+    const arabicDiv = document.getElementById('arabicText');
+    const transDiv = document.getElementById('translationText');
+    if (lang === 'ar') {
+        // Arabic first
+        if (container.firstChild !== arabicDiv) {
+            container.insertBefore(arabicDiv, container.firstChild);
+        }
+    } else {
+        // English first
+        if (container.firstChild !== transDiv) {
+            container.insertBefore(transDiv, container.firstChild);
+        }
+    }
+}
+
 function render() {
     const category = getCategoryData(currentCat);
     const isEmptyFav = (currentCat === 4 && favorites.length === 0);
@@ -893,6 +1049,7 @@ function render() {
     
     updateFavoriteButtonUI();
     updateColorTooltips();
+    swapTextOrder(); // ensure correct order after content update
     document.getElementById('scrollArea').scrollTop = 0;
 }
 
@@ -907,9 +1064,21 @@ function incrementCount() {
             saveFavorites();
         }
         playTapSound();
+        const wasCompletedBefore = (currentCount - 1 === max); // was it already complete?
         render();
+        // Check if we just completed this dhikr AND it's the last dhikr in the category
         if (currentCount === max) {
-            playVibrateSound();
+            // Completed current dhikr
+            const categoryData = getCategoryData(currentCat);
+            const isLastDhikr = (currentIndex === categoryData.arabic.length - 1);
+            if (isLastDhikr) {
+                // Entire category completed!
+                celebrateCategoryComplete();
+                playVibrateSound(); // ensure vibration if enabled
+            } else {
+                // Just a single dhikr completed, not the whole category
+                playVibrateSound();
+            }
             if(document.getElementById('chkAuto').checked) setTimeout(() => next(), 600);
         }
     }
@@ -944,7 +1113,6 @@ function changeCat(index) {
 function toggleLang() {
     lang = (lang === 'ar') ? 'en' : 'ar';
     const body = document.getElementById('bodyNode');
-    // Using classList preserves existing classes like 'light-mode'
     body.classList.remove('lang-ar', 'lang-en');
     body.classList.add('lang-' + lang);
     render();
