@@ -208,7 +208,7 @@
             cursor: pointer;
             transition: all 0.2s ease;
             font-size: 18px;
-            opacity: 0.65; /* Made transparent so text is visible underneath */
+            opacity: 0.65;
             border: 2px solid var(--accent);
         }
 
@@ -223,7 +223,7 @@
             transform: scale(1.05);
         }
 
-        /* Dark Mode: Dark Bg, Accent Border, White glow/border on hover (Screenshot 1 Match) */
+        /* Dark Mode: Dark Bg, Accent Border, White glow/border on hover */
         body:not(.light-mode) .scroll-btn {
             background: rgba(0, 0, 0, 0.7);
             color: var(--accent);
@@ -367,6 +367,7 @@
         .main-display::-webkit-scrollbar { width: 4px; }
         .main-display::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
 
+        /* Share Popup Styles */
         .share-popup {
             position: absolute; bottom: 100px; right: 20px;
             background: var(--popup-bg); border-radius: 28px; padding: 20px;
@@ -376,6 +377,29 @@
             transform: scale(0.95);
         }
         .share-popup.show { visibility: visible; opacity: 1; transform: scale(1); }
+        .share-popup-title {
+            text-align: center; font-weight: 700; font-size: 18px;
+            margin-bottom: 18px; letter-spacing: 0.5px;
+            color: var(--accent);
+        }
+        .share-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px;
+            justify-items: center;
+        }
+        .share-icon {
+            display: flex; flex-direction: column; align-items: center; gap: 8px;
+            cursor: pointer; color: var(--accent); font-size: 12px; font-weight: 500;
+            transition: transform 0.1s ease;
+        }
+        .share-icon:hover { transform: scale(1.05); }
+        .share-icon svg {
+            width: 48px; height: 48px;
+            background: rgba(128,128,128,0.2); border-radius: 30px;
+            padding: 10px;
+            transition: background 0.2s;
+            stroke: var(--accent);
+        }
+        .share-icon:hover svg { background: rgba(128,128,128,0.4); }
 
         #confetti-canvas {
             position: fixed;
@@ -386,6 +410,7 @@
             pointer-events: none;
             z-index: 9999;
         }
+        .empty-fav { opacity: 0.8; font-style: italic; text-align: center; margin-top: 30px; color: var(--text-dim); }
     </style>
 </head>
 <body class="lang-ar" id="bodyNode">
