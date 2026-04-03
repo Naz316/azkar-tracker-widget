@@ -447,26 +447,10 @@
 
     <!-- Grouped square scroll buttons -->
     <div class="scroll-buttons">
-    <div class="scroll-btn" id="scrollUpBtn">▲</div>
-    <div class="scroll-btn" id="scrollDownBtn">▼</div>
-</div>
+        <div class="scroll-btn" id="scrollUpBtn" title="Scroll up">▲</div>
+        <div class="scroll-btn" id="scrollDownBtn" title="Scroll down">▼</div>
+    </div>
 
-function updateScrollButtonTooltips() {
-    const upBtn = document.getElementById('scrollUpBtn');
-    const downBtn = document.getElementById('scrollDownBtn');
-    if (upBtn && downBtn) {
-        if (lang === 'ar') {
-            upBtn.title = 'تمرير لأعلى';
-            downBtn.title = 'تمرير لأسفل';
-        } else {
-            upBtn.title = 'Scroll up';
-            downBtn.title = 'Scroll down';
-        }
-    }
-}
-
-function setupScrollButtons() {
-    
     <div class="footer-controls">
         <button class="nav-btn" onclick="prev()">❮</button>
         <div class="side-info">
